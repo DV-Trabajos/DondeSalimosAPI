@@ -1,0 +1,93 @@
+﻿@page "/Publicidades/Listado"
+@inject HttpClient Http
+
+<h3>Listado de Publicidades</h3>
+<form>
+    <div class="row">
+        <div class="col-md-5">
+            <b>Comercio</b><br />
+            <input type="text" class="form-control" placeholder="Nombre del comercio" @bind-value="Titulo" @bind-value:event="oninput" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-3">
+            <button type="button" class="btn btn-primary" @onclick="filtro">Filtrar</button>
+            <a class="btn btn-info" href="Publicidades/Editar_Nuevo/">Nuevo</a>
+        </div>
+    </div>
+    <br />
+</form>
+
+@if (Publicidades == null)
+{
+    <text>Cargando..</text>
+}
+else if (Publicidades.Count == 0)
+{
+    <text>No hay publicidades en la base de datos</text>
+}
+else
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Comercio</th>
+                <th scope="col">Descripción</th>
+                <th scope="col">Visualizaciones</th>
+                <th scope="col">Tiempo</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Fecha de creación</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var row in Publicidades)
+            {
+                <tr>
+                    <td>@row.Comercio.Nombre</td>
+                    <td>@row.Descripcion</td>
+                    <td>@row.Visualizaciones</td>
+                    <td>@row.Tiempo</td>
+                    <td>@row.Estado</td>
+                    <td>@row.FechaCreacion</td>
+                    <td>
+                        <a href="Publicidades/Editar_Nuevo/@row.ID_Publicidad">Editar</a> |
+                        <a href="Publicidades/Eliminar/@row.ID_Publicidad">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter] public string Titulo { get; set; }
+    public string Url = "/api/publicidades";
+
+    private List<DondeSalimos.Shared.Modelos.Publicidad> Publicidades;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarPublicidades();
+    }
+
+    async Task CargarPublicidades()
+    {
+        Publicidades = await Http.GetFromJsonAsync<List<DondeSalimos.Shared.Modelos.Publicidad>>(Url);
+    }
+
+    public async Task filtro()
+    {
+        //Filtrar por 'Nombre comercio'
+        if (!string.IsNullOrEmpty(Titulo))
+        {
+            Publicidades = await Http.GetFromJsonAsync<List<DondeSalimos.Shared.Modelos.Publicidad>>($"{Url}/{Titulo}");
+        }
+        else
+        {
+            await CargarPublicidades();
+        }
+
+        StateHasChanged();
+    }
+}

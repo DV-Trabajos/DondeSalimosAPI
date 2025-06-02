@@ -1,0 +1,45 @@
+﻿@page "/Publicidades/Eliminar/{ID_Publicidad:int}"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>Eliminar publicidad</h3>
+<form>
+    <div class="row">
+        <div class="col-md-5">
+            <b>Publicidad</b><br />
+            <input type="text" class="form-control" @bind-value="Publicidad.ID_Publicidad" disabled="disabled" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-3 alert alert-danger">
+            <h5>¿Esta seguro que desea eliminarlo?</h5>
+            <input type="hidden" @bind-value="Publicidad.ID_Publicidad" />
+            <button type="button" class="btn btn-danger" @onclick="borrar">Si</button>
+            <a class="btn btn-primary" href="Publicidades/Listado">No</a>
+        </div>
+    </div>
+    <br />
+</form>
+
+@code {
+    [Parameter] public int ID_Publicidad { get; set; }
+    public string Url = "/api/publicidades";
+
+    DondeSalimos.Shared.Modelos.Publicidad Publicidad = new DondeSalimos.Shared.Modelos.Publicidad();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (ID_Publicidad > 0)
+        {
+            Publicidad = await Http.GetFromJsonAsync<DondeSalimos.Shared.Modelos.Publicidad>($"{Url}/{ID_Publicidad}");
+        }
+    }
+
+    async Task borrar()
+    {
+        await Http.DeleteAsync($"{Url}/{ID_Publicidad}");
+
+        NavigationManager.NavigateTo("/Publicidades/Listado");
+    }
+}

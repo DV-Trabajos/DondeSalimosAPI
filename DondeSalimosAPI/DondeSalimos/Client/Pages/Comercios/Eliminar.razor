@@ -1,0 +1,45 @@
+﻿@page "/Comercios/Eliminar/{ID_Comercio:int}"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>Eliminar comercios</h3>
+<form>
+    <div class="row">
+        <div class="col-md-5">
+            <b>Comercio</b><br />
+            <input type="text" class="form-control" @bind-value="Comercio.Nombre" disabled="disabled" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-3 alert alert-danger">
+            <h5>¿Esta seguro que desea eliminarlo?</h5>
+            <input type="hidden" @bind-value="Comercio.ID_Comercio" />
+            <button type="button" class="btn btn-danger" @onclick="borrar">Si</button>
+            <a class="btn btn-primary" href="Comercios/Listado">No</a>
+        </div>
+    </div>
+    <br />
+</form>
+
+@code {
+    [Parameter] public int ID_Comercio { get; set; }
+    public string Url = "/api/comercios";
+
+    DondeSalimos.Shared.Modelos.Comercio Comercio = new DondeSalimos.Shared.Modelos.Comercio();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (ID_Comercio > 0)
+        {
+            Comercio = await Http.GetFromJsonAsync<DondeSalimos.Shared.Modelos.Comercio>($"{Url}/{ID_Comercio}");
+        }
+    }
+
+    async Task borrar()
+    {
+        await Http.DeleteAsync($"{Url}/{ID_Comercio}");
+
+        NavigationManager.NavigateTo("/Comercios/Listado");
+    }
+}

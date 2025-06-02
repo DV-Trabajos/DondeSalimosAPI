@@ -1,0 +1,99 @@
+﻿@page "/Clientes/Listado"
+@inject HttpClient Http
+
+<h3>Listado de Clientes</h3>
+<form>
+    <div class="row">
+        <div class="col-md-5">
+            <b>Cliente</b><br />
+            <input type="text" class="form-control" placeholder="Nombre del cliente" @bind-value="Titulo" @bind-value:event="oninput" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-3">
+            <button type="button" class="btn btn-primary" @onclick="filtro">Filtrar</button>
+            <a class="btn btn-info" href="Clientes/Editar_Nuevo/">Nuevo</a>
+        </div>
+    </div>
+    <br />
+</form>
+
+@if (Clientes == null)
+{
+    <text>Cargando..</text>
+}
+else if (Clientes.Count == 0)
+{
+    <text>No hay clientes en la base de datos</text>
+}
+else
+{
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th scope="col">Nombre</th>
+                <th scope="col">Apellido</th>
+                <th scope="col">Tipo de documento</th>
+                <th scope="col">Nro. de documento</th>
+                <th scope="col">Correo</th>
+                <th scope="col">Telefono</th>
+                <th scope="col">Estado</th>
+                <th scope="col">Fecha de creación</th>
+                <th scope="col">Usuario</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var row in Clientes)
+            {
+                <tr>
+                    <td>@row.Nombre</td>
+                    <td>@row.Apellido</td>
+                    <td>@row.TipoDocumento</td>
+                    <td>@row.NroDocumento</td>
+                    <td>@row.Correo</td>
+                    <td>@row.Telefono</td>
+                    <td>@row.Estado</td>
+                    <td>@row.FechaCreacion</td>
+                    <td>@row.Usuario.NombreUsuario</td>
+                    <td>
+                        <a href="Clientes/Editar_Nuevo/@row.ID_Cliente">Editar</a> |
+                        <a href="Clientes/Eliminar/@row.ID_Cliente">Eliminar</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter] public string Titulo { get; set; }
+    public string Url = "/api/clientes";
+
+    private List<DondeSalimos.Shared.Modelos.Cliente> Clientes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarClientes();
+    }
+
+    async Task CargarClientes()
+    {
+        Clientes = await Http.GetFromJsonAsync<List<DondeSalimos.Shared.Modelos.Cliente>>(Url);
+    }
+
+    public async Task filtro()
+    {
+        //Filtrar por 'Nombre cliente'
+        if (!string.IsNullOrEmpty(Titulo))
+        {
+            Clientes = await Http.GetFromJsonAsync<List<DondeSalimos.Shared.Modelos.Cliente>>($"{Url}/{Titulo}");
+        }
+        else
+        {
+            await CargarClientes();
+        }
+
+        StateHasChanged();
+    }
+}

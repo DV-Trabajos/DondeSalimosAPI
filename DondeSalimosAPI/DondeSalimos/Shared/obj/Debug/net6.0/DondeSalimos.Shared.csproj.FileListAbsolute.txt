@@ -1,0 +1,116 @@
+C:\Users\nicoz\Documents\Analista en Sistemas\DondeSalimos\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.deps.json
+C:\Users\nicoz\Documents\Analista en Sistemas\DondeSalimos\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.dll
+C:\Users\nicoz\Documents\Analista en Sistemas\DondeSalimos\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.pdb
+C:\Users\nicoz\Documents\Analista en Sistemas\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.csproj.AssemblyReference.cache
+C:\Users\nicoz\Documents\Analista en Sistemas\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nicoz\Documents\Analista en Sistemas\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.AssemblyInfoInputs.cache
+C:\Users\nicoz\Documents\Analista en Sistemas\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.AssemblyInfo.cs
+C:\Users\nicoz\Documents\Analista en Sistemas\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.csproj.CoreCompileInputs.cache
+C:\Users\nicoz\Documents\Analista en Sistemas\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.dll
+C:\Users\nicoz\Documents\Analista en Sistemas\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\refint\DondeSalimos.Shared.dll
+C:\Users\nicoz\Documents\Analista en Sistemas\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.pdb
+C:\Users\nicoz\Documents\Analista en Sistemas\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\ref\DondeSalimos.Shared.dll
+C:\Users\nicoz\Documents\Analista en Sistemas\Tesis\DondeSalimos\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.deps.json
+C:\Users\nicoz\Documents\Analista en Sistemas\Tesis\DondeSalimos\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.dll
+C:\Users\nicoz\Documents\Analista en Sistemas\Tesis\DondeSalimos\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.pdb
+C:\Users\nicoz\Documents\Analista en Sistemas\Tesis\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.csproj.AssemblyReference.cache
+C:\Users\nicoz\Documents\Analista en Sistemas\Tesis\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nicoz\Documents\Analista en Sistemas\Tesis\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.AssemblyInfoInputs.cache
+C:\Users\nicoz\Documents\Analista en Sistemas\Tesis\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.AssemblyInfo.cs
+C:\Users\nicoz\Documents\Analista en Sistemas\Tesis\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.csproj.CoreCompileInputs.cache
+C:\Users\nicoz\Documents\Analista en Sistemas\Tesis\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.dll
+C:\Users\nicoz\Documents\Analista en Sistemas\Tesis\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\refint\DondeSalimos.Shared.dll
+C:\Users\nicoz\Documents\Analista en Sistemas\Tesis\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.pdb
+C:\Users\nicoz\Documents\Analista en Sistemas\Tesis\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\ref\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\DondeSalimos\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.deps.json
+C:\Users\nicoz\Downloads\DondeSalimos\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\DondeSalimos\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.pdb
+C:\Users\nicoz\Downloads\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nicoz\Downloads\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.AssemblyInfoInputs.cache
+C:\Users\nicoz\Downloads\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.AssemblyInfo.cs
+C:\Users\nicoz\Downloads\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.csproj.CoreCompileInputs.cache
+C:\Users\nicoz\Downloads\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\refint\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.pdb
+C:\Users\nicoz\Downloads\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\ref\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\Analista en Sistemas\DondeSalimos\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.deps.json
+C:\Users\nicoz\Downloads\Analista en Sistemas\DondeSalimos\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\Analista en Sistemas\DondeSalimos\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.pdb
+C:\Users\nicoz\Downloads\Analista en Sistemas\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nicoz\Downloads\Analista en Sistemas\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.AssemblyInfoInputs.cache
+C:\Users\nicoz\Downloads\Analista en Sistemas\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.AssemblyInfo.cs
+C:\Users\nicoz\Downloads\Analista en Sistemas\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.csproj.CoreCompileInputs.cache
+C:\Users\nicoz\Downloads\Analista en Sistemas\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\Analista en Sistemas\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\refint\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\Analista en Sistemas\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.pdb
+C:\Users\nicoz\Downloads\Analista en Sistemas\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\ref\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\Tesis 2024\DondeSalimos\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.deps.json
+C:\Users\nicoz\Downloads\Tesis 2024\DondeSalimos\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\Tesis 2024\DondeSalimos\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.pdb
+C:\Users\nicoz\Downloads\Tesis 2024\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nicoz\Downloads\Tesis 2024\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.AssemblyInfoInputs.cache
+C:\Users\nicoz\Downloads\Tesis 2024\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.AssemblyInfo.cs
+C:\Users\nicoz\Downloads\Tesis 2024\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.csproj.CoreCompileInputs.cache
+C:\Users\nicoz\Downloads\Tesis 2024\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\Tesis 2024\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\refint\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\Tesis 2024\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.pdb
+C:\Users\nicoz\Downloads\Tesis 2024\DondeSalimos\DondeSalimos\Shared\obj\Debug\net6.0\ref\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\New folder\Tesis 2024\DondeSalimosWeb\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.deps.json
+C:\Users\nicoz\Downloads\New folder\Tesis 2024\DondeSalimosWeb\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\New folder\Tesis 2024\DondeSalimosWeb\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.pdb
+C:\Users\nicoz\Downloads\New folder\Tesis 2024\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nicoz\Downloads\New folder\Tesis 2024\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.AssemblyInfoInputs.cache
+C:\Users\nicoz\Downloads\New folder\Tesis 2024\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.AssemblyInfo.cs
+C:\Users\nicoz\Downloads\New folder\Tesis 2024\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.csproj.CoreCompileInputs.cache
+C:\Users\nicoz\Downloads\New folder\Tesis 2024\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.sourcelink.json
+C:\Users\nicoz\Downloads\New folder\Tesis 2024\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\New folder\Tesis 2024\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\refint\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\New folder\Tesis 2024\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.pdb
+C:\Users\nicoz\Downloads\New folder\Tesis 2024\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\ref\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\Tesis 2024\DondeSalimosWeb\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.deps.json
+C:\Users\nicoz\Downloads\Tesis 2024\DondeSalimosWeb\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\Tesis 2024\DondeSalimosWeb\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.pdb
+C:\Users\nicoz\Downloads\Tesis 2024\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nicoz\Downloads\Tesis 2024\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.AssemblyInfoInputs.cache
+C:\Users\nicoz\Downloads\Tesis 2024\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.AssemblyInfo.cs
+C:\Users\nicoz\Downloads\Tesis 2024\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.csproj.CoreCompileInputs.cache
+C:\Users\nicoz\Downloads\Tesis 2024\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.sourcelink.json
+C:\Users\nicoz\Downloads\Tesis 2024\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\Tesis 2024\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\refint\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\Tesis 2024\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.pdb
+C:\Users\nicoz\Downloads\Tesis 2024\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\ref\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\DondeSalimosWeb\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.deps.json
+C:\Users\nicoz\Downloads\DondeSalimosWeb\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\DondeSalimosWeb\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.pdb
+C:\Users\nicoz\Downloads\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nicoz\Downloads\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.AssemblyInfoInputs.cache
+C:\Users\nicoz\Downloads\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.AssemblyInfo.cs
+C:\Users\nicoz\Downloads\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.csproj.CoreCompileInputs.cache
+C:\Users\nicoz\Downloads\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.sourcelink.json
+C:\Users\nicoz\Downloads\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\refint\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.pdb
+C:\Users\nicoz\Downloads\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\ref\DondeSalimos.Shared.dll
+C:\Users\nicoz\Documents\GitHub\DondeSalimosWeb\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.deps.json
+C:\Users\nicoz\Documents\GitHub\DondeSalimosWeb\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.dll
+C:\Users\nicoz\Documents\GitHub\DondeSalimosWeb\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.pdb
+C:\Users\nicoz\Documents\GitHub\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nicoz\Documents\GitHub\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.AssemblyInfoInputs.cache
+C:\Users\nicoz\Documents\GitHub\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.AssemblyInfo.cs
+C:\Users\nicoz\Documents\GitHub\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.csproj.CoreCompileInputs.cache
+C:\Users\nicoz\Documents\GitHub\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.dll
+C:\Users\nicoz\Documents\GitHub\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\refint\DondeSalimos.Shared.dll
+C:\Users\nicoz\Documents\GitHub\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.pdb
+C:\Users\nicoz\Documents\GitHub\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\ref\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\Tesis\DondeSalimosWeb\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.deps.json
+C:\Users\nicoz\Downloads\Tesis\DondeSalimosWeb\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\Tesis\DondeSalimosWeb\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.pdb
+C:\Users\nicoz\Downloads\Tesis\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\nicoz\Downloads\Tesis\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.AssemblyInfoInputs.cache
+C:\Users\nicoz\Downloads\Tesis\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.AssemblyInfo.cs
+C:\Users\nicoz\Downloads\Tesis\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.csproj.CoreCompileInputs.cache
+C:\Users\nicoz\Downloads\Tesis\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.sourcelink.json
+C:\Users\nicoz\Downloads\Tesis\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\Tesis\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\refint\DondeSalimos.Shared.dll
+C:\Users\nicoz\Downloads\Tesis\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.pdb
+C:\Users\nicoz\Downloads\Tesis\DondeSalimosWeb\DondeSalimos\Shared\obj\Debug\net6.0\ref\DondeSalimos.Shared.dll

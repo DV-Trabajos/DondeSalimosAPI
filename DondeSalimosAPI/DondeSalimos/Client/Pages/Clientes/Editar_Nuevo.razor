@@ -1,0 +1,136 @@
+﻿@page "/Clientes/Editar_Nuevo/"
+@page "/Clientes/Editar_Nuevo/{ID_Cliente:int}"
+@using System.Text.RegularExpressions;
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>@TituloPagina</h3>
+
+<EditForm Model="@Cliente" OnValidSubmit="@Guardar">
+    <DataAnnotationsValidator />
+    <div class="form-group">
+        <b>Nombre</b><br />
+        <div>
+            <InputText @bind-Value="@Cliente.Nombre" />
+            <ValidationMessage For="@(() => Cliente.Nombre)" />
+        </div>
+        <b>Apellido</b><br />
+        <div>
+            <InputText @bind-Value="@Cliente.Apellido" />
+            <ValidationMessage For="@(() => Cliente.Apellido)" />
+        </div>
+        <b>Tipo de documento</b><br />
+        <div>
+        <InputSelect @bind-Value="@Cliente.TipoDocumento">
+            <option selected disabled value="-1"> Seleccione un tipo de documento</option>
+            <option value="DNI">DNI</option>
+            <option value="PASAPORTE">PASAPORTE</option>
+            <ValidationMessage For="@(() => Cliente.TipoDocumento)" />
+        </InputSelect>
+        </div>
+        <b>Nro. de Documento</b><br />
+        <div>
+            <InputText @bind-Value="@Cliente.NroDocumento" />
+            <ValidationMessage For="@(() => Cliente.NroDocumento)" />
+        </div>
+        <b>Email</b><br />
+        <div>
+            <InputText @bind-Value="@Cliente.Correo" />
+            <ValidationMessage For="@(() => Cliente.Correo)" />
+        </div>
+        <b>Telefono</b><br />
+        <div>
+            <InputText @bind-Value="@Cliente.Telefono" />
+            <ValidationMessage For="@(() => Cliente.Telefono)" />
+            @if (!string.IsNullOrEmpty(mensajeError))
+            {
+                <p class="text-danger">@mensajeError</p>
+            }
+        </div>
+        <b>Estado</b><br />
+        <div>
+            <InputCheckbox @bind-Value="@Cliente.Estado"/>
+        </div>
+        <b>Fecha de creación</b><br />
+        <div>
+            <InputDate @bind-Value="@Cliente.FechaCreacion" />
+            <ValidationMessage For="@(() => Cliente.FechaCreacion)" />
+        </div>
+        <b>Usuario</b><br />
+        <div>
+            <select class="form-control" @bind="UsuarioSeleccionado">
+                <option selected disabled value="-1"> Seleccione una usuario</option>
+                @foreach (var item in Usuarios)
+                {
+                    <option value="@item.ID_Usuario">@item.NombreUsuario</option>
+                }
+            </select>
+        </div>
+    </div>
+    <br />
+    <div class="form-group">
+        <button type="submit" class="btn btn-success"> Guardar </button>
+        <a class="btn btn-info" href="Clientes/Listado/">Volver</a>
+    </div>
+    <br />
+    <ValidationSummary />
+</EditForm>
+
+@code {
+    [Parameter] public int ID_Cliente { get; set; }
+    public string TituloPagina;
+    public string Url = "/api/clientes";
+    private string mensajeError;
+    public int UsuarioSeleccionado { get; set; }
+
+    DondeSalimos.Shared.Modelos.Cliente Cliente = new DondeSalimos.Shared.Modelos.Cliente();
+    List<DondeSalimos.Shared.Modelos.Usuario> Usuarios = new List<DondeSalimos.Shared.Modelos.Usuario>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Usuarios = await Http.GetFromJsonAsync<List<DondeSalimos.Shared.Modelos.Usuario>>("/api/usuarios");
+
+        if (ID_Cliente > 0)
+        {
+            TituloPagina = "Editar cliente";
+            Cliente = await Http.GetFromJsonAsync<DondeSalimos.Shared.Modelos.Cliente>($"{Url}/{ID_Cliente}");
+            UsuarioSeleccionado = Cliente.ID_Usuario;
+        }
+        else
+        {
+            TituloPagina = "Nuevo cliente";
+            UsuarioSeleccionado = Usuarios.FirstOrDefault().ID_Usuario;
+        }
+    }
+
+    async Task Guardar()
+    {
+        if (!EsNumeroTelefonoValido(Cliente.Telefono))
+        {
+            mensajeError = "El número de teléfono no es válido.";
+
+            return; // Evita que el formulario se envíe si el número de teléfono no es válido
+        }
+
+        Cliente.ID_Usuario = UsuarioSeleccionado;
+        //Cliente.Usuario = Usuarios.Where(x => x.ID_Usuario == Cliente.ID_Usuario).FirstOrDefault();
+
+        if (ID_Cliente > 0)
+        {
+            await Http.PutAsJsonAsync($"{Url}/{ID_Cliente}", Cliente);
+        }
+        else
+        {
+            await Http.PostAsJsonAsync(Url, Cliente);
+        }
+
+        NavigationManager.NavigateTo("/Clientes/Listado");
+    }
+
+    private bool EsNumeroTelefonoValido(string telefono)
+    {
+        // Expresión regular que permite solo dígitos numéricos y caracteres especiales comunes
+        string patron = @"^[0-9()+\- ]*$";
+        return Regex.IsMatch(telefono, patron);
+    }
+}

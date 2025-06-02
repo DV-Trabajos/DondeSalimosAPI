@@ -1,0 +1,54 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\nicoz\\Documents\\GitHub\\DondeSalimosWeb\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|c:\\users\\nicoz\\documents\\github\\dondesalimosweb\\dondesalimos\\server\\controllers\\usuarioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|solutionrelative:dondesalimos\\server\\controllers\\usuarioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|c:\\users\\nicoz\\documents\\github\\dondesalimosweb\\dondesalimos\\server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|solutionrelative:dondesalimos\\server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\nicoz\\Documents\\GitHub\\DondeSalimosWeb\\DondeSalimos\\Server\\Program.cs",
+              "RelativeDocumentMoniker": "DondeSalimos\\Server\\Program.cs",
+              "ToolTip": "C:\\Users\\nicoz\\Documents\\GitHub\\DondeSalimosWeb\\DondeSalimos\\Server\\Program.cs",
+              "RelativeToolTip": "DondeSalimos\\Server\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-02T02:46:05.835Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UsuariosController.cs",
+              "DocumentMoniker": "C:\\Users\\nicoz\\Documents\\GitHub\\DondeSalimosWeb\\DondeSalimos\\Server\\Controllers\\UsuariosController.cs",
+              "RelativeDocumentMoniker": "DondeSalimos\\Server\\Controllers\\UsuariosController.cs",
+              "ToolTip": "C:\\Users\\nicoz\\Documents\\GitHub\\DondeSalimosWeb\\DondeSalimos\\Server\\Controllers\\UsuariosController.cs",
+              "RelativeToolTip": "DondeSalimos\\Server\\Controllers\\UsuariosController.cs",
+              "ViewState": "AgIAABsAAAAAAAAAAAAYwFwAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-05-26T03:33:04.796Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

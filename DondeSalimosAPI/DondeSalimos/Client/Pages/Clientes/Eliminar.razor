@@ -1,0 +1,46 @@
+﻿@page "/Clientes/Eliminar/{ID_Cliente:int}"
+@inject HttpClient Http
+@inject NavigationManager NavigationManager
+
+<h3>Eliminar clientes</h3>
+<form>
+    <div class="row">
+        <div class="col-md-5">
+            <b>Cliente</b><br />
+            <input type="text" class="form-control" @bind-value="Cliente.Nombre" disabled="disabled" />
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-md-3 alert alert-danger">
+            <h5>¿Esta seguro que desea eliminarlo?</h5>
+            <input type="hidden" @bind-value="Cliente.ID_Cliente" />
+            <button type="button" class="btn btn-danger" @onclick="borrar">Si</button>
+            <a class="btn btn-primary" href="Clientes/Listado">No</a>
+        </div>
+    </div>
+    <br />
+</form>
+
+@code {
+
+    [Parameter] public int ID_Cliente { get; set; }
+    public string Url = "/api/clientes";
+
+    DondeSalimos.Shared.Modelos.Cliente Cliente = new DondeSalimos.Shared.Modelos.Cliente();
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (ID_Cliente > 0)
+        {
+            Cliente = await Http.GetFromJsonAsync<DondeSalimos.Shared.Modelos.Cliente>($"{Url}/{ID_Cliente}");
+        }
+    }
+
+    async Task borrar()
+    {
+        await Http.DeleteAsync($"{Url}/{ID_Cliente}");
+
+        NavigationManager.NavigateTo("/Clientes/Listado");
+    }
+}
