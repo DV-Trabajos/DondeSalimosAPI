@@ -1877,7 +1877,7 @@
         }
       }
     },
-    "/api/Usuarios/iniciarSesionConGoogle": {
+    "/api/Usuarios/autenticacionConGoogle": {
       "post": {
         "tags": [
           "Usuarios"
@@ -1886,17 +1886,17 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/SignInWithGoogleRequest"
+                "$ref": "#/components/schemas/AuthenticationWithGoogleRequest"
               }
             },
             "text/json": {
               "schema": {
-                "$ref": "#/components/schemas/SignInWithGoogleRequest"
+                "$ref": "#/components/schemas/AuthenticationWithGoogleRequest"
               }
             },
             "application/*+json": {
               "schema": {
-                "$ref": "#/components/schemas/SignInWithGoogleRequest"
+                "$ref": "#/components/schemas/AuthenticationWithGoogleRequest"
               }
             }
           }
@@ -1907,17 +1907,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/SignInWithGoogleResponse"
+                  "$ref": "#/components/schemas/AuthenticationWithGoogleResponse"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SignInWithGoogleResponse"
+                  "$ref": "#/components/schemas/AuthenticationWithGoogleResponse"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/SignInWithGoogleResponse"
+                  "$ref": "#/components/schemas/AuthenticationWithGoogleResponse"
                 }
               }
             }
@@ -1974,6 +1974,32 @@
   },
   "components": {
     "schemas": {
+      "AuthenticationWithGoogleRequest": {
+        "type": "object",
+        "properties": {
+          "idToken": {
+            "type": "string",
+            "nullable": true
+          },
+          "rolUsuario": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AuthenticationWithGoogleResponse": {
+        "type": "object",
+        "properties": {
+          "usuario": {
+            "$ref": "#/components/schemas/Usuario"
+          },
+          "esNuevoUsuario": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
       "Cliente": {
         "required": [
           "apellido",
@@ -2262,32 +2288,6 @@
           "fechaCreacion": {
             "type": "string",
             "format": "date-time"
-          }
-        },
-        "additionalProperties": false
-      },
-      "SignInWithGoogleRequest": {
-        "type": "object",
-        "properties": {
-          "idToken": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "SignInWithGoogleResponse": {
-        "type": "object",
-        "properties": {
-          "usuario": {
-            "$ref": "#/components/schemas/Usuario"
-          },
-          "esNuevoUsuario": {
-            "type": "boolean"
-          },
-          "token": {
-            "type": "string",
-            "nullable": true
           }
         },
         "additionalProperties": false

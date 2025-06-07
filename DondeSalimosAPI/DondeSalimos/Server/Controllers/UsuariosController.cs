@@ -190,9 +190,9 @@ namespace DondeSalimos.Server.Controllers
         }
         #endregion
 
-        #region // POST: api/usuarios/iniciarSesionConGoogle
-        [HttpPost("iniciarSesionConGoogle")]
-        public async Task<ActionResult<SignInWithGoogleResponse>> SignInWithGoogle(SignInWithGoogleRequest request)
+        #region // POST: api/usuarios/autenticacionConGoogle
+        [HttpPost("autenticacionConGoogle")]
+        public async Task<ActionResult<AuthenticationWithGoogleResponse>> AuthenticationWithGoogle(AuthenticationWithGoogleRequest request)
         {
             try
             {
@@ -222,31 +222,21 @@ namespace DondeSalimos.Server.Controllers
                 if (usuarioExistente != null)
                 {
                     // Usuario existente - Login normal
-                    return Ok(new SignInWithGoogleResponse
+                    return Ok(new AuthenticationWithGoogleResponse
                     {
                         Usuario = usuarioExistente,
-                        EsNuevoUsuario = false,
-                        Token = await _firebaseService.CreateCustomTokenAsync(firebaseUid)
+                        EsNuevoUsuario = false
+                        //Token = await _firebaseService.CreateCustomTokenAsync(firebaseUid)
                     });
                 }
                 else
                 {
                     // Verificar si ya existe un usuario con el mismo email pero diferente UID
-                    var usuarioConMismoEmail = await _context.Usuario
-                        .FirstOrDefaultAsync(x => x.Correo == email);
+                    var usuarioConMismoEmail = await _context.Usuario.FirstOrDefaultAsync(x => x.Correo == email);
 
                     if (usuarioConMismoEmail != null)
                     {
                         return BadRequest("Ya existe una cuenta registrada con este email");
-                    }
-
-                    // Obtener el rol por defecto
-                    var rolPorDefecto = await _context.RolUsuario
-                        .FirstOrDefaultAsync(x => x.Descripcion == "Usuario" && x.Estado == true);
-
-                    if (rolPorDefecto == null)
-                    {
-                        return BadRequest("No se encontró un rol por defecto para asignar al usuario");
                     }
 
                     // Crear nuevo usuario
@@ -254,8 +244,8 @@ namespace DondeSalimos.Server.Controllers
                     {
                         NombreUsuario = email.Split('@')[0], // Usar usuario del email
                         Correo = email,
-                        Telefono = string.Empty, // Se puede actualizar después en el perfil
-                        ID_RolUsuario = rolPorDefecto.ID_RolUsuario,
+                        //Telefono = string.Empty, // Se puede actualizar después en el perfil
+                        ID_RolUsuario = request.RolUsuario,
                         Uid = firebaseUid,
                         Estado = true,
                         FechaCreacion = DateTime.Now
@@ -266,11 +256,11 @@ namespace DondeSalimos.Server.Controllers
                     await _context.SaveChangesAsync();
 
                     // Devolver respuesta con nuevo usuario
-                    return Ok(new SignInWithGoogleResponse
+                    return Ok(new AuthenticationWithGoogleResponse
                     {
                         Usuario = nuevoUsuario,
-                        EsNuevoUsuario = true,
-                        Token = await _firebaseService.CreateCustomTokenAsync(firebaseUid)
+                        EsNuevoUsuario = true
+                        //Token = await _firebaseService.CreateCustomTokenAsync(firebaseUid)
                     });
                 }
             }
@@ -360,16 +350,18 @@ namespace DondeSalimos.Server.Controllers
             return match.Success;
         }
 
-        public class SignInWithGoogleRequest
+        public class AuthenticationWithGoogleRequest
         {
             public string IdToken { get; set; }
+
+            public int RolUsuario { get; set; } = 1;
         }
 
-        public class SignInWithGoogleResponse
+        public class AuthenticationWithGoogleResponse
         {
             public Usuario Usuario { get; set; }
             public Boolean EsNuevoUsuario { get; set; }
-            public string Token { get; set; }
+            //public string Token { get; set; }
         }
     }
 }

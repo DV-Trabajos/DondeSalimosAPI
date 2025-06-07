@@ -948,6 +948,32 @@
   },
   {
     "ContainingType": "DondeSalimos.Server.Controllers.UsuariosController",
+    "Method": "AuthenticationWithGoogle",
+    "RelativePath": "api/Usuarios/autenticacionConGoogle",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "DondeSalimos.Server.Controllers.UsuariosController\u002BAuthenticationWithGoogleRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "DondeSalimos.Server.Controllers.UsuariosController\u002BAuthenticationWithGoogleResponse",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "DondeSalimos.Server.Controllers.UsuariosController",
     "Method": "GetUsuarioByEmail",
     "RelativePath": "api/Usuarios/buscarEmail/{email}",
     "HttpMethod": "GET",
@@ -1071,32 +1097,6 @@
       }
     ],
     "ReturnTypes": []
-  },
-  {
-    "ContainingType": "DondeSalimos.Server.Controllers.UsuariosController",
-    "Method": "SignInWithGoogle",
-    "RelativePath": "api/Usuarios/iniciarSesionConGoogle",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "request",
-        "Type": "DondeSalimos.Server.Controllers.UsuariosController\u002BSignInWithGoogleRequest",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": [
-      {
-        "Type": "DondeSalimos.Server.Controllers.UsuariosController\u002BSignInWithGoogleResponse",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
   },
   {
     "ContainingType": "DondeSalimos.Server.Controllers.UsuariosController",
