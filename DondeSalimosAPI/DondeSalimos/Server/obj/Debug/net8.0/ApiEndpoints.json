@@ -1052,22 +1052,6 @@
   },
   {
     "ContainingType": "DondeSalimos.Server.Controllers.UsuariosController",
-    "Method": "PostUser",
-    "RelativePath": "api/Usuarios/crear",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "usuarioDto",
-        "Type": "DondeSalimos.Shared.Modelos.Usuario",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "DondeSalimos.Server.Controllers.UsuariosController",
     "Method": "DesactivarUsuario",
     "RelativePath": "api/Usuarios/desactivar/{id}",
     "HttpMethod": "POST",

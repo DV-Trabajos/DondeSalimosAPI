@@ -144,52 +144,6 @@ namespace DondeSalimos.Server.Controllers
         }
         #endregion
 
-        #region // POST: api/usuarios/crear
-        [HttpPost]
-        [Route("crear")]
-        public async Task<ActionResult> PostUser(Usuario usuarioDto)
-        {
-            try
-            {
-                // Verificar si el correo ya existe en la base de datos
-                var usuarioExistente = await _context.Usuario
-                    .FirstOrDefaultAsync(u => u.Correo.ToLower() == usuarioDto.Correo.ToLower());
-
-                if (usuarioExistente != null)
-                {
-                    return BadRequest("El correo ya está registrado");
-                }
-
-                // Crear usuario en Firebase
-                var firebaseUser = await _firebaseService.CreateUserAsync(
-                    usuarioDto.Correo,
-                    "", //usuarioDto.Password,
-                    usuarioDto.NombreUsuario);
-
-                // Crear usuario en la base de datos
-                var usuario = new Usuario
-                {
-                    NombreUsuario = usuarioDto.NombreUsuario,
-                    Correo = usuarioDto.Correo,
-                    Telefono = usuarioDto.Telefono,
-                    Uid = firebaseUser.Uid,
-                    Estado = true,
-                    FechaCreacion = DateTime.Now,
-                    ID_RolUsuario = usuarioDto.ID_RolUsuario
-                };
-
-                _context.Usuario.Add(usuario);
-                await _context.SaveChangesAsync();
-
-                return CreatedAtAction(nameof(GetUserById), new { id = usuario.ID_Usuario }, usuario);
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Error al crear usuario: {ex.Message}");
-            }
-        }
-        #endregion
-
         #region // POST: api/usuarios/autenticacionConGoogle
         [HttpPost("autenticacionConGoogle")]
         public async Task<ActionResult<AuthenticationWithGoogleResponse>> AuthenticationWithGoogle(AuthenticationWithGoogleRequest request)

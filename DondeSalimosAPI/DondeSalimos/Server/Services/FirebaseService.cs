@@ -2,6 +2,7 @@ using FirebaseAdmin;
 using FirebaseAdmin.Auth;
 using Google.Apis.Auth;
 using Google.Apis.Auth.OAuth2;
+using NuGet.Common;
 
 namespace DondeSalimos.Server.Services
 {
@@ -113,65 +114,80 @@ namespace DondeSalimos.Server.Services
         }
 
         // Verificar token de Google
-        public async Task<AuthTokenInfo> VerifyGoogleTokenAsync(string googleIdToken)
+        public async Task<AuthTokenInfo> VerifyGoogleTokenAsync(string token)
         {
+            // Intentar primero con Firebase
             try
             {
-                // OPCIÓN 1: Verificar directamente con Firebase Admin SDK
-                try
+                Console.WriteLine("Intentando verificar como token de Firebase...");
+                var decodedToken = await _firebaseAuth.VerifyIdTokenAsync(token);
+
+                Console.WriteLine($"✓ Token de Firebase verificado exitosamente para UID: {decodedToken.Uid}");
+
+                // Obtener información del proveedor
+                string provider = "firebase";
+                if (decodedToken.Claims.TryGetValue("firebase", out var firebaseValue) &&
+                    firebaseValue is Dictionary<string, object> firebaseDict &&
+                    firebaseDict.TryGetValue("sign_in_provider", out var providerValue))
                 {
-                    // Verificar el token con Firebase Admin SDK
-                    var decodedToken = await _firebaseAuth.VerifyIdTokenAsync(googleIdToken);
-
-                    // Obtener el proveedor de autenticación
-                    string provider = "unknown";
-                    if (decodedToken.Claims.TryGetValue("firebase", out var firebaseValue) &&
-                        firebaseValue is Dictionary<string, object> firebaseDict &&
-                        firebaseDict.TryGetValue("sign_in_provider", out var providerValue))
-                    {
-                        provider = providerValue.ToString();
-                    }
-
-                    // Devolver la información del token
-                    return new AuthTokenInfo
-                    {
-                        Uid = decodedToken.Uid,
-                        Claims = decodedToken.Claims.ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
-                        CustomToken = await _firebaseAuth.CreateCustomTokenAsync(decodedToken.Uid),
-                        ExpirationTime = DateTimeOffset.FromUnixTimeSeconds(decodedToken.ExpirationTimeSeconds).UtcDateTime,
-                        Provider = provider
-                    };
-                }
-                catch (FirebaseAuthException ex)
-                {
-                    //throw new Exception("Error en la autenticación: Token de Google inválido", ex);
-
-                    // Si falla la verificación con Firebase, intentar con Google API
+                    provider = providerValue.ToString();
                 }
 
-                // OPCIÓN 2: Verificar con Google API
-                // Esta opción es útil si el token fue emitido directamente por Google (no por Firebase)
-                var validationSettings = new GoogleJsonWebSignature.ValidationSettings
+                // Devolver la información del token
+                return new AuthTokenInfo
                 {
-                    Audience = new[] { _clientId }
+                    Uid = decodedToken.Uid,
+                    Claims = decodedToken.Claims.ToDictionary(kvp => kvp.Key, kvp => kvp.Value),
+                    CustomToken = await _firebaseAuth.CreateCustomTokenAsync(decodedToken.Uid),
+                    ExpirationTime = DateTimeOffset.FromUnixTimeSeconds(decodedToken.ExpirationTimeSeconds).UtcDateTime,
+                    Provider = provider
                 };
-
-                var payload = await GoogleJsonWebSignature.ValidateAsync(googleIdToken, validationSettings);
-
-                // Buscar o crear usuario en Firebase basado en el token de Google
-                UserRecord userRecord;
-
+            }
+            catch (FirebaseAuthException firebaseEx)
+            {
+                // Si falla Firebase, intentar con Google
                 try
                 {
-                    // Intentar obtener el usuario por email
-                    userRecord = await _firebaseAuth.GetUserByEmailAsync(payload.Email);
+                    var validationSettings = new GoogleJsonWebSignature.ValidationSettings
+                    {
+                        // Aceptar cualquier audience de Google
+                        Audience = new[] {
+                        _clientId,
+                        "620861653759-n7la2q029vi8vjl2r53v2g18lo8s0rlh.apps.googleusercontent.com" // El client ID que vimos en el error
+                        }
+                    };
+
+                    var payload = await GoogleJsonWebSignature.ValidateAsync(token, validationSettings);
+
+                    // Buscar o crear usuario en Firebase basado en el token de Google
+                    UserRecord userRecord;
+
+                    try
+                    {
+                        // Intentar obtener el usuario por email
+                        userRecord = await _firebaseAuth.GetUserByEmailAsync(payload.Email);
+                    }
+                    catch (FirebaseAuthException)
+                    {
+                        // El usuario no existe, crearlo
+                        var userArgs = new UserRecordArgs
+                        {
+                            Email = payload.Email,
+                            DisplayName = payload.Name,
+                            PhotoUrl = payload.Picture,
+                            EmailVerified = payload.EmailVerified
+                        };
+
+                        userRecord = await _firebaseAuth.CreateUserAsync(userArgs);
+                    }
 
                     // Crear claims para el token personalizado
                     var claims = new Dictionary<string, object>
                     {
                         { "email", payload.Email },
-                        { "name", payload.Name },
-                        { "picture", payload.Picture }
+                        { "name", payload.Name ?? "" },
+                        { "picture", payload.Picture ?? "" },
+                        { "email_verified", payload.EmailVerified }
                     };
 
                     // Crear un token personalizado de Firebase para el usuario
@@ -187,26 +203,11 @@ namespace DondeSalimos.Server.Services
                         Provider = "google.com"
                     };
                 }
-                catch (FirebaseAuthException ex)
+                catch (Exception googleEx)
                 {
-                    throw new Exception("Error en la autenticación: Token de Google inválido", ex);
+                    throw new Exception("Token inválido: No se pudo verificar ni con Firebase ni con Google", googleEx);
                 }
             }
-            catch (Exception ex)
-            {
-                if (ex.InnerException != null)
-                {
-                    Console.Error.WriteLine($"Inner exception: {ex.InnerException.Message}");
-                }
-
-                throw new Exception("Error en la autenticación: Token de Google inválido", ex);
-            }
-        }
-
-        // Crear token personalizado
-        public async Task<string> CreateCustomTokenAsync(string uid, Dictionary<string, object> claims = null)
-        {
-            return await _firebaseAuth.CreateCustomTokenAsync(uid, claims);
         }
     }
 }
