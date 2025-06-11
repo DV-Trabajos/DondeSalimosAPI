@@ -3,6 +3,7 @@ using FirebaseAdmin.Auth;
 using Google.Apis.Auth;
 using Google.Apis.Auth.OAuth2;
 using NuGet.Common;
+using System.Security.Claims;
 
 namespace DondeSalimos.Server.Services
 {
@@ -32,7 +33,7 @@ namespace DondeSalimos.Server.Services
             _firebaseAuth = FirebaseAuth.DefaultInstance;
         }
 
-        // Clase personalizada para devolver la información del token
+        #region // Clase personalizada para devolver la información del token
         public class AuthTokenInfo
         {
             public string Uid { get; set; }
@@ -41,8 +42,21 @@ namespace DondeSalimos.Server.Services
             public DateTime ExpirationTime { get; set; }
             public string Provider { get; set; }
         }
+        #endregion
 
-        // Crear usuario en Firebase
+        #region // Clase personalizada para devolver la información del token con google
+        public class AuthGoogleTokenInfo
+        {
+            public Dictionary<string, object> Claims { get; set; }
+            public UserRecord? FirebaseUser { get; set; }
+            public bool UserExistsInFirebase { get; set; }
+            public bool IsValidGoogleToken { get; set; }
+            public string? Mensaje { get; set; }
+            public string? Error { get; set; }
+        }
+        #endregion
+
+        #region // Crear usuario en Firebase
         public async Task<UserRecord> CreateUserAsync(string email, string password, string displayName)
         {
             var userArgs = new UserRecordArgs()
@@ -56,8 +70,9 @@ namespace DondeSalimos.Server.Services
 
             return await _firebaseAuth.CreateUserAsync(userArgs);
         }
+        #endregion
 
-        // Actualizar usuario en Firebase
+        #region // Actualizar usuario en Firebase
         public async Task<UserRecord> UpdateUserAsync(string uid, string email = null, string displayName = null, bool? disabled = null)
         {
             var userArgs = new UserRecordArgs()
@@ -66,36 +81,46 @@ namespace DondeSalimos.Server.Services
             };
 
             if (email != null)
+            {
                 userArgs.Email = email;
+            }
 
             if (displayName != null)
+            { 
                 userArgs.DisplayName = displayName;
+            }
 
             if (disabled.HasValue)
+            {
                 userArgs.Disabled = disabled.Value;
+            }
 
             return await _firebaseAuth.UpdateUserAsync(userArgs);
         }
+        #endregion
 
-        // Eliminar usuario en Firebase
+        #region // Eliminar usuario en Firebase
         public async Task DeleteUserAsync(string uid)
         {
             await _firebaseAuth.DeleteUserAsync(uid);
         }
+        #endregion
 
-        // Obtener usuario por UID
+        #region // Obtener usuario por UID
         public async Task<UserRecord> GetUserAsync(string uid)
         {
             return await _firebaseAuth.GetUserAsync(uid);
         }
+        #endregion
 
-        // Obtener usuario por email
+        #region // Obtener usuario por email
         public async Task<UserRecord> GetUserByEmailAsync(string email)
         {
             return await _firebaseAuth.GetUserByEmailAsync(email);
         }
+        #endregion
 
-        // Verificar si un usuario existe en Firebase
+        #region // Verificar si un usuario existe en Firebase
         public async Task<bool> UserExistsAsync(string uid)
         {
             try
@@ -112,17 +137,15 @@ namespace DondeSalimos.Server.Services
                 throw;
             }
         }
+        #endregion
 
-        // Verificar token de Google
-        public async Task<AuthTokenInfo> VerifyGoogleTokenAsync(string token)
+        #region // Verificar token
+        public async Task<AuthTokenInfo> VerifyTokenAsync(string token)
         {
             // Intentar primero con Firebase
             try
             {
-                Console.WriteLine("Intentando verificar como token de Firebase...");
                 var decodedToken = await _firebaseAuth.VerifyIdTokenAsync(token);
-
-                Console.WriteLine($"✓ Token de Firebase verificado exitosamente para UID: {decodedToken.Uid}");
 
                 // Obtener información del proveedor
                 string provider = "firebase";
@@ -209,5 +232,77 @@ namespace DondeSalimos.Server.Services
                 }
             }
         }
+        #endregion
+
+        #region // Verificar token de Google
+        public async Task<AuthGoogleTokenInfo> VerifyGoogleTokenAsync(string token, Boolean isCreate = false)
+        {
+            try
+            {
+                var validationSettings = new GoogleJsonWebSignature.ValidationSettings
+                {
+                    // Aceptar cualquier audience de Google
+                    Audience = new[] {
+                    _clientId,
+                    "620861653759-n7la2q029vi8vjl2r53v2g18lo8s0rlh.apps.googleusercontent.com" // El client ID que vimos en el error
+                    }
+                };
+
+                var payload = await GoogleJsonWebSignature.ValidateAsync(token, validationSettings);
+
+                if (payload == null)
+                {
+                    return new AuthGoogleTokenInfo
+                    {
+                        IsValidGoogleToken = false,
+                        Mensaje = "Token de Google inválido"
+                    };
+                }
+
+                // Buscar usuario en Firebase basado en el token de Google
+                UserRecord firebaseUser;
+
+                try
+                {
+                    // Intentar obtener el usuario por email
+                    firebaseUser = await _firebaseAuth.GetUserByEmailAsync(payload.Email);
+
+                    // Usuario existe en Firebase
+                    return new AuthGoogleTokenInfo
+                    {
+                        IsValidGoogleToken = true,
+                        UserExistsInFirebase = true,
+                        FirebaseUser = firebaseUser,
+                        Mensaje = "Usuario en Firebase"
+                    };
+                }
+                catch (FirebaseAuthException ex)
+                {
+                    if (ex.AuthErrorCode == AuthErrorCode.UserNotFound)
+                    {
+                        // Usuario NO existe en Firebase
+                        return new AuthGoogleTokenInfo
+                        {
+                            Claims = new Dictionary<string, object>{ { "email", payload.Email }, { "name", payload.Name ?? "" }, { "picture", payload.Picture ?? "" }, { "email_verified", payload.EmailVerified } },
+                            IsValidGoogleToken = true,
+                            UserExistsInFirebase = false,
+                            Mensaje = "Usuario no existe en Firebase"
+                        };
+                    }
+
+                    // Otro error
+                    throw ex;
+                }
+            }
+            catch (Exception ex)
+            {
+                return new AuthGoogleTokenInfo
+                {
+                    IsValidGoogleToken = false,
+                    Error = ex.Message
+                };
+            }
+        }            
     }
+    #endregion
 }

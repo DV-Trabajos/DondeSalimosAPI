@@ -1,9 +1,9 @@
 ﻿using DondeSalimos.Server.Data;
 using DondeSalimos.Server.Services;
 using DondeSalimos.Shared.Modelos;
+using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using System.Text.RegularExpressions;
 
 namespace DondeSalimos.Server.Controllers
 {
@@ -145,7 +145,7 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // POST: api/usuarios/autenticacionConGoogle
-        [HttpPost("autenticacionConGoogle")]
+        /*[HttpPost("autenticacionConGoogle")]
         public async Task<ActionResult<AuthenticationWithGoogleResponse>> AuthenticationWithGoogle(AuthenticationWithGoogleRequest request)
         {
             try
@@ -222,7 +222,137 @@ namespace DondeSalimos.Server.Controllers
             {
                 return StatusCode(500, $"Error al iniciar sesión con Google: {ex.Message}");
             }
+        }*/
+        #endregion
+
+        #region // POST: api/usuarios/iniciarSesionConGoogle
+        [HttpPost("iniciarSesionConGoogle")]
+        public async Task<ActionResult<SignInWithGoogleResponse>> SignInWithGoogle(SignInWithGoogleRequest request)
+        {
+            try
+            {
+                // Verificar que el token de Google sea válido en Firebase
+                var firebase = await _firebaseService.VerifyGoogleTokenAsync(request.IdToken);
+
+                //Verificar si el token es válido
+                if (!firebase.IsValidGoogleToken)
+                {
+                    return BadRequest(new SignInWithGoogleResponse
+                    {
+                        Usuario = null,
+                        ExisteUsuario = false,
+                        Mensaje = firebase.Mensaje
+                    });
+                }
+
+                //Sino existe en Firebase es porque debe registrarse
+                if (!firebase.UserExistsInFirebase)
+                {
+                    return BadRequest(new SignInWithGoogleResponse
+                    {
+                        Usuario = null,
+                        ExisteUsuario = false,
+                        Mensaje = "Usuario no existe, debe registrarse"
+                    });
+                }
+
+                // Obtener información del usuario de Firebase en nuestra BD
+                var firebaseUid = firebase.FirebaseUser.Uid;
+                var usuario     = await _context.Usuario
+                                                .Include(u => u.RolUsuario)
+                                                .FirstOrDefaultAsync(x => x.Uid == firebaseUid);
+
+                return Ok(new SignInWithGoogleResponse
+                {
+                    Usuario = usuario,
+                    ExisteUsuario = true,
+                    Mensaje = "Inicio de sesión exitoso"
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al iniciar sesión con Google: {ex.Message}");
+            }
         }
+        #endregion
+
+        #region // POST: api/usuarios/registrarseConGoogle
+        /*[HttpPost("registrarseConGoogle")]
+        public async Task<ActionResult<SignUpWithGoogleResponse>> SignUpWithGoogle(SignUpWithGoogleRequest request)
+        {
+            try
+            {
+                // Verificar que el token de Google sea válido en Firebase
+                var firebase = await _firebaseService.VerifyGoogleTokenAsync(request.IdToken);
+
+                //Si existe debe iniciar sesión
+                if (firebase.UserExistsInFirebase)
+                {
+                    return BadRequest(new SignInWithGoogleResponse
+                    {
+                        Usuario = null,
+                        Mensaje = "Usuario existente, debe iniciar sesión"
+                    });
+                }
+
+                //Crear usuario en firebase con proveedor de Google
+                var userArgs = new UserRecordArgs
+                {
+                    Uid = firebase.Claims.GetValueOrDefault("uid", "")?.ToString(),
+                    Email = firebase.Claims.GetValueOrDefault("email", "")?.ToString(),
+                    DisplayName = firebase.Claims.GetValueOrDefault("name", "")?.ToString(),
+                    PhotoUrl = firebase.Claims.GetValueOrDefault("picture", "")?.ToString(),
+                    EmailVerified = (bool)firebase.Claims.GetValueOrDefault("email_verified", false), 
+                    Disabled = false,
+                    // IMPORTANTE: Agregar el proveedor de Google
+                    ProviderData = new List<UserProvider>
+                    {
+                        new UserProvider
+                        {
+                            ProviderId = "google.com",
+                            Uid = googlePayload.Subject, // Google UID
+                            Email = googlePayload.Email,
+                            DisplayName = googlePayload.Name,
+                            PhotoUrl = googlePayload.Picture
+                        }
+                    }
+                };
+
+                var newUser = await _firebaseService.CreateUserAsync(userArgs);
+
+
+                // Obtener información del usuario de Firebase
+                var firebaseUid = firebase.Uid;
+                var email       = firebase.Claims.GetValueOrDefault("email")?.ToString();
+                var nombre      = firebase.Claims.GetValueOrDefault("name")?.ToString();
+
+                // Crear nuevo usuario
+                var nuevoUsuario = new Usuario
+                {
+                    NombreUsuario = email.Split('@')[0], // Usar usuario del email
+                    Correo = email,
+                    //Telefono = string.Empty, // Se puede actualizar después en el perfil
+                    //ID_RolUsuario = request.RolUsuario,
+                    Uid = firebaseUid,
+                    Estado = true,
+                    FechaCreacion = DateTime.Now
+                };
+
+                // Guardar en la base de datos
+                _context.Usuario.Add(nuevoUsuario);
+                await _context.SaveChangesAsync();
+
+                return Ok(new SignUpWithGoogleResponse
+                {
+                    Usuario = nuevoUsuario,
+                    Mensaje = "Inicio de sesión exitoso"
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al registrarse con Google: {ex.Message}");
+            }
+        }*/
         #endregion
 
         #region // POST: api/usuarios/desactivar/{id}
@@ -296,14 +426,6 @@ namespace DondeSalimos.Server.Controllers
         }
         #endregion
 
-        private bool validateEmail(string email)
-        {
-            Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
-            Match match = regex.Match(email);
-
-            return match.Success;
-        }
-
         public class AuthenticationWithGoogleRequest
         {
             public string IdToken { get; set; }
@@ -315,7 +437,29 @@ namespace DondeSalimos.Server.Controllers
         {
             public Usuario Usuario { get; set; }
             public Boolean EsNuevoUsuario { get; set; }
-            //public string Token { get; set; }
+        }
+
+        public class SignInWithGoogleRequest
+        {
+            public string IdToken { get; set; }
+        }
+
+        public class SignUpWithGoogleRequest
+        {
+            public string IdToken { get; set; }
+        }
+
+        public class SignInWithGoogleResponse
+        {
+            public Usuario Usuario { get; set; }
+            public Boolean ExisteUsuario { get; set; }
+            public string Mensaje { get; set; }
+        }
+
+        public class SignUpWithGoogleResponse
+        {
+            public Usuario Usuario { get; set; }
+            public string Mensaje { get; set; }
         }
     }
 }

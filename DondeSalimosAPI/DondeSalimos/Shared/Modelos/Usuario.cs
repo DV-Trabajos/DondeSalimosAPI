@@ -25,7 +25,7 @@ namespace DondeSalimos.Shared.Modelos
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public DateTime FechaCreacion { get; set; } = DateTime.Now;
 
-        public int ID_RolUsuario { get; set; }
+        public int ID_RolUsuario { get; set; } = 1;
 
         [ForeignKey("ID_RolUsuario")]
         public RolUsuario? RolUsuario { get; set; }
