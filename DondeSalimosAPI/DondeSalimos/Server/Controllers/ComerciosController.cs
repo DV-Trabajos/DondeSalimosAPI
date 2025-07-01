@@ -71,6 +71,25 @@ namespace DondeSalimos.Server.Controllers
         }
         #endregion
 
+        #region // GET: api/comercios/buscarComerciosPorUsuario/{usuarioId}
+        [HttpGet] //("{comercio}")]
+        [Route("buscarComerciosPorUsuario/{usuarioId}")]
+        public async Task<ActionResult<List<Comercio>>> GetShopsPerUser(int usuarioId)
+        {
+            var comercioNombre = await _context.Comercio.Where(x => x.ID_Usuario == usuarioId)
+                                            .Include(x => x.TipoComercio)
+                                            .Include(x => x.Usuario)
+                                            .ToListAsync();
+
+            if (comercioNombre == null)
+            {
+                return NotFound("El Usuario no tiene comercios asociados");
+            }
+
+            return comercioNombre;
+        }
+        #endregion
+
         #region // PUT: api/comercios/actualizar/{id}
         [HttpPut] //("{id}")]
         [Route("actualizar/{id}")]

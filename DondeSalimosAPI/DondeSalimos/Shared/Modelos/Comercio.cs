@@ -30,6 +30,12 @@ namespace DondeSalimos.Shared.Modelos
         [DataType(DataType.PhoneNumber)]
         public string Telefono { get; set; }
 
+        public TimeSpan? HoraIngreso { get; set; }
+
+        public TimeSpan? HoraCierre { get; set; }
+
+        public byte[]? Foto { get; set; }
+
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public bool Estado { get; set; }
 
