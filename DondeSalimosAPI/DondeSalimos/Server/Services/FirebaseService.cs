@@ -2,8 +2,6 @@ using FirebaseAdmin;
 using FirebaseAdmin.Auth;
 using Google.Apis.Auth;
 using Google.Apis.Auth.OAuth2;
-using NuGet.Common;
-using System.Security.Claims;
 
 namespace DondeSalimos.Server.Services
 {
@@ -69,6 +67,13 @@ namespace DondeSalimos.Server.Services
             };
 
             return await _firebaseAuth.CreateUserAsync(userArgs);
+        }
+        #endregion
+
+        #region // Crear usuario en Firebase con Google
+        public async Task<UserRecord> CreateUserWithGoogleAsync(UserRecordArgs args)
+        {
+            return await _firebaseAuth.CreateUserAsync(args);
         }
         #endregion
 
@@ -235,74 +240,81 @@ namespace DondeSalimos.Server.Services
         #endregion
 
         #region // Verificar token de Google
-        public async Task<AuthGoogleTokenInfo> VerifyGoogleTokenAsync(string token, Boolean isCreate = false)
+        public async Task<AuthGoogleTokenInfo> VerifyGoogleTokenAsync(string token)
         {
             try
             {
-                var validationSettings = new GoogleJsonWebSignature.ValidationSettings
-                {
-                    // Aceptar cualquier audience de Google
-                    Audience = new[] {
-                    _clientId,
-                    "620861653759-n7la2q029vi8vjl2r53v2g18lo8s0rlh.apps.googleusercontent.com" // El client ID que vimos en el error
-                    }
-                };
-
-                var payload = await GoogleJsonWebSignature.ValidateAsync(token, validationSettings);
-
-                if (payload == null)
+                if (string.IsNullOrEmpty(token))
                 {
                     return new AuthGoogleTokenInfo
                     {
                         IsValidGoogleToken = false,
-                        Mensaje = "Token de Google inválido"
+                        UserExistsInFirebase = false,
+                        Mensaje = "Token ID no puede estar vacío"
                     };
                 }
 
-                // Buscar usuario en Firebase basado en el token de Google
-                UserRecord firebaseUser;
+                // Valido el token contra tu GOOGLE_CLIENT_ID
+                var validationSettings = new GoogleJsonWebSignature.ValidationSettings
+                {
+                    // Aceptar cualquier audience de Google
+                    Audience = new[] {
+                        "564893312785-lqod6mmspdi217njl0en3jufld1vbq28.apps.googleusercontent.com"
+                        }
+                };
 
+                var payload = await GoogleJsonWebSignature.ValidateAsync(token, validationSettings);
+
+                var claims = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase)
+                {
+                    ["email"] = payload.Email,
+                    ["name"] = string.IsNullOrWhiteSpace(payload.Name)
+                                   ? $"{payload.GivenName} {payload.FamilyName}".Trim()
+                                   : payload.Name,
+                    ["picture"] = payload.Picture,
+                    ["email_verified"] = payload.EmailVerified,
+                    ["uid"] = payload.Subject // sub de Google
+                };
+
+                UserRecord? firebaseUser = null;
                 try
                 {
-                    // Intentar obtener el usuario por email
-                    firebaseUser = await _firebaseAuth.GetUserByEmailAsync(payload.Email);
-
-                    // Usuario existe en Firebase
-                    return new AuthGoogleTokenInfo
-                    {
-                        IsValidGoogleToken = true,
-                        UserExistsInFirebase = true,
-                        FirebaseUser = firebaseUser,
-                        Mensaje = "Usuario en Firebase"
-                    };
+                    firebaseUser = await this.GetUserByEmailAsync(payload.Email);
                 }
-                catch (FirebaseAuthException ex)
+                catch (FirebaseAuthException ex) when (ex.AuthErrorCode == AuthErrorCode.UserNotFound)
                 {
-                    if (ex.AuthErrorCode == AuthErrorCode.UserNotFound)
-                    {
-                        // Usuario NO existe en Firebase
-                        return new AuthGoogleTokenInfo
-                        {
-                            Claims = new Dictionary<string, object>{ { "email", payload.Email }, { "name", payload.Name ?? "" }, { "picture", payload.Picture ?? "" }, { "email_verified", payload.EmailVerified } },
-                            IsValidGoogleToken = true,
-                            UserExistsInFirebase = false,
-                            Mensaje = "Usuario no existe en Firebase"
-                        };
-                    }
-
-                    // Otro error
-                    throw ex;
+                    firebaseUser = null; // Usuario no existe en Firebase
                 }
-            }
-            catch (Exception ex)
-            {
+
                 return new AuthGoogleTokenInfo
                 {
-                    IsValidGoogleToken = false,
-                    Error = ex.Message
+                    Claims = claims,
+                    FirebaseUser = firebaseUser,
+                    UserExistsInFirebase = firebaseUser is not null,
+                    IsValidGoogleToken = true,
+                    Mensaje = firebaseUser is not null
+                        ? "Usuario existente en Firebase"
+                        : "Usuario no existe en Firebase"
                 };
             }
-        }            
+            catch (FirebaseAuthException ex) when (ex.AuthErrorCode == AuthErrorCode.UserNotFound)
+            {
+                // Usuario NO existe en Firebase
+                return new AuthGoogleTokenInfo
+                {
+                    IsValidGoogleToken = true,
+                    UserExistsInFirebase = false,
+                    Mensaje = "Usuario no existe en Firebase"
+                };
+            }
+            catch
+            {
+                // Cualquier otro error (token inválido, clock skew, etc.)
+                throw; // preserva el stack
+            }
+
+        }
+        #endregion
     }
-    #endregion
+
 }

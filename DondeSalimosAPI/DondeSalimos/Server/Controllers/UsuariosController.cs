@@ -241,7 +241,7 @@ namespace DondeSalimos.Server.Controllers
                     {
                         Usuario = null,
                         ExisteUsuario = false,
-                        Mensaje = firebase.Mensaje
+                        Mensaje = firebase.Mensaje ?? "Token de Google inválido"
                     });
                 }
 
@@ -271,13 +271,18 @@ namespace DondeSalimos.Server.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, $"Error al iniciar sesión con Google: {ex.Message}");
+                return StatusCode(500, new SignInWithGoogleResponse
+                {
+                    Usuario = null,
+                    ExisteUsuario = false,
+                    Mensaje = $"Error interno del servidor: {ex.Message}"
+                });
             }
         }
         #endregion
 
         #region // POST: api/usuarios/registrarseConGoogle
-        /*[HttpPost("registrarseConGoogle")]
+        [HttpPost("registrarseConGoogle")]
         public async Task<ActionResult<SignUpWithGoogleResponse>> SignUpWithGoogle(SignUpWithGoogleRequest request)
         {
             try
@@ -288,7 +293,7 @@ namespace DondeSalimos.Server.Controllers
                 //Si existe debe iniciar sesión
                 if (firebase.UserExistsInFirebase)
                 {
-                    return BadRequest(new SignInWithGoogleResponse
+                    return StatusCode(StatusCodes.Status409Conflict, new SignUpWithGoogleResponse
                     {
                         Usuario = null,
                         Mensaje = "Usuario existente, debe iniciar sesión"
@@ -296,7 +301,7 @@ namespace DondeSalimos.Server.Controllers
                 }
 
                 //Crear usuario en firebase con proveedor de Google
-                var userArgs = new UserRecordArgs
+                /*var userArgs = new UserRecordArgs
                 {
                     Uid = firebase.Claims.GetValueOrDefault("uid", "")?.ToString(),
                     Email = firebase.Claims.GetValueOrDefault("email", "")?.ToString(),
@@ -316,15 +321,39 @@ namespace DondeSalimos.Server.Controllers
                             PhotoUrl = googlePayload.Picture
                         }
                     }
+                };*/
+
+                // Crear usuario en Firebase (Admin SDK: creás cuenta básica por email)
+                string email = (string)firebase.Claims.GetValueOrDefault("email");
+                string displayName = (string)firebase.Claims.GetValueOrDefault("name", email);
+                string photoUrl = (string)firebase.Claims.GetValueOrDefault("picture");
+                bool emailVerified = (bool)firebase.Claims.GetValueOrDefault("email_verified", false);
+
+                // El usuario no existe, crearlo
+                var userArgs = new UserRecordArgs
+                {
+                    Email = email,
+                    DisplayName = displayName,
+                    PhotoUrl = photoUrl,
+                    EmailVerified = emailVerified,
+                    Disabled = false
+                    // Nota: vincular el proveedor 'google.com' se hace del lado cliente con Firebase Auth;
+                    // el Admin SDK no "loguea" con Google ni crea la vinculación OIDC en este punto.
                 };
+                /*var userArgs = new UserRecordArgs
+                {
+                    Email = firebase.Claims.GetValueOrDefault("email", "")?.ToString(), //payload.Email,
+                    DisplayName = firebase.Claims.GetValueOrDefault("name", "")?.ToString(), //payload.Name,
+                    PhotoUrl = firebase.Claims.GetValueOrDefault("picture", "")?.ToString(), //payload.Picture,
+                    EmailVerified = (bool)firebase.Claims.GetValueOrDefault("email_verified", false), //payload.EmailVerified
+                };*/
 
-                var newUser = await _firebaseService.CreateUserAsync(userArgs);
-
+                UserRecord userRecord = await _firebaseService.CreateUserWithGoogleAsync(userArgs);
 
                 // Obtener información del usuario de Firebase
-                var firebaseUid = firebase.Uid;
-                var email       = firebase.Claims.GetValueOrDefault("email")?.ToString();
-                var nombre      = firebase.Claims.GetValueOrDefault("name")?.ToString();
+                //var firebaseUid = firebase.Uid;
+                //var email       = firebase.Claims.GetValueOrDefault("email")?.ToString();
+                //var nombre      = firebase.Claims.GetValueOrDefault("name")?.ToString();
 
                 // Crear nuevo usuario
                 var nuevoUsuario = new Usuario
@@ -333,7 +362,7 @@ namespace DondeSalimos.Server.Controllers
                     Correo = email,
                     //Telefono = string.Empty, // Se puede actualizar después en el perfil
                     //ID_RolUsuario = request.RolUsuario,
-                    Uid = firebaseUid,
+                    Uid = userRecord.Uid,
                     Estado = true,
                     FechaCreacion = DateTime.Now
                 };
@@ -352,7 +381,7 @@ namespace DondeSalimos.Server.Controllers
             {
                 return StatusCode(500, $"Error al registrarse con Google: {ex.Message}");
             }
-        }*/
+        }
         #endregion
 
         #region // POST: api/usuarios/desactivar/{id}

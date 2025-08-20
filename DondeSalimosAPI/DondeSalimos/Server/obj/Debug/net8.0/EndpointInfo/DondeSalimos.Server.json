@@ -131,6 +131,55 @@
         }
       }
     },
+    "/api/Comercios/buscarComerciosPorUsuario/{usuarioId}": {
+      "get": {
+        "tags": [
+          "Comercios"
+        ],
+        "parameters": [
+          {
+            "name": "usuarioId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Comercio"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Comercio"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Comercio"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/Comercios/actualizar/{id}": {
       "put": {
         "tags": [
@@ -1809,6 +1858,21 @@
             "format": "tel",
             "nullable": true
           },
+          "horaIngreso": {
+            "type": "string",
+            "format": "date-span",
+            "nullable": true
+          },
+          "horaCierre": {
+            "type": "string",
+            "format": "date-span",
+            "nullable": true
+          },
+          "foto": {
+            "type": "string",
+            "format": "byte",
+            "nullable": true
+          },
           "estado": {
             "type": "boolean"
           },
@@ -2024,9 +2088,6 @@
           "idToken": {
             "type": "string",
             "nullable": true
-          },
-          "isCreate": {
-            "type": "boolean"
           }
         },
         "additionalProperties": false

@@ -1565,7 +1565,6 @@ C:\Users\nicoz\Documents\GitHub\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Ser
 C:\Users\nicoz\Documents\GitHub\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Server\obj\Debug\net8.0\DondeSalimos.Server.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\nicoz\Documents\GitHub\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Server\obj\Debug\net8.0\DondeSalimos.Server.RazorAssemblyInfo.cache
 C:\Users\nicoz\Documents\GitHub\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Server\obj\Debug\net8.0\DondeSalimos.Server.RazorAssemblyInfo.cs
-C:\Users\nicoz\Documents\GitHub\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Server\obj\Debug\net8.0\DondeSalimos.Server.sourcelink.json
 C:\Users\nicoz\Documents\GitHub\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Server\obj\Debug\net8.0\scopedcss\bundle\DondeSalimos.Server.styles.css
 C:\Users\nicoz\Documents\GitHub\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Server\obj\Debug\net8.0\staticwebassets.build.json
 C:\Users\nicoz\Documents\GitHub\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Server\obj\Debug\net8.0\staticwebassets.development.json
@@ -1896,3 +1895,4 @@ C:\Users\nicolas.zalazar\Documents\GitHub\DondeSalimosWeb\DondeSalimosAPI\DondeS
 C:\Users\nicolas.zalazar\Documents\GitHub\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Server\obj\Debug\net8.0\DondeSalimos.Server.pdb
 C:\Users\nicolas.zalazar\Documents\GitHub\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Server\obj\Debug\net8.0\DondeSalimos.Server.genruntimeconfig.cache
 C:\Users\nicolas.zalazar\Documents\GitHub\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Server\obj\Debug\net8.0\ref\DondeSalimos.Server.dll
+C:\Users\nicoz\Documents\GitHub\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Server\bin\Debug\net8.0\System.ClientModel.dll

@@ -9,10 +9,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|c:\\users\\nicoz\\documents\\github\\dondesalimosweb\\dondesalimosapi\\dondesalimos\\server\\services\\firebaseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|solutionrelative:dondesalimos\\server\\services\\firebaseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{CC1EB973-717D-4146-AF6C-E2D307163FEF}|DondeSalimos\\Shared\\DondeSalimos.Shared.csproj|c:\\users\\nicoz\\documents\\github\\dondesalimosweb\\dondesalimosapi\\dondesalimos\\shared\\modelos\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{CC1EB973-717D-4146-AF6C-E2D307163FEF}|DondeSalimos\\Shared\\DondeSalimos.Shared.csproj|solutionrelative:dondesalimos\\shared\\modelos\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,20 +18,8 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 2,
+          "SelectedChildIndex": 1,
           "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Usuario.cs",
-              "DocumentMoniker": "C:\\Users\\nicoz\\Documents\\GitHub\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Shared\\Modelos\\Usuario.cs",
-              "RelativeDocumentMoniker": "DondeSalimos\\Shared\\Modelos\\Usuario.cs",
-              "ToolTip": "C:\\Users\\nicoz\\Documents\\GitHub\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Shared\\Modelos\\Usuario.cs",
-              "RelativeToolTip": "DondeSalimos\\Shared\\Modelos\\Usuario.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABsAAAAzAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-10T22:25:48.853Z"
-            },
             {
               "$type": "Document",
               "DocumentIndex": 1,
@@ -44,9 +28,9 @@
               "RelativeDocumentMoniker": "DondeSalimos\\Server\\Services\\FirebaseService.cs",
               "ToolTip": "C:\\Users\\nicoz\\Documents\\GitHub\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Services\\FirebaseService.cs",
               "RelativeToolTip": "DondeSalimos\\Server\\Services\\FirebaseService.cs",
-              "ViewState": "AgIAABEAAAAAAAAAAAAIwDIAAAAaAAAAAAAAAA==",
+              "ViewState": "AgIAAP0AAAAAAAAAAAAIwDkBAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-07T22:54:37.181Z",
+              "WhenOpened": "2025-08-19T23:32:25.328Z",
               "EditorCaption": ""
             },
             {
@@ -57,9 +41,9 @@
               "RelativeDocumentMoniker": "DondeSalimos\\Server\\Controllers\\UsuariosController.cs",
               "ToolTip": "C:\\Users\\nicoz\\Documents\\GitHub\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\UsuariosController.cs",
               "RelativeToolTip": "DondeSalimos\\Server\\Controllers\\UsuariosController.cs",
-              "ViewState": "AgIAAOIAAAAAAAAAAAAvwAMBAAA8AAAAAAAAAA==",
+              "ViewState": "AgIAADsBAAAAAAAAAAD4v0kBAABmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-05-26T03:33:04.796Z",
+              "WhenOpened": "2025-08-17T03:32:37.178Z",
               "EditorCaption": ""
             }
           ]

@@ -22,6 +22,32 @@
   },
   {
     "ContainingType": "DondeSalimos.Server.Controllers.ComerciosController",
+    "Method": "GetShopsPerUser",
+    "RelativePath": "api/Comercios/buscarComerciosPorUsuario/{usuarioId}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "usuarioId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.List\u00601[[DondeSalimos.Shared.Modelos.Comercio, DondeSalimos.Shared, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "DondeSalimos.Server.Controllers.ComerciosController",
     "Method": "GetShopById",
     "RelativePath": "api/Comercios/buscarIdComercio/{id}",
     "HttpMethod": "GET",
