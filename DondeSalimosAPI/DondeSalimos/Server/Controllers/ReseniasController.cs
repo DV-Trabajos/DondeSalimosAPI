@@ -21,14 +21,10 @@ namespace DondeSalimos.Server.Controllers
         [Route("listado")]
         public async Task<ActionResult<List<Resenia>>> GetReviews()
         {
-            if (_context.Resenia == null)
-            {
-                return NotFound();
-            }
-
             return await _context.Resenia
-                                .Include(x => x.Comercio)
-                                .ToListAsync();
+                                    .AsNoTracking()
+                                    .Include(x => x.Comercio)
+                                    .ToListAsync();
         }
         #endregion
 
@@ -37,14 +33,11 @@ namespace DondeSalimos.Server.Controllers
         [Route("buscarIdResenia/{id}")]
         public async Task<ActionResult<Resenia>> GetIdReview(int id)
         {
-            if (_context.Resenia == null)
-            {
-                return NotFound();
-            }
-
-            var resenia = await _context.Resenia.Where(x => x.ID_Resenia == id)
-                                                .Include(x => x.Comercio)
-                                                .FirstOrDefaultAsync();
+            var resenia = await _context.Resenia
+                                            .AsNoTracking()
+                                            .Where(x => x.ID_Resenia == id)
+                                            .Include(x => x.Comercio)
+                                            .FirstOrDefaultAsync();
 
             if (resenia == null)
             {
@@ -60,9 +53,11 @@ namespace DondeSalimos.Server.Controllers
         [Route("buscarNombreComercio/{comercio}")]
         public async Task<ActionResult<List<Resenia>>> GetReviewByShopName(string comercio)
         {
-            return await _context.Resenia.Where(x => x.Comercio.Nombre.ToLower().Contains(comercio))
-                                        .Include(x => x.Comercio)
-                                        .ToListAsync();
+            return await _context.Resenia
+                                    .AsNoTracking()
+                                    .Where(x => x.Comercio.Nombre.ToLower().Contains(comercio))
+                                    .Include(x => x.Comercio)
+                                    .ToListAsync();
         }
         #endregion
 
@@ -103,20 +98,8 @@ namespace DondeSalimos.Server.Controllers
         [Route("crear")]
         public async Task<ActionResult<Resenia>> PostReview(Resenia resenia)
         {
-            if (_context.Resenia == null)
-            {
-                return Problem("Entity set 'Contexto.Resenia'  is null.");
-            }
-
-            try
-            {
-                _context.Resenia.Add(resenia);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            _context.Resenia.Add(resenia);
+            await _context.SaveChangesAsync();
 
             //return CreatedAtAction("GetIdResenia", new { id = resenia.ID_Resenia }, resenia);
             return Ok("Reseña creada correctamente");
@@ -128,27 +111,15 @@ namespace DondeSalimos.Server.Controllers
         [Route("eliminar/{id}")]
         public async Task<IActionResult> DeleteReview(int id)
         {
-            if (_context.Resenia == null)
-            {
-                return NotFound();
-            }
-
             var resenia = await _context.Resenia.FindAsync(id);
 
             if (resenia == null)
             {
-                return NotFound();
+                return NotFound("Reseña no encontrada");
             }
 
-            try
-            {
-                _context.Resenia.Remove(resenia);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            _context.Resenia.Remove(resenia);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -156,7 +127,9 @@ namespace DondeSalimos.Server.Controllers
 
         private bool ReseniaExists(int id)
         {
-            return (_context.Resenia?.Any(e => e.ID_Resenia == id)).GetValueOrDefault();
+            return (_context.Resenia?
+                            .AsNoTracking()
+                            .Any(e => e.ID_Resenia == id)).GetValueOrDefault();
         }
     }
 }

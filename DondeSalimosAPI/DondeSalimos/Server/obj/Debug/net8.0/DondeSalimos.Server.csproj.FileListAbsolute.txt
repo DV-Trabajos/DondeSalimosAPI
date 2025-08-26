@@ -1896,3 +1896,4 @@ C:\Users\nicolas.zalazar\Documents\GitHub\DondeSalimosWeb\DondeSalimosAPI\DondeS
 C:\Users\nicolas.zalazar\Documents\GitHub\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Server\obj\Debug\net8.0\DondeSalimos.Server.genruntimeconfig.cache
 C:\Users\nicolas.zalazar\Documents\GitHub\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Server\obj\Debug\net8.0\ref\DondeSalimos.Server.dll
 C:\Users\nicoz\Documents\GitHub\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Server\bin\Debug\net8.0\System.ClientModel.dll
+C:\Users\nicoz\Documents\GitHub\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Server\obj\Debug\net8.0\DondeSalimos.Server.sourcelink.json

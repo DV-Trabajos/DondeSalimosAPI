@@ -21,12 +21,9 @@ namespace DondeSalimos.Server.Controllers
         [Route("listado")]
         public async Task<ActionResult<List<TipoComercio>>> GetTypeShops()
         {
-            if (_context.TipoComercio == null)
-            {
-                return NotFound();
-            }
-
-            return await _context.TipoComercio.ToListAsync();
+            return await _context.TipoComercio
+                                    .AsNoTracking()
+                                    .ToListAsync();
         }
         #endregion
 
@@ -35,8 +32,10 @@ namespace DondeSalimos.Server.Controllers
         [Route("buscarIdTipoComercio/{id}")]
         public async Task<ActionResult<TipoComercio>> GetIdTypeShop(int id)
         {
-            var tipoComercioId = await _context.TipoComercio.Where(x => x.ID_TipoComercio == id)
-                                                .FirstOrDefaultAsync();
+            var tipoComercioId = await _context.TipoComercio
+                                                    .AsNoTracking()
+                                                    .Where(x => x.ID_TipoComercio == id)
+                                                    .FirstOrDefaultAsync();
 
             if (tipoComercioId == null)
             {
@@ -52,8 +51,10 @@ namespace DondeSalimos.Server.Controllers
         [Route("buscarNombreTipoComercio/{tipoComercio}")]
         public async Task<ActionResult<List<TipoComercio>>> GetTypeShopByName(string tipoComercio)
         {
-            var nombreTipoComercio = await _context.TipoComercio.Where(x => x.Descripcion.ToLower().Contains(tipoComercio))
-                                                            .ToListAsync();
+            var nombreTipoComercio = await _context.TipoComercio
+                                                        .AsNoTracking()
+                                                        .Where(x => x.Descripcion.ToLower().Contains(tipoComercio))
+                                                        .ToListAsync();
 
             if (nombreTipoComercio == null)
             {
@@ -80,7 +81,7 @@ namespace DondeSalimos.Server.Controllers
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException ex)
+            catch (DbUpdateConcurrencyException)
             {
                 if (!TypeShopExists(id))
                 {
@@ -88,7 +89,7 @@ namespace DondeSalimos.Server.Controllers
                 }
                 else
                 {
-                    throw ex;
+                    throw;
                 }
             }
 
@@ -101,20 +102,8 @@ namespace DondeSalimos.Server.Controllers
         [Route("crear")]
         public async Task<ActionResult> PostTypeShop(TipoComercio tipoComercio)
         {
-            if (_context.TipoComercio == null)
-            {
-                return Problem("Entity set 'Contexto.TipoComercio'  is null.");
-            }
-
-            try
-            {
-                _context.TipoComercio.Add(tipoComercio);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            _context.TipoComercio.Add(tipoComercio);
+            await _context.SaveChangesAsync();
 
             //return new CreatedAtRouteResult("GetIdTipoComercio", new { id = tipoComercio.ID_TipoComercio }, tipoComercio);
             return Ok("Tipo de comercio creado correctamente");
@@ -133,15 +122,8 @@ namespace DondeSalimos.Server.Controllers
                 return NotFound("Tipo de comercio no encontrado");
             }
 
-            try
-            {
-                _context.TipoComercio.Remove(tipoComercio);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            _context.TipoComercio.Remove(tipoComercio);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -149,7 +131,9 @@ namespace DondeSalimos.Server.Controllers
 
         private bool TypeShopExists(int id)
         {
-            return _context.TipoComercio.Any(e => e.ID_TipoComercio == id);
+            return _context.TipoComercio
+                             .AsNoTracking()
+                             .Any(e => e.ID_TipoComercio == id);
         }
     }
 }

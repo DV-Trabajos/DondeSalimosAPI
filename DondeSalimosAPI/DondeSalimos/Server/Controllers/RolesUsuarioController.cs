@@ -21,12 +21,9 @@ namespace DondeSalimos.Server.Controllers
         [Route("listado")]
         public async Task<ActionResult<List<RolUsuario>>> GetUserRoles()
         {
-            if (_context.RolUsuario == null)
-            {
-                return NotFound();
-            }
-
-            return await _context.RolUsuario.ToListAsync();
+            return await _context.RolUsuario
+                                    .AsNoTracking()
+                                    .ToListAsync();
         }
         #endregion
 
@@ -35,8 +32,10 @@ namespace DondeSalimos.Server.Controllers
         [Route("buscarIdRolUsuario/{id}")]
         public async Task<ActionResult<RolUsuario>> GetIdRol(int id)
         {
-            var rolId = await _context.RolUsuario.Where(x => x.ID_RolUsuario == id)
-                                                .FirstOrDefaultAsync();
+            var rolId = await _context.RolUsuario
+                                        .AsNoTracking()
+                                        .Where(x => x.ID_RolUsuario == id)
+                                        .FirstOrDefaultAsync();
 
             if (rolId == null)
             {
@@ -52,8 +51,10 @@ namespace DondeSalimos.Server.Controllers
         [Route("buscarNombreRolUsuario/{rolUsuario}")]
         public async Task<ActionResult<List<RolUsuario>>> GetUserRolByName(string rolUsuario)
         {
-            var nombreRolUsuario = await _context.RolUsuario.Where(x => x.Descripcion.ToLower().Contains(rolUsuario))
-                                                            .ToListAsync();
+            var nombreRolUsuario = await _context.RolUsuario
+                                                    .AsNoTracking()
+                                                    .Where(x => x.Descripcion.ToLower().Contains(rolUsuario))
+                                                    .ToListAsync();
 
             if (nombreRolUsuario == null)
             {
@@ -80,7 +81,7 @@ namespace DondeSalimos.Server.Controllers
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException ex)
+            catch (DbUpdateConcurrencyException)
             {
                 if (!UserRolExists(id))
                 {
@@ -88,7 +89,7 @@ namespace DondeSalimos.Server.Controllers
                 }
                 else
                 {
-                    throw ex;
+                    throw;
                 }
             }
 
@@ -101,20 +102,8 @@ namespace DondeSalimos.Server.Controllers
         [Route("crear")]
         public async Task<ActionResult> PostUserRol(RolUsuario rolUsuario)
         {
-            if (_context.RolUsuario == null)
-            {
-                return Problem("Entity set 'Contexto.RolUsuario'  is null.");
-            }
-
-            try
-            {
-                _context.RolUsuario.Add(rolUsuario);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            _context.RolUsuario.Add(rolUsuario);
+            await _context.SaveChangesAsync();
 
             //return new CreatedAtRouteResult("GetIdUsuario", new { id = usuario.ID_Usuario }, usuario);
             return Ok("Rol usuario creado correctamente");
@@ -133,15 +122,8 @@ namespace DondeSalimos.Server.Controllers
                 return NotFound("Rol usuario no encontrado");
             }
 
-            try
-            {
-                _context.RolUsuario.Remove(rolUsuario);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            _context.RolUsuario.Remove(rolUsuario);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -149,7 +131,9 @@ namespace DondeSalimos.Server.Controllers
 
         private bool UserRolExists(int id)
         {
-            return _context.RolUsuario.Any(e => e.ID_RolUsuario == id);
+            return _context.RolUsuario
+                           .AsNoTracking()
+                           .Any(e => e.ID_RolUsuario == id);
         }
     }
 }

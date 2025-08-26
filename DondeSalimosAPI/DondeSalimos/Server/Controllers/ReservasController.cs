@@ -21,15 +21,11 @@ namespace DondeSalimos.Server.Controllers
         [Route("listado")]
         public async Task<ActionResult<List<Reserva>>> GetReservations()
         {
-            if (_context.Reserva == null)
-            {
-                return NotFound();
-            }
-
             return await _context.Reserva
-                                .Include(x => x.Comercio)
-                                .Include(x => x.Usuario)
-                                .ToListAsync();
+                                    .AsNoTracking()
+                                    .Include(x => x.Comercio)
+                                    .Include(x => x.Usuario)
+                                    .ToListAsync();
         }
         #endregion
 
@@ -38,15 +34,11 @@ namespace DondeSalimos.Server.Controllers
         [Route("buscarIdReserva/{id}")]
         public async Task<ActionResult<Reserva>> GetIdReservation(int id)
         {
-            if (_context.Reserva == null)
-            {
-                return NotFound();
-            }
-
-            var reserva = await _context.Reserva.Where(x => x.ID_Reserva == id)
-                                                .Include(x => x.Comercio)
-                                                .Include(x => x.Usuario)
-                                                .FirstOrDefaultAsync();
+            var reserva = await _context.Reserva
+                                            .AsNoTracking().Where(x => x.ID_Reserva == id)
+                                            .Include(x => x.Comercio)
+                                            .Include(x => x.Usuario)
+                                            .FirstOrDefaultAsync();
 
             if (reserva == null)
             {
@@ -62,9 +54,11 @@ namespace DondeSalimos.Server.Controllers
         [Route("buscarNombreComercio/{comercio}")]
         public async Task<ActionResult<List<Reserva>>> GetReservationByName(string comercio)
         {
-            return await _context.Reserva.Where(x => x.Comercio.Nombre.ToLower().Contains(comercio))
-                                        .Include(x => x.Usuario)
-                                        .ToListAsync();
+            return await _context.Reserva
+                                    .AsNoTracking()
+                                    .Where(x => x.Comercio.Nombre.ToLower().Contains(comercio))
+                                    .Include(x => x.Usuario)
+                                    .ToListAsync();
         }
         #endregion
 
@@ -105,20 +99,8 @@ namespace DondeSalimos.Server.Controllers
         [Route("crear")]
         public async Task<ActionResult<Reserva>> PostReservation(Reserva reserva)
         {
-            if (_context.Reserva == null)
-            {
-                return Problem("Entity set 'Contexto.Reserva'  is null.");
-            }
-
-            try
-            {
-                _context.Reserva.Add(reserva);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            _context.Reserva.Add(reserva);
+            await _context.SaveChangesAsync();
 
             //return CreatedAtAction("GetIdReserva", new { id = reserva.ID_Reserva }, reserva);
             return Ok("Reserva creada correctamente");
@@ -130,27 +112,15 @@ namespace DondeSalimos.Server.Controllers
         [Route("eliminar/{id}")]
         public async Task<IActionResult> DeleteReservation(int id)
         {
-            if (_context.Reserva == null)
-            {
-                return NotFound();
-            }
-
             var reserva = await _context.Reserva.FindAsync(id);
 
             if (reserva == null)
             {
-                return NotFound();
+                return NotFound("Reserva no encontrada");
             }
 
-            try
-            {
-                _context.Reserva.Remove(reserva);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            _context.Reserva.Remove(reserva);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -158,7 +128,9 @@ namespace DondeSalimos.Server.Controllers
 
         private bool ReservaExists(int id)
         {
-            return (_context.Reserva?.Any(e => e.ID_Reserva == id)).GetValueOrDefault();
+            return (_context.Reserva?
+                            .AsNoTracking()
+                            .Any(e => e.ID_Reserva == id)).GetValueOrDefault();
         }
     }
 }

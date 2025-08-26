@@ -25,14 +25,10 @@ namespace DondeSalimos.Server.Controllers
         [Route("listado")]
         public async Task<ActionResult<List<Usuario>>> GetUsers()
         {
-            if (_context.Usuario == null)
-            {
-                return NotFound();
-            }
-
             return await _context.Usuario
-                                .Include(x => x.RolUsuario)
-                                .ToListAsync();
+                                    .AsNoTracking()
+                                    .Include(x => x.RolUsuario)
+                                    .ToListAsync();
         }
         #endregion
 
@@ -41,9 +37,11 @@ namespace DondeSalimos.Server.Controllers
         [Route("buscarIdUsuario/{id}")]
         public async Task<ActionResult<Usuario>> GetUserById(int id)
         {
-            var usuarioId = await _context.Usuario.Where(x => x.ID_Usuario == id)
-                                                .Include(x => x.RolUsuario)
-                                                .FirstOrDefaultAsync();
+            var usuarioId = await _context.Usuario
+                                            .AsNoTracking()
+                                            .Where(x => x.ID_Usuario == id)
+                                            .Include(x => x.RolUsuario)
+                                            .FirstOrDefaultAsync();
 
             if (usuarioId == null)
             {
@@ -59,11 +57,14 @@ namespace DondeSalimos.Server.Controllers
         [Route("buscarNombreUsuario/{usuario}")]
         public async Task<ActionResult<List<Usuario>>> GetUserByName(string usuario)
         {
-            var usuarioNombre = await _context.Usuario.Where(x => x.NombreUsuario.ToLower().Contains(usuario))
-                                        .Include(x => x.RolUsuario)
-                                        .ToListAsync();
+            var filter = usuario.ToLower();
+            var usuarioNombre = await _context.Usuario
+                                                .AsNoTracking()
+                                                .Where(x => x.NombreUsuario.ToLower().Contains(filter))
+                                                .Include(x => x.RolUsuario)
+                                                .ToListAsync();
 
-            if (usuarioNombre == null)
+            if (usuarioNombre.Any())
             {
                 return NotFound("Usuario no encontrado");
             }
@@ -78,6 +79,7 @@ namespace DondeSalimos.Server.Controllers
         public async Task<ActionResult<Usuario>> GetUsuarioByEmail(string email)
         {
             var usuario = await _context.Usuario
+                                        .AsNoTracking()
                                         .Where(x => x.Correo.ToLower() == email.ToLower())
                                         .FirstOrDefaultAsync();
 
@@ -142,87 +144,6 @@ namespace DondeSalimos.Server.Controllers
                 return StatusCode(500, $"Error al actualizar usuario: {ex.Message}");
             }
         }
-        #endregion
-
-        #region // POST: api/usuarios/autenticacionConGoogle
-        /*[HttpPost("autenticacionConGoogle")]
-        public async Task<ActionResult<AuthenticationWithGoogleResponse>> AuthenticationWithGoogle(AuthenticationWithGoogleRequest request)
-        {
-            try
-            {
-                // Verificar el token de ID de Google con Firebase
-                var firebaseToken = await _firebaseService.VerifyGoogleTokenAsync(request.IdToken);
-
-                if (firebaseToken == null)
-                {
-                    return BadRequest("Token de Google inválido");
-                }
-
-                // Obtener información del usuario de Firebase
-                var firebaseUid = firebaseToken.Uid;
-                var email = firebaseToken.Claims.GetValueOrDefault("email")?.ToString();
-                var nombre = firebaseToken.Claims.GetValueOrDefault("name")?.ToString();
-
-                if (string.IsNullOrEmpty(email))
-                {
-                    return BadRequest("No se pudo obtener el email del usuario de Google");
-                }
-
-                // Verificar si el usuario ya existe en nuestra base de datos
-                var usuarioExistente = await _context.Usuario
-                                                    .Include(u => u.RolUsuario)
-                                                    .FirstOrDefaultAsync(x => x.Uid == firebaseUid);
-
-                if (usuarioExistente != null)
-                {
-                    // Usuario existente - Login normal
-                    return Ok(new AuthenticationWithGoogleResponse
-                    {
-                        Usuario = usuarioExistente,
-                        EsNuevoUsuario = false
-                        //Token = await _firebaseService.CreateCustomTokenAsync(firebaseUid)
-                    });
-                }
-                else
-                {
-                    // Verificar si ya existe un usuario con el mismo email pero diferente UID
-                    var usuarioConMismoEmail = await _context.Usuario.FirstOrDefaultAsync(x => x.Correo == email);
-
-                    if (usuarioConMismoEmail != null)
-                    {
-                        return BadRequest("Ya existe una cuenta registrada con este email");
-                    }
-
-                    // Crear nuevo usuario
-                    var nuevoUsuario = new Usuario
-                    {
-                        NombreUsuario = email.Split('@')[0], // Usar usuario del email
-                        Correo = email,
-                        //Telefono = string.Empty, // Se puede actualizar después en el perfil
-                        ID_RolUsuario = request.RolUsuario,
-                        Uid = firebaseUid,
-                        Estado = true,
-                        FechaCreacion = DateTime.Now
-                    };
-
-                    // Guardar en la base de datos
-                    _context.Usuario.Add(nuevoUsuario);
-                    await _context.SaveChangesAsync();
-
-                    // Devolver respuesta con nuevo usuario
-                    return Ok(new AuthenticationWithGoogleResponse
-                    {
-                        Usuario = nuevoUsuario,
-                        EsNuevoUsuario = true
-                        //Token = await _firebaseService.CreateCustomTokenAsync(firebaseUid)
-                    });
-                }
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Error al iniciar sesión con Google: {ex.Message}");
-            }
-        }*/
         #endregion
 
         #region // POST: api/usuarios/iniciarSesionConGoogle
@@ -300,29 +221,6 @@ namespace DondeSalimos.Server.Controllers
                     });
                 }
 
-                //Crear usuario en firebase con proveedor de Google
-                /*var userArgs = new UserRecordArgs
-                {
-                    Uid = firebase.Claims.GetValueOrDefault("uid", "")?.ToString(),
-                    Email = firebase.Claims.GetValueOrDefault("email", "")?.ToString(),
-                    DisplayName = firebase.Claims.GetValueOrDefault("name", "")?.ToString(),
-                    PhotoUrl = firebase.Claims.GetValueOrDefault("picture", "")?.ToString(),
-                    EmailVerified = (bool)firebase.Claims.GetValueOrDefault("email_verified", false), 
-                    Disabled = false,
-                    // IMPORTANTE: Agregar el proveedor de Google
-                    ProviderData = new List<UserProvider>
-                    {
-                        new UserProvider
-                        {
-                            ProviderId = "google.com",
-                            Uid = googlePayload.Subject, // Google UID
-                            Email = googlePayload.Email,
-                            DisplayName = googlePayload.Name,
-                            PhotoUrl = googlePayload.Picture
-                        }
-                    }
-                };*/
-
                 // Crear usuario en Firebase (Admin SDK: creás cuenta básica por email)
                 string email = (string)firebase.Claims.GetValueOrDefault("email");
                 string displayName = (string)firebase.Claims.GetValueOrDefault("name", email);
@@ -340,20 +238,8 @@ namespace DondeSalimos.Server.Controllers
                     // Nota: vincular el proveedor 'google.com' se hace del lado cliente con Firebase Auth;
                     // el Admin SDK no "loguea" con Google ni crea la vinculación OIDC en este punto.
                 };
-                /*var userArgs = new UserRecordArgs
-                {
-                    Email = firebase.Claims.GetValueOrDefault("email", "")?.ToString(), //payload.Email,
-                    DisplayName = firebase.Claims.GetValueOrDefault("name", "")?.ToString(), //payload.Name,
-                    PhotoUrl = firebase.Claims.GetValueOrDefault("picture", "")?.ToString(), //payload.Picture,
-                    EmailVerified = (bool)firebase.Claims.GetValueOrDefault("email_verified", false), //payload.EmailVerified
-                };*/
 
                 UserRecord userRecord = await _firebaseService.CreateUserWithGoogleAsync(userArgs);
-
-                // Obtener información del usuario de Firebase
-                //var firebaseUid = firebase.Uid;
-                //var email       = firebase.Claims.GetValueOrDefault("email")?.ToString();
-                //var nombre      = firebase.Claims.GetValueOrDefault("name")?.ToString();
 
                 // Crear nuevo usuario
                 var nuevoUsuario = new Usuario
@@ -361,7 +247,7 @@ namespace DondeSalimos.Server.Controllers
                     NombreUsuario = email.Split('@')[0], // Usar usuario del email
                     Correo = email,
                     //Telefono = string.Empty, // Se puede actualizar después en el perfil
-                    //ID_RolUsuario = request.RolUsuario,
+                    ID_RolUsuario = request.RolUsuario,
                     Uid = userRecord.Uid,
                     Estado = true,
                     FechaCreacion = DateTime.Now
@@ -476,6 +362,8 @@ namespace DondeSalimos.Server.Controllers
         public class SignUpWithGoogleRequest
         {
             public string IdToken { get; set; }
+
+            public int RolUsuario { get; set; } = 1;
         }
 
         public class SignInWithGoogleResponse

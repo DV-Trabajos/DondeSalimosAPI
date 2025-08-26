@@ -21,12 +21,8 @@ namespace DondeSalimos.Server.Controllers
         [Route("listado")]
         public async Task<ActionResult<IEnumerable<Comercio>>> GetShops()
         {
-            if (_context.Comercio == null)
-            {
-                return NotFound();
-            }
-
             return await _context.Comercio
+                                .AsNoTracking()
                                 .Include(x => x.TipoComercio)
                                 .Include(x => x.Usuario)
                                 .ToListAsync();
@@ -38,10 +34,12 @@ namespace DondeSalimos.Server.Controllers
         [Route("buscarIdComercio/{id}")]
         public async Task<ActionResult<Comercio>> GetShopById(int id)
         {
-            var comercioId = await _context.Comercio.Where(x => x.ID_Comercio == id)
-                                                    .Include(x => x.TipoComercio)
-                                                    .Include(x => x.Usuario)
-                                                    .FirstOrDefaultAsync();
+            var comercioId = await _context.Comercio
+                                            .AsNoTracking()
+                                            .Where(x => x.ID_Comercio == id)
+                                            .Include(x => x.TipoComercio)
+                                            .Include(x => x.Usuario)
+                                            .FirstOrDefaultAsync();
 
             if (comercioId == null)
             {
@@ -57,12 +55,15 @@ namespace DondeSalimos.Server.Controllers
         [Route("buscarNombreComercio/{comercio}")]
         public async Task<ActionResult<List<Comercio>>> GetShopByName(string comercio)
         {
-            var comercioNombre = await _context.Comercio.Where(x => x.Nombre.ToLower().Contains(comercio))
-                                            .Include(x => x.TipoComercio)
-                                            .Include(x => x.Usuario)
-                                            .ToListAsync();
+            var filter = comercio.ToLower();
+            var comercioNombre = await _context.Comercio
+                                                .AsNoTracking()
+                                                .Where(x => x.Nombre.ToLower().Contains(filter))
+                                                .Include(x => x.TipoComercio)
+                                                .Include(x => x.Usuario)
+                                                .ToListAsync();
 
-            if (comercioNombre == null)
+            if (comercioNombre.Any())
             {
                 return NotFound("Comercio no encontrado");
             }
@@ -76,10 +77,12 @@ namespace DondeSalimos.Server.Controllers
         [Route("buscarComerciosPorUsuario/{usuarioId}")]
         public async Task<ActionResult<List<Comercio>>> GetShopsPerUser(int usuarioId)
         {
-            var comercioNombre = await _context.Comercio.Where(x => x.ID_Usuario == usuarioId)
-                                            .Include(x => x.TipoComercio)
-                                            .Include(x => x.Usuario)
-                                            .ToListAsync();
+            var comercioNombre = await _context.Comercio
+                                                .AsNoTracking()
+                                                .Where(x => x.ID_Usuario == usuarioId)
+                                                .Include(x => x.TipoComercio)
+                                                .Include(x => x.Usuario)
+                                                .ToListAsync();
 
             if (comercioNombre == null)
             {
@@ -106,7 +109,7 @@ namespace DondeSalimos.Server.Controllers
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException ex)
+            catch (DbUpdateConcurrencyException)
             {
                 if (!ShopExists(id))
                 {
@@ -114,7 +117,7 @@ namespace DondeSalimos.Server.Controllers
                 }
                 else
                 {
-                    throw ex;
+                    throw;
                 }
             }
 
@@ -127,20 +130,8 @@ namespace DondeSalimos.Server.Controllers
         [Route("crear")]
         public async Task<ActionResult<Comercio>> PostShop(Comercio comercio)
         {
-            if (_context.Comercio == null)
-            {
-                return Problem("Entity set 'Contexto.Comercio'  is null.");
-            }
-
-            try
-            {
-                _context.Comercio.Add(comercio);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            _context.Comercio.Add(comercio);
+            await _context.SaveChangesAsync();
 
             //return CreatedAtAction("GetIdComercio", new { id = comercio.ID_Comercio }, comercio);
             return Ok("Comercio creado correctamente");
@@ -152,27 +143,15 @@ namespace DondeSalimos.Server.Controllers
         [Route("eliminar/{id}")]
         public async Task<IActionResult> DeleteShop(int id)
         {
-            if (_context.Comercio == null)
-            {
-                return NotFound();
-            }
-
             var comercio = await _context.Comercio.FindAsync(id);
 
             if (comercio == null)
             {
-                return NotFound();
+                return NotFound("Comercio no encontrado");
             }
 
-            try
-            {
-                _context.Comercio.Remove(comercio);
-                await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
+            _context.Comercio.Remove(comercio);
+            await _context.SaveChangesAsync();
 
             return NoContent();
         }
@@ -180,7 +159,9 @@ namespace DondeSalimos.Server.Controllers
 
         private bool ShopExists(int id)
         {
-            return (_context.Comercio?.Any(e => e.ID_Comercio == id)).GetValueOrDefault();
+            return (_context.Comercio?
+                            .AsNoTracking()
+                            .Any(e => e.ID_Comercio == id)).GetValueOrDefault();
         }
     }
 }
