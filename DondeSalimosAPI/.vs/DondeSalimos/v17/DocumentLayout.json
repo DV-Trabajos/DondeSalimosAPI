@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\nicoz\\Documents\\GitHub\\DondeSalimosWeb\\DondeSalimosAPI\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|c:\\users\\nicoz\\documents\\github\\dondesalimosweb\\dondesalimosapi\\dondesalimos\\server\\services\\firebaseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|solutionrelative:dondesalimos\\server\\services\\firebaseservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|c:\\users\\nicoz\\documents\\github\\dondesalimosweb\\dondesalimosapi\\dondesalimos\\server\\controllers\\usuarioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|solutionrelative:dondesalimos\\server\\controllers\\usuarioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -23,19 +27,32 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
+              "Title": "FirebaseService.cs",
+              "DocumentMoniker": "C:\\Users\\nicoz\\Documents\\GitHub\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Services\\FirebaseService.cs",
+              "RelativeDocumentMoniker": "DondeSalimos\\Server\\Services\\FirebaseService.cs",
+              "ToolTip": "C:\\Users\\nicoz\\Documents\\GitHub\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Services\\FirebaseService.cs",
+              "RelativeToolTip": "DondeSalimos\\Server\\Services\\FirebaseService.cs",
+              "ViewState": "AgIAAJIAAAAAAAAAAAAuwPYAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-08-28T21:37:33.623Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "UsuariosController.cs",
               "DocumentMoniker": "C:\\Users\\nicoz\\Documents\\GitHub\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\UsuariosController.cs",
               "RelativeDocumentMoniker": "DondeSalimos\\Server\\Controllers\\UsuariosController.cs",
               "ToolTip": "C:\\Users\\nicoz\\Documents\\GitHub\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\UsuariosController.cs",
               "RelativeToolTip": "DondeSalimos\\Server\\Controllers\\UsuariosController.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAGkBAAAsAAAAAAAAAA==",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAGoBAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-08-25T23:13:13.771Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\nicoz\\Documents\\GitHub\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\appsettings.json",
               "RelativeDocumentMoniker": "DondeSalimos\\Server\\appsettings.json",
@@ -43,7 +60,8 @@
               "RelativeToolTip": "DondeSalimos\\Server\\appsettings.json",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABUAAABGAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-08-25T22:46:55.197Z"
+              "WhenOpened": "2025-08-25T22:46:55.197Z",
+              "EditorCaption": ""
             }
           ]
         }

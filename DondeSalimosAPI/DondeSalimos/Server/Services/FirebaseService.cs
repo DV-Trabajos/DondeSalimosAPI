@@ -259,7 +259,9 @@ namespace DondeSalimos.Server.Services
                 {
                     // Aceptar cualquier audience de Google
                     Audience = new[] {
-                        "564893312785-lqod6mmspdi217njl0en3jufld1vbq28.apps.googleusercontent.com"
+                        "564893312785-lqod6mmspdi217njl0en3jufld1vbq28.apps.googleusercontent.com",
+                        "279280321644-liu8o3o8imlgpcmffog559tijjuekusu.apps.googleusercontent.com"
+                        //"564893312785-lqod6mmspdi217njl0en3jufld1vbq28.apps.googleusercontent.com"
                         }
                 };
 

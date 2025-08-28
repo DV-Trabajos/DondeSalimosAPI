@@ -341,19 +341,6 @@ namespace DondeSalimos.Server.Controllers
         }
         #endregion
 
-        public class AuthenticationWithGoogleRequest
-        {
-            public string IdToken { get; set; }
-
-            public int RolUsuario { get; set; } = 1;
-        }
-
-        public class AuthenticationWithGoogleResponse
-        {
-            public Usuario Usuario { get; set; }
-            public Boolean EsNuevoUsuario { get; set; }
-        }
-
         public class SignInWithGoogleRequest
         {
             public string IdToken { get; set; }

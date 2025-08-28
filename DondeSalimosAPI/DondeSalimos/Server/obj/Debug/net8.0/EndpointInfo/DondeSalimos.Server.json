@@ -2088,6 +2088,10 @@
           "idToken": {
             "type": "string",
             "nullable": true
+          },
+          "rolUsuario": {
+            "type": "integer",
+            "format": "int32"
           }
         },
         "additionalProperties": false
