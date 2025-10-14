@@ -18,6 +18,9 @@ namespace DondeSalimos.Shared.Modelos
         public TimeSpan Tiempo { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido")]
+        public byte[]? Imagen { get; set; }
+
+        [Required(ErrorMessage = "El campo {0} es requerido")]
         public bool Estado { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido")]
