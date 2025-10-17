@@ -130,6 +130,18 @@ namespace DondeSalimos.Server.Controllers
         [Route("crear")]
         public async Task<ActionResult<Comercio>> PostShop(Comercio comercio)
         {
+            var comercioCUIT = await _context.Comercio
+                                                .AsNoTracking()
+                                                .Where(x => x.NroDocumento.Contains(comercio.NroDocumento))
+                                                .Include(x => x.TipoComercio)
+                                                .Include(x => x.Usuario)
+                                                .ToListAsync();
+
+            if (comercioCUIT != null)
+            {
+                return BadRequest("Existe comercio con el mismo CUIT");
+            }
+
             _context.Comercio.Add(comercio);
             await _context.SaveChangesAsync();
 

@@ -122,10 +122,17 @@ namespace DondeSalimos.Server.Controllers
                 return NotFound("Rol usuario no encontrado");
             }
 
-            _context.RolUsuario.Remove(rolUsuario);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.RolUsuario.Remove(rolUsuario);
+                await _context.SaveChangesAsync();
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(400, $"Error al eliminar rol: {ex.Message}");
+            }            
         }
         #endregion
 

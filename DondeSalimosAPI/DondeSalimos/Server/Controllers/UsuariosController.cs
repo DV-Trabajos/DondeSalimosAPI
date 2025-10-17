@@ -128,6 +128,7 @@ namespace DondeSalimos.Server.Controllers
                 usuario.NombreUsuario = usuarioDto.NombreUsuario ?? usuario.NombreUsuario;
                 usuario.Correo = usuarioDto.Correo ?? usuario.Correo;
                 usuario.Telefono = usuarioDto.Telefono ?? usuario.Telefono;
+                usuario.Estado = usuarioDto.Estado;
 
                 if (usuarioDto.ID_RolUsuario > 0)
                 {
