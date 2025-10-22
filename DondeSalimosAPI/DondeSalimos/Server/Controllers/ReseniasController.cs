@@ -98,8 +98,23 @@ namespace DondeSalimos.Server.Controllers
         [Route("crear")]
         public async Task<ActionResult<Resenia>> PostReview(Resenia resenia)
         {
-            _context.Resenia.Add(resenia);
-            await _context.SaveChangesAsync();
+            //Consultar si la reseña corresponde a un comercio que el usuario haya hecho una reserva
+            var reservaUsuario = await _context.Reserva
+                                            .AsNoTracking().Where(x => x.ID_Usuario == resenia.ID_Usuario && 
+                                                                    x.ID_Comercio == resenia.ID_Comercio)
+                                            .Include(x => x.Comercio)
+                                            .Include(x => x.Usuario)
+                                            .FirstOrDefaultAsync();
+
+            if (reservaUsuario == null)
+            {
+                return BadRequest("El usuario no tiene una reserva en un comercio para dejar su comentario");
+            }
+            else
+            {
+                _context.Resenia.Add(resenia);
+                await _context.SaveChangesAsync();
+            }
 
             //return CreatedAtAction("GetIdResenia", new { id = resenia.ID_Resenia }, resenia);
             return Ok("Reseña creada correctamente");
