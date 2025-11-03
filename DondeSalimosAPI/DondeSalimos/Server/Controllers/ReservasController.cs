@@ -2,11 +2,12 @@
 using Microsoft.EntityFrameworkCore;
 using DondeSalimos.Server.Data;
 using DondeSalimos.Shared.Modelos;
-
+using Microsoft.AspNetCore.Authorization; 
 namespace DondeSalimos.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize] 
     public class ReservasController : ControllerBase
     {
         private readonly Contexto _context;

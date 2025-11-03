@@ -2,11 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using DondeSalimos.Server.Data;
 using DondeSalimos.Shared.Modelos;
+using Microsoft.AspNetCore.Authorization; // Agregar using para Authorization
 
 namespace DondeSalimos.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize] // Proteger el controlador por defecto
     public class ReseniasController : ControllerBase
     {
         private readonly Contexto _context;
@@ -17,6 +19,7 @@ namespace DondeSalimos.Server.Controllers
         }
 
         #region // GET: api/resenias/listado
+        [AllowAnonymous] // Hacer público para leer reseñas
         [HttpGet]
         [Route("listado")]
         public async Task<ActionResult<List<Resenia>>> GetReviews()
@@ -29,6 +32,7 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // GET: api/resenias/buscarIdResenia/{id}
+        [AllowAnonymous] // Hacer público para ver detalles de reseñas
         [HttpGet] //("{id:int}", Name = "GetIdResenia")]
         [Route("buscarIdResenia/{id}")]
         public async Task<ActionResult<Resenia>> GetIdReview(int id)
@@ -49,6 +53,7 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // GET: api/resenias/buscarNombreComercio/{comercio}
+        [AllowAnonymous] // Hacer público para ver reseñas por comercio
         [HttpGet] //("{nombreComercio}")]
         [Route("buscarNombreComercio/{comercio}")]
         public async Task<ActionResult<List<Resenia>>> GetReviewByShopName(string comercio)
@@ -100,7 +105,7 @@ namespace DondeSalimos.Server.Controllers
         {
             //Consultar si la reseña corresponde a un comercio que el usuario haya hecho una reserva
             var reservaUsuario = await _context.Reserva
-                                            .AsNoTracking().Where(x => x.ID_Usuario == resenia.ID_Usuario && 
+                                            .AsNoTracking().Where(x => x.ID_Usuario == resenia.ID_Usuario &&
                                                                     x.ID_Comercio == resenia.ID_Comercio)
                                             .Include(x => x.Comercio)
                                             .Include(x => x.Usuario)

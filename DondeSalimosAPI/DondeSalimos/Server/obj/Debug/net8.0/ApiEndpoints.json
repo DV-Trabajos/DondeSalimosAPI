@@ -161,6 +161,38 @@
     ]
   },
   {
+    "ContainingType": "DondeSalimos.Server.Controllers.PagosController",
+    "Method": "CrearPreferencia",
+    "RelativePath": "api/Pagos/crear-preferencia",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "DondeSalimos.Server.Controllers.PreferenciaRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DondeSalimos.Server.Controllers.PagosController",
+    "Method": "VerificarPago",
+    "RelativePath": "api/Pagos/verificar-pago",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "DondeSalimos.Server.Controllers.VerificarPagoRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "DondeSalimos.Server.Controllers.PublicidadesController",
     "Method": "PutAdvertising",
     "RelativePath": "api/Publicidades/actualizar/{id}",
@@ -264,6 +296,22 @@
     "Method": "DeleteAdvertising",
     "RelativePath": "api/Publicidades/eliminar/{id}",
     "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "DondeSalimos.Server.Controllers.PublicidadesController",
+    "Method": "IncrementarVisualizacion",
+    "RelativePath": "api/Publicidades/incrementar-visualizacion/{id}",
+    "HttpMethod": "PUT",
     "IsController": true,
     "Order": 0,
     "Parameters": [
@@ -991,6 +1039,22 @@
         "StatusCode": 200
       }
     ]
+  },
+  {
+    "ContainingType": "DondeSalimos.Server.Controllers.UsuariosController",
+    "Method": "LoginTest",
+    "RelativePath": "api/Usuarios/login-test",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "DondeSalimos.Server.Controllers.UsuariosController\u002BLoginTestRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
   },
   {
     "ContainingType": "DondeSalimos.Server.Controllers.UsuariosController",

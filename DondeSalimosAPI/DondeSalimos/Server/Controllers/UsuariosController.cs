@@ -4,6 +4,13 @@ using DondeSalimos.Shared.Modelos;
 using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+//nuevos
+
+using Microsoft.AspNetCore.Authorization; 
+using Microsoft.IdentityModel.Tokens; 
+using System.IdentityModel.Tokens.Jwt; 
+using System.Security.Claims; 
+using System.Text; 
 
 namespace DondeSalimos.Server.Controllers
 {
@@ -13,11 +20,14 @@ namespace DondeSalimos.Server.Controllers
     {
         private readonly Contexto _context;
         private readonly FirebaseService _firebaseService;
+        private readonly IConfiguration _configuration; 
 
-        public UsuariosController(Contexto context, FirebaseService firebaseService)
+        //public UsuariosController(Contexto context, FirebaseService firebaseService)
+        public UsuariosController(Contexto context, FirebaseService firebaseService, IConfiguration configuration) // <CHANGE> Agregar IConfiguration        
         {
             _context = context;
             _firebaseService = firebaseService;
+            _configuration = configuration; 
         }
 
         #region // GET: api/usuarios/listado
@@ -183,12 +193,13 @@ namespace DondeSalimos.Server.Controllers
                 var usuario     = await _context.Usuario
                                                 .Include(u => u.RolUsuario)
                                                 .FirstOrDefaultAsync(x => x.Uid == firebaseUid);
-
+                var jwtToken = GenerateJwtToken(usuario);
                 return Ok(new SignInWithGoogleResponse
                 {
                     Usuario = usuario,
                     ExisteUsuario = true,
-                    Mensaje = "Inicio de sesión exitoso"
+                    Mensaje = "Inicio de sesión exitoso",
+                    JwtToken = jwtToken 
                 });
             }
             catch (Exception ex)
@@ -258,10 +269,13 @@ namespace DondeSalimos.Server.Controllers
                 _context.Usuario.Add(nuevoUsuario);
                 await _context.SaveChangesAsync();
 
+                var jwtToken = GenerateJwtToken(nuevoUsuario);
                 return Ok(new SignUpWithGoogleResponse
                 {
                     Usuario = nuevoUsuario,
-                    Mensaje = "Inicio de sesión exitoso"
+                    Mensaje = "Inicio de sesión exitoso",
+
+                    JwtToken = jwtToken // <CHANGE> Agregar esta línea
                 });
             }
             catch (Exception ex)
@@ -341,7 +355,63 @@ namespace DondeSalimos.Server.Controllers
             }
         }
         #endregion
+        
+        private string GenerateJwtToken(Usuario usuario)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var jwtSettings = _configuration.GetSection("Jwt");
+            var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]);
 
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[]
+                {
+                    new Claim(ClaimTypes.NameIdentifier, usuario.ID_Usuario.ToString()),
+                    new Claim(ClaimTypes.Email, usuario.Correo),
+                    new Claim(ClaimTypes.Role, usuario.ID_RolUsuario.ToString())
+                }),
+                Expires = DateTime.UtcNow.AddDays(7),
+                Issuer = jwtSettings["Issuer"],
+                Audience = jwtSettings["Audience"],
+                SigningCredentials = new SigningCredentials(
+                    new SymmetricSecurityKey(key),
+                    SecurityAlgorithms.HmacSha256Signature
+                )
+            };
+
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
+        }
+
+       
+        [HttpPost("login-test")]
+        public async Task<ActionResult> LoginTest([FromBody] LoginTestRequest request)
+        {
+            try
+            {
+                var usuario = await _context.Usuario
+                                            .Include(u => u.RolUsuario)
+                                            .FirstOrDefaultAsync(x => x.Correo == request.Email);
+
+                if (usuario == null)
+                {
+                    return NotFound(new { mensaje = "Usuario no encontrado" });
+                }
+
+                var jwtToken = GenerateJwtToken(usuario);
+
+                return Ok(new
+                {
+                    token = jwtToken,
+                    usuario = usuario,
+                    mensaje = "Token generado correctamente (SOLO PARA TESTING)"
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = ex.Message });
+            }
+        }
         public class SignInWithGoogleRequest
         {
             public string IdToken { get; set; }
@@ -359,12 +429,23 @@ namespace DondeSalimos.Server.Controllers
             public Usuario Usuario { get; set; }
             public Boolean ExisteUsuario { get; set; }
             public string Mensaje { get; set; }
+
+            public string JwtToken { get; set; } 
         }
 
         public class SignUpWithGoogleResponse
         {
             public Usuario Usuario { get; set; }
             public string Mensaje { get; set; }
+
+            public string JwtToken { get; set; } 
         }
+        
+        public class LoginTestRequest
+        {
+            public string Email { get; set; }
+        }
+
     }
+
 }

@@ -2,11 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using DondeSalimos.Server.Data;
 using DondeSalimos.Shared.Modelos;
+using Microsoft.AspNetCore.Authorization; // Agregar using para Authorization
 
 namespace DondeSalimos.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize] // Proteger el controlador por defecto
     public class ComerciosController : ControllerBase
     {
         private readonly Contexto _context;
@@ -17,6 +19,7 @@ namespace DondeSalimos.Server.Controllers
         }
 
         #region // GET: api/comercios/listado
+        [AllowAnonymous] // Hacer público para explorar bares
         [HttpGet]
         [Route("listado")]
         public async Task<ActionResult<IEnumerable<Comercio>>> GetShops()
@@ -30,6 +33,7 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // GET: api/comercios/buscarIdComercio/{id}
+        [AllowAnonymous] // Hacer público para ver detalles de bares
         [HttpGet] //("{id:int}", Name = "GetIdComercio")]
         [Route("buscarIdComercio/{id}")]
         public async Task<ActionResult<Comercio>> GetShopById(int id)
@@ -51,6 +55,7 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // GET: api/comercios/buscarNombreComercio/{comercio}
+        [AllowAnonymous] // Hacer público para búsquedas
         [HttpGet] //("{comercio}")]
         [Route("buscarNombreComercio/{comercio}")]
         public async Task<ActionResult<List<Comercio>>> GetShopByName(string comercio)
@@ -63,7 +68,7 @@ namespace DondeSalimos.Server.Controllers
                                                 .Include(x => x.Usuario)
                                                 .ToListAsync();
 
-            if (comercioNombre.Any())
+            if (!comercioNombre.Any()) // Corregir la lógica de NotFound
             {
                 return NotFound("Comercio no encontrado");
             }
@@ -137,7 +142,7 @@ namespace DondeSalimos.Server.Controllers
                                                 .Include(x => x.Usuario)
                                                 .ToListAsync();
 
-            if (comercioCUIT != null)
+            if (comercioCUIT.Any()) // Corregir la lógica de BadRequest
             {
                 return BadRequest("Existe comercio con el mismo CUIT");
             }

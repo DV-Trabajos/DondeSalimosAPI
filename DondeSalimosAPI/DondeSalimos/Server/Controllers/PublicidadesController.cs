@@ -2,11 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using DondeSalimos.Server.Data;
 using DondeSalimos.Shared.Modelos;
+using Microsoft.AspNetCore.Authorization; 
 
 namespace DondeSalimos.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize] // Proteger el controlador por defecto
     public class PublicidadesController : ControllerBase
     {
         private readonly Contexto _context;
@@ -17,6 +19,7 @@ namespace DondeSalimos.Server.Controllers
         }
 
         #region // GET: api/publicidades/listado
+        [AllowAnonymous] // Hacer público para atraer nuevos usuarios
         [HttpGet]
         [Route("listado")]
         public async Task<ActionResult<List<Publicidad>>> GetAdvertisements()
@@ -29,6 +32,7 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // GET: api/publicidades/buscarIdPublicidad/{id}
+        [AllowAnonymous] // Hacer público para ver detalles
         [HttpGet] //("{id:int}", Name = "GetIdPublicidad")]
         [Route("buscarIdPublicidad/{id}")]
         public async Task<ActionResult<Publicidad>> GetIdAdvertising(int id)
@@ -49,7 +53,8 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // GET: api/publicidades/buscarNombreComercio/{comercio}
-        [HttpGet] //("{nombreComercio}")]
+        [AllowAnonymous] // Hacer público para búsquedas
+        [HttpGet] //("{nombreComercio}")] 
         [Route("buscarNombreComercio/{comercio}")]
         public async Task<ActionResult<List<Publicidad>>> GetAdvertisingByName(string comercio)
         {
@@ -101,8 +106,12 @@ namespace DondeSalimos.Server.Controllers
             _context.Publicidad.Add(publicidad);
             await _context.SaveChangesAsync();
 
-            //return CreatedAtAction("GetIdPublicidad", new { id = publicidad.ID_Publicidad }, publicidad);
-            return Ok("Publicidad creada correctamente");
+            return Ok(new
+            {
+                message = "Publicidad creada correctamente",
+                id = publicidad.ID_Publicidad,
+                publicidad = publicidad
+            });
         }
         #endregion
 
@@ -125,6 +134,39 @@ namespace DondeSalimos.Server.Controllers
         }
         #endregion
 
+        #region // PUT: api/publicidades/incrementar-visualizacion/{id}
+        [AllowAnonymous] // Hacer público para tracking de visualizaciones
+        [HttpPut]
+        [Route("incrementar-visualizacion/{id}")]
+        public async Task<IActionResult> IncrementarVisualizacion(int id)
+        {
+            try
+            {
+                var publicidad = await _context.Publicidad.FindAsync(id);
+
+                if (publicidad == null)
+                {
+                    return NotFound(new { message = "Publicidad no encontrada" });
+                }
+
+                publicidad.Visualizaciones += 1;
+                await _context.SaveChangesAsync();
+
+                Console.WriteLine($"[DEBUG] Visualización incrementada para publicidad {id}. Total: {publicidad.Visualizaciones}");
+
+                return Ok(new
+                {
+                    message = "Visualización incrementada correctamente",
+                    visualizaciones = publicidad.Visualizaciones
+                });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ERROR] Error al incrementar visualización: {ex.Message}");
+                return StatusCode(500, new { error = "Error al incrementar visualización" });
+            }
+        }
+        #endregion
         private bool PublicidadExists(int id)
         {
             return (_context.Publicidad?

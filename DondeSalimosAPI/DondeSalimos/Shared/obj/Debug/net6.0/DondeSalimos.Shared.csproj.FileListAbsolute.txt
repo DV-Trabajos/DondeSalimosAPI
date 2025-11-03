@@ -138,3 +138,15 @@ C:\Users\nicolas.zalazar\Documents\GitHub\DondeSalimosWeb\DondeSalimosAPI\DondeS
 C:\Users\nicolas.zalazar\Documents\GitHub\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Shared\obj\Debug\net6.0\refint\DondeSalimos.Shared.dll
 C:\Users\nicolas.zalazar\Documents\GitHub\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.pdb
 C:\Users\nicolas.zalazar\Documents\GitHub\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Shared\obj\Debug\net6.0\ref\DondeSalimos.Shared.dll
+D:\apis\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.deps.json
+D:\apis\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.dll
+D:\apis\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Shared\bin\Debug\net6.0\DondeSalimos.Shared.pdb
+D:\apis\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.GeneratedMSBuildEditorConfig.editorconfig
+D:\apis\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.AssemblyInfoInputs.cache
+D:\apis\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.AssemblyInfo.cs
+D:\apis\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.csproj.CoreCompileInputs.cache
+D:\apis\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.sourcelink.json
+D:\apis\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.dll
+D:\apis\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Shared\obj\Debug\net6.0\refint\DondeSalimos.Shared.dll
+D:\apis\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Shared\obj\Debug\net6.0\DondeSalimos.Shared.pdb
+D:\apis\DondeSalimosWeb\DondeSalimosAPI\DondeSalimos\Shared\obj\Debug\net6.0\ref\DondeSalimos.Shared.dll

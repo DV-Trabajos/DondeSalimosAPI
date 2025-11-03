@@ -2,11 +2,13 @@
 using DondeSalimos.Shared.Modelos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.AspNetCore.Authorization; 
 namespace DondeSalimos.Server.Controllers
+
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize] 
     public class RolesUsuarioController : ControllerBase
     {
         private readonly Contexto _context;
@@ -17,6 +19,7 @@ namespace DondeSalimos.Server.Controllers
         }
 
         #region // GET: api/rolesUsuario/listado
+        [AllowAnonymous]
         [HttpGet]
         [Route("listado")]
         public async Task<ActionResult<List<RolUsuario>>> GetUserRoles()
@@ -28,7 +31,8 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // GET: api/rolesUsuario/buscarIdRolUsuario/{id}
-        [HttpGet] //("{id:int}", Name = "GetIdUsuario")]
+        [AllowAnonymous]
+        [HttpGet]
         [Route("buscarIdRolUsuario/{id}")]
         public async Task<ActionResult<RolUsuario>> GetIdRol(int id)
         {
@@ -47,7 +51,8 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // GET: api/rolesUsuario/buscarNombreRolUsuario/{rolUsuario}
-        [HttpGet] //("{rolUsuario}")]
+        [AllowAnonymous]
+        [HttpGet]
         [Route("buscarNombreRolUsuario/{rolUsuario}")]
         public async Task<ActionResult<List<RolUsuario>>> GetUserRolByName(string rolUsuario)
         {
@@ -66,7 +71,7 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // PUT: api/rolesUsuario/actualizar/{id}
-        [HttpPut] //("{id}")]
+        [HttpPut]
         [Route("actualizar/{id}")]
         public async Task<IActionResult> PutUserRol(int id, RolUsuario rolUsuario)
         {
@@ -105,13 +110,12 @@ namespace DondeSalimos.Server.Controllers
             _context.RolUsuario.Add(rolUsuario);
             await _context.SaveChangesAsync();
 
-            //return new CreatedAtRouteResult("GetIdUsuario", new { id = usuario.ID_Usuario }, usuario);
             return Ok("Rol usuario creado correctamente");
         }
         #endregion
 
         #region // DELETE: api/rolesUsuario/eliminar/{id}
-        [HttpDelete]//("{id}")]
+        [HttpDelete]
         [Route("eliminar/{id}")]
         public async Task<IActionResult> DeleteUserRol(int id)
         {
@@ -132,7 +136,7 @@ namespace DondeSalimos.Server.Controllers
             catch (Exception ex)
             {
                 return StatusCode(400, $"Error al eliminar rol: {ex.Message}");
-            }            
+            }
         }
         #endregion
 

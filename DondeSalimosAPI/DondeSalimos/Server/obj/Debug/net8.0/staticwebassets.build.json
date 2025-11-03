@@ -1,12 +1,11 @@
 {
   "Version": 1,
-  "Hash": "OxV6yiC0t8/+sV4lhxM0NEdU+us8e74fOWBDnZ9Axok=",
+  "Hash": "J14oihEHZA9sLxocaLheUrziVEhTRDwYQEYT7XWnjmM=",
   "Source": "DondeSalimos.Server",
   "BasePath": "_content/DondeSalimos.Server",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [],
-  "Assets": [],
-  "Endpoints": []
+  "Assets": []
 }

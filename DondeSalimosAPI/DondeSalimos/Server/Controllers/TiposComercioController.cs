@@ -2,11 +2,13 @@
 using DondeSalimos.Shared.Modelos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization; // Agregar using para Authorization
 
 namespace DondeSalimos.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [AllowAnonymous] // Todo público - solo datos de referencia
     public class TiposComercioController : ControllerBase
     {
         private readonly Contexto _context;
