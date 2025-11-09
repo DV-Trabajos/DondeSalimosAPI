@@ -323,25 +323,98 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // DELETE: api/usuarios/eliminar/{id}
-        [HttpDelete]//("{id}")]
+        [HttpDelete]
         [Route("eliminar/{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
             var usuario = await _context.Usuario.FindAsync(id);
-            var uid = usuario.Uid;
+
+
 
             if (usuario == null)
             {
                 return NotFound("Usuario no encontrado");
             }
 
+            var uid = usuario.Uid;
+
             try
             {
-                // Eliminar en la base de datos
+                // 1. ELIMINAR RESEÑAS CREADAS POR EL USUARIO
+                var reseniasUsuario = await _context.Resenia
+                    .Where(r => r.ID_Usuario == id)
+                    .ToListAsync();
+
+                if (reseniasUsuario.Any())
+                {
+                    _context.Resenia.RemoveRange(reseniasUsuario);
+                    await _context.SaveChangesAsync();
+                }
+
+                // 2. ELIMINAR RESERVAS DEL USUARIO
+                var reservasUsuario = await _context.Reserva
+                    .Where(r => r.ID_Usuario == id)
+                    .ToListAsync();
+
+                if (reservasUsuario.Any())
+                {
+                    _context.Reserva.RemoveRange(reservasUsuario);
+                    await _context.SaveChangesAsync();
+                }
+
+                // 3. SI ES DUEÑO DE COMERCIO, ELIMINAR COMERCIOS Y SUS DEPENDENCIAS
+                var comerciosUsuario = await _context.Comercio
+                    .Where(c => c.ID_Usuario == id)
+                    .ToListAsync();
+
+                if (comerciosUsuario.Any())
+                {
+                    foreach (var comercio in comerciosUsuario)
+                    {
+                        // 3.1. Eliminar reservas del comercio
+                        var reservasComercio = await _context.Reserva
+                            .Where(r => r.ID_Comercio == comercio.ID_Comercio)
+                            .ToListAsync();
+
+                        if (reservasComercio.Any())
+                        {
+                            _context.Reserva.RemoveRange(reservasComercio);
+                            await _context.SaveChangesAsync();
+                        }
+
+                        // 3.2. Eliminar publicidades del comercio
+                        var publicidadesComercio = await _context.Publicidad
+                            .Where(p => p.ID_Comercio == comercio.ID_Comercio)
+                            .ToListAsync();
+
+                        if (publicidadesComercio.Any())
+                        {
+                            _context.Publicidad.RemoveRange(publicidadesComercio);
+                            await _context.SaveChangesAsync();
+                        }
+
+                        // 3.3. Eliminar reseñas del comercio
+                        var reseniasComercio = await _context.Resenia
+                            .Where(r => r.ID_Comercio == comercio.ID_Comercio)
+                            .ToListAsync();
+
+                        if (reseniasComercio.Any())
+                        {
+                            _context.Resenia.RemoveRange(reseniasComercio);
+                            await _context.SaveChangesAsync();
+                        }
+
+                        // 3.4. Eliminar el comercio
+                        _context.Comercio.Remove(comercio);
+                        await _context.SaveChangesAsync();
+                    }
+                }
+
+                // 4. ELIMINAR EL USUARIO DE LA BASE DE DATOS
                 _context.Usuario.Remove(usuario);
                 await _context.SaveChangesAsync();
 
-                // Eliminar en Firebase
+                // 5. ELIMINAR EN FIREBASE
                 if (!string.IsNullOrEmpty(uid))
                 {
                     await _firebaseService.DeleteUserAsync(uid);
@@ -351,11 +424,13 @@ namespace DondeSalimos.Server.Controllers
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"Error completo al eliminar usuario: {ex}");
                 return StatusCode(400, $"Error al eliminar usuario: {ex.Message}");
             }
         }
         #endregion
-        
+
+
         private string GenerateJwtToken(Usuario usuario)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

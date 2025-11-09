@@ -21,8 +21,11 @@ namespace DondeSalimos.Shared.Modelos
 
         //[ForeignKey("ID_Cliente")]
         //public Cliente? Cliente { get; set; }
-
+        public string? MotivoRechazo { get; set; }
         public int ID_Usuario { get; set; }
+        [Required(ErrorMessage = "El campo {0} es requerido")]
+        [Range(1, 5, ErrorMessage = "La puntuación debe estar entre 1 y 5")]
+        public int Puntuacion { get; set; }
 
         [ForeignKey("ID_Usuario")]
         public Usuario? Usuario { get; set; }        

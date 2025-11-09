@@ -27,6 +27,8 @@ namespace DondeSalimos.Shared.Modelos
         public DateTime FechaCreacion { get; set; } = DateTime.Now;
 
         public int ID_Comercio { get; set; }
+        public string? MotivoRechazo { get; set; }
+        public bool Pago { get; set; } = false; // Nueva propiedad
 
         [ForeignKey("ID_Comercio")]
         public Comercio? Comercio { get; set; }

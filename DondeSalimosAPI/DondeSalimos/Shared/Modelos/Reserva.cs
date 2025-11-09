@@ -27,7 +27,7 @@ namespace DondeSalimos.Shared.Modelos
 
         //[ForeignKey("ID_Cliente")]
         //public Cliente? Cliente { get; set; }
-
+        public string? MotivoRechazo { get; set; }
         public int ID_Usuario { get; set; }
 
         [ForeignKey("ID_Usuario")]

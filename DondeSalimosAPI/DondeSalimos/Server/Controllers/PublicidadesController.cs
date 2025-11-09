@@ -103,6 +103,10 @@ namespace DondeSalimos.Server.Controllers
         [Route("crear")]
         public async Task<ActionResult<Publicidad>> PostAdvertising(Publicidad publicidad)
         {
+            // <CHANGE> Inicializar Estado = false y Pago = false al crear
+            publicidad.Estado = false; // Pendiente de aprobación del admin
+            publicidad.Pago = false;   // Pendiente de pago
+           
             _context.Publicidad.Add(publicidad);
             await _context.SaveChangesAsync();
 

@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 using DondeSalimos.Server.Data;
 using DondeSalimos.Shared.Modelos;
-using Microsoft.AspNetCore.Authorization; // Agregar using para Authorization
-
+using Microsoft.AspNetCore.Authorization; 
+using System.Text.RegularExpressions;
 namespace DondeSalimos.Server.Controllers
 {
     [Route("api/[controller]")]
@@ -135,22 +135,42 @@ namespace DondeSalimos.Server.Controllers
         [Route("crear")]
         public async Task<ActionResult<Comercio>> PostShop(Comercio comercio)
         {
-            var comercioCUIT = await _context.Comercio
-                                                .AsNoTracking()
-                                                .Where(x => x.NroDocumento.Contains(comercio.NroDocumento))
-                                                .Include(x => x.TipoComercio)
-                                                .Include(x => x.Usuario)
-                                                .ToListAsync();
 
-            if (comercioCUIT.Any()) // Corregir la lógica de BadRequest
+            if (!string.IsNullOrEmpty(comercio.Correo))
+            {
+                var emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
+                if (!emailRegex.IsMatch(comercio.Correo))
+                {
+                    return BadRequest(new { Correo = new[] { "El correo es inválido." } });
+                }
+            }
+            // Validar dígito verificador del CUIT
+            if (!string.IsNullOrEmpty(comercio.NroDocumento))
+            {
+                if (!ValidateCUITCheckDigit(comercio.NroDocumento))
+                {
+                    return BadRequest(new
+                    {
+                        NroDocumento = new[] { "El dígito verificador del CUIT es incorrecto." }
+                    });
+                }
+            }
+
+            var comercioCUIT = await _context.Comercio
+                                              .AsNoTracking()
+                                              .Where(x => x.NroDocumento == comercio.NroDocumento)
+                                              .FirstOrDefaultAsync();
+
+            if (comercioCUIT != null)
             {
                 return BadRequest("Existe comercio con el mismo CUIT");
             }
 
+            // Solo se ejecuta si pasó todas las validaciones
+            Console.WriteLine($"[DEBUG] Creando comercio con CUIT: {comercio.NroDocumento}");
             _context.Comercio.Add(comercio);
             await _context.SaveChangesAsync();
 
-            //return CreatedAtAction("GetIdComercio", new { id = comercio.ID_Comercio }, comercio);
             return Ok("Comercio creado correctamente");
         }
         #endregion
@@ -180,5 +200,32 @@ namespace DondeSalimos.Server.Controllers
                             .AsNoTracking()
                             .Any(e => e.ID_Comercio == id)).GetValueOrDefault();
         }
+        /// <summary>
+        /// Valida el dígito verificador de un CUIT argentino según el algoritmo oficial
+        /// </summary>
+        private bool ValidateCUITCheckDigit(string cuit)
+        {
+            string cleanCuit = cuit.Replace("-", "");
+
+            if (cleanCuit.Length != 11 || !long.TryParse(cleanCuit, out _))
+                return false;
+
+            int[] multipliers = { 5, 4, 3, 2, 7, 6, 5, 4, 3, 2 };
+            int sum = 0;
+
+            for (int i = 0; i < 10; i++)
+            {
+                sum += int.Parse(cleanCuit[i].ToString()) * multipliers[i];
+            }
+
+            int remainder = sum % 11;
+            int checkDigit = 11 - remainder;
+
+            if (checkDigit == 11) checkDigit = 0;
+            if (checkDigit == 10) checkDigit = 9;
+
+            return checkDigit == int.Parse(cleanCuit[10].ToString());
+        }
     }
+
 }

@@ -33,6 +33,8 @@ namespace DondeSalimos.Shared.Modelos
         public TimeSpan? HoraIngreso { get; set; }
 
         public TimeSpan? HoraCierre { get; set; }
+        
+        public string? MotivoRechazo { get; set; }
 
         public byte[]? Foto { get; set; }
 

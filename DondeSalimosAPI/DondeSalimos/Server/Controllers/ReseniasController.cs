@@ -60,7 +60,8 @@ namespace DondeSalimos.Server.Controllers
         {
             return await _context.Resenia
                                     .AsNoTracking()
-                                    .Where(x => x.Comercio.Nombre.ToLower().Contains(comercio))
+                                   // .Where(x => x.Comercio.Nombre.ToLower().Contains(comercio))
+                                    .Where(x => x.Comercio.Nombre.ToLower() == comercio.ToLower())
                                     .Include(x => x.Comercio)
                                     .ToListAsync();
         }
@@ -71,9 +72,19 @@ namespace DondeSalimos.Server.Controllers
         [Route("actualizar/{id}")]
         public async Task<IActionResult> PutReview(int id, Resenia resenia)
         {
+
+            if (resenia.Puntuacion < 1 || resenia.Puntuacion > 5)
+            {
+                return BadRequest("La puntuación debe estar entre 1 y 5");
+            }
+
             if (id != resenia.ID_Resenia)
             {
                 return BadRequest();
+            }
+            if (resenia.Puntuacion < 1 || resenia.Puntuacion > 5)
+            {
+                return BadRequest("La puntuación debe estar entre 1 y 5");
             }
 
             _context.Entry(resenia).State = EntityState.Modified;

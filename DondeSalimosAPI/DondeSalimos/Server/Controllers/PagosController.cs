@@ -3,9 +3,11 @@ using MercadoPago.Config;
 using MercadoPago.Client.Preference;
 using MercadoPago.Resource.Preference;
 using MercadoPago.Client.Payment;
-using MercadoPago.Resource.Payment;
-using Microsoft.AspNetCore.Authorization; 
+using Microsoft.AspNetCore.Authorization;
+using DondeSalimos.Server.Data;
+
 namespace DondeSalimos.Server.Controllers
+
 {
     [ApiController]
     [Authorize] 
@@ -13,10 +15,11 @@ namespace DondeSalimos.Server.Controllers
     public class PagosController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-
-        public PagosController(IConfiguration configuration)
+        private readonly Contexto _context;
+        public PagosController(IConfiguration configuration, Contexto context)
         {
             _configuration = configuration;
+            _context = context; // <CHANGE> Inicializar contexto
             var accessToken = _configuration["MercadoPago:AccessToken"];
 
             Console.WriteLine("=== CONFIGURACIÓN MERCADO PAGO ===");
@@ -104,14 +107,26 @@ namespace DondeSalimos.Server.Controllers
                     
                     var publicidadId = int.Parse(payment.ExternalReference);
 
-                    Console.WriteLine($"[DEBUG] Pago aprobado para publicidad ID: {publicidadId}");
+                   // <CHANGE> Actualizar Pago = true en la publicidad
+            var publicidad = await _context.Publicidad.FindAsync(publicidadId);
+            if (publicidad != null)
+            {
+                publicidad.Pago = true;
+                await _context.SaveChangesAsync();
+                Console.WriteLine($"[DEBUG] Publicidad {publicidadId} marcada como pagada");
+            }
+
+            Console.WriteLine($"[DEBUG] Pago aprobado para publicidad ID: {publicidadId}");
+
 
                     return Ok(new
                     {
                         success = true,
                         message = "Pago verificado correctamente",
                         paymentStatus = payment.Status,
-                        publicidadId = publicidadId
+                        publicidadId = publicidadId,
+                        estadoPublicidad = publicidad?.Estado ?? false,
+                        pagoRealizado = true
                     });
                 }
                 else
