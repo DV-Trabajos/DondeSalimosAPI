@@ -27,6 +27,7 @@ namespace DondeSalimos.Server.Controllers
             return await _context.Resenia
                                     .AsNoTracking()
                                     .Include(x => x.Comercio)
+                                    .Include(x => x.Usuario)
                                     .ToListAsync();
         }
         #endregion
@@ -41,6 +42,7 @@ namespace DondeSalimos.Server.Controllers
                                             .AsNoTracking()
                                             .Where(x => x.ID_Resenia == id)
                                             .Include(x => x.Comercio)
+                                            .Include(x => x.Usuario)
                                             .FirstOrDefaultAsync();
 
             if (resenia == null)
@@ -62,7 +64,9 @@ namespace DondeSalimos.Server.Controllers
                                     .AsNoTracking()
                                    // .Where(x => x.Comercio.Nombre.ToLower().Contains(comercio))
                                     .Where(x => x.Comercio.Nombre.ToLower() == comercio.ToLower())
+
                                     .Include(x => x.Comercio)
+                                    .Include(x => x.Usuario)
                                     .ToListAsync();
         }
         #endregion
@@ -114,28 +118,60 @@ namespace DondeSalimos.Server.Controllers
         [Route("crear")]
         public async Task<ActionResult<Resenia>> PostReview(Resenia resenia)
         {
-            //Consultar si la reseña corresponde a un comercio que el usuario haya hecho una reserva
-            var reservaUsuario = await _context.Reserva
-                                            .AsNoTracking().Where(x => x.ID_Usuario == resenia.ID_Usuario &&
-                                                                    x.ID_Comercio == resenia.ID_Comercio)
-                                            .Include(x => x.Comercio)
-                                            .Include(x => x.Usuario)
+            if (resenia.Puntuacion < 1 || resenia.Puntuacion > 5)
+            {
+                return BadRequest("La puntuación debe estar entre 1 y 5");
+            }
+
+            var usuario = await _context.Usuario.FindAsync(resenia.ID_Usuario);
+            if (usuario == null || usuario.Estado == false)
+            {
+                return BadRequest("No puedes crear una reseña porque tu cuenta está inactiva.");
+            }
+
+            var comercio = await _context.Comercio.FindAsync(resenia.ID_Comercio);
+            if (comercio == null || comercio.Estado == false)
+            {
+                return BadRequest("El comercio no existe o está inactivo.");
+            }
+
+            // Estado == true significa aprobada, Estado == false con MotivoRechazo != null es rechazada
+            var reservaAprobada = await _context.Reserva
+                                            .AsNoTracking()
+                                            .Where(x => x.ID_Usuario == resenia.ID_Usuario &&
+                                                       x.ID_Comercio == resenia.ID_Comercio &&
+                                                       x.Estado == true)
                                             .FirstOrDefaultAsync();
 
-            if (reservaUsuario == null)
+            if (reservaAprobada == null)
             {
-                return BadRequest("El usuario no tiene una reserva en un comercio para dejar su comentario");
-            }
-            else
-            {
-                _context.Resenia.Add(resenia);
-                await _context.SaveChangesAsync();
+                return BadRequest("No tienes una reserva aprobada en este comercio para poder dejar una reseña.");
             }
 
-            //return CreatedAtAction("GetIdResenia", new { id = resenia.ID_Resenia }, resenia);
-            return Ok("Reseña creada correctamente");
+            // Solo puede crear una nueva si la anterior fue rechazada (Estado == false y MotivoRechazo != null)
+            var reseniaExistente = await _context.Resenia
+                                            .AsNoTracking()
+                                            .Where(x => x.ID_Usuario == resenia.ID_Usuario &&
+                                                       x.ID_Comercio == resenia.ID_Comercio &&
+                                                       (x.Estado == true || (x.Estado == false && x.MotivoRechazo == null)))
+                                            .FirstOrDefaultAsync();
+
+            if (reseniaExistente != null)
+            {
+                return BadRequest("Ya tienes una reseña aprobada o pendiente para este comercio. Solo puedes crear una nueva si la anterior fue rechazada.");
+            }
+
+            resenia.FechaCreacion = DateTime.Now;
+            resenia.Estado = false; // Pendiente de aprobación
+            resenia.MotivoRechazo = null;
+
+            _context.Resenia.Add(resenia);
+            await _context.SaveChangesAsync();
+
+            return Ok("Reseña creada correctamente y está pendiente de aprobación.");
         }
         #endregion
+
 
         #region // DELETE: api/resenias/eliminar/{id}
         [HttpDelete] //("{id}")]

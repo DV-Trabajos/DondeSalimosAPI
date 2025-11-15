@@ -17,10 +17,7 @@ namespace DondeSalimos.Shared.Modelos
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public DateTime FechaCreacion { get; set; } = DateTime.Now;
 
-        //public int ID_Cliente { get; set; }
-
-        //[ForeignKey("ID_Cliente")]
-        //public Cliente? Cliente { get; set; }
+       
         public string? MotivoRechazo { get; set; }
         public int ID_Usuario { get; set; }
         [Required(ErrorMessage = "El campo {0} es requerido")]

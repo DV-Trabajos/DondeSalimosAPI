@@ -26,6 +26,7 @@ namespace DondeSalimos.Server.Controllers
                                     .AsNoTracking()
                                     .Include(x => x.Comercio)
                                     .Include(x => x.Usuario)
+                                    .Where(x => x.Usuario.Estado == true)
                                     .ToListAsync();
         }
         #endregion
@@ -100,6 +101,44 @@ namespace DondeSalimos.Server.Controllers
         [Route("crear")]
         public async Task<ActionResult<Reserva>> PostReservation(Reserva reserva)
         {
+            var usuario = await _context.Usuario.FindAsync(reserva.ID_Usuario);
+            if (usuario == null || usuario.Estado == false)
+            {
+                return BadRequest("No puedes crear una reserva porque tu cuenta está inactiva.");
+            }
+
+            var comercio = await _context.Comercio.FindAsync(reserva.ID_Comercio);
+            if (comercio == null || comercio.Estado == false)
+            {
+                return BadRequest("El comercio no está disponible para reservas.");
+            }
+
+            var reservaPendiente = await _context.Reserva
+                .AsNoTracking()
+                .Where(x => x.ID_Usuario == reserva.ID_Usuario &&
+                           x.ID_Comercio == reserva.ID_Comercio &&
+                           x.FechaReserva.Date == reserva.FechaReserva.Date &&
+                           x.Estado == false &&
+                           x.MotivoRechazo == null) // Pendiente de aprobación
+                .FirstOrDefaultAsync();
+
+            if (reservaPendiente != null)
+            {
+                return BadRequest("Tiene una reserva pendiente de aprobación para este comercio en esta fecha. Seleccione otra fecha.");
+            }
+
+            var reservaAprobada = await _context.Reserva
+                .AsNoTracking()
+                .Where(x => x.ID_Usuario == reserva.ID_Usuario &&
+                           x.ID_Comercio == reserva.ID_Comercio &&
+                           x.FechaReserva.Date == reserva.FechaReserva.Date &&
+                           x.Estado == true) // Aprobada
+                .FirstOrDefaultAsync();
+
+            if (reservaAprobada != null)
+            {
+                return BadRequest("Ya tiene una reserva aprobada para este comercio en esta fecha. Seleccione otra fecha.");
+            }
             _context.Reserva.Add(reserva);
             await _context.SaveChangesAsync();
 

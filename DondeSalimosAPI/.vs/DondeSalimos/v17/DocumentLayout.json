@@ -3,12 +3,40 @@
   "WorkspaceRootPath": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|d:\\apis\\dondesalimosweb\\dondesalimosapi\\dondesalimos\\server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|solutionrelative:dondesalimos\\server\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|d:\\apis\\dondesalimosweb\\dondesalimosapi\\dondesalimos\\server\\controllers\\reseniascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|solutionrelative:dondesalimos\\server\\controllers\\reseniascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|d:\\apis\\dondesalimosweb\\dondesalimosapi\\dondesalimos\\server\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|solutionrelative:dondesalimos\\server\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|d:\\apis\\dondesalimosweb\\dondesalimosapi\\dondesalimos\\server\\controllers\\reservascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|solutionrelative:dondesalimos\\server\\controllers\\reservascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|d:\\apis\\dondesalimosweb\\dondesalimosapi\\dondesalimos\\server\\controllers\\usuarioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|solutionrelative:dondesalimos\\server\\controllers\\usuarioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|d:\\apis\\dondesalimosweb\\dondesalimosapi\\dondesalimos\\server\\controllers\\tiposcomerciocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|solutionrelative:dondesalimos\\server\\controllers\\tiposcomerciocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CC1EB973-717D-4146-AF6C-E2D307163FEF}|DondeSalimos\\Shared\\DondeSalimos.Shared.csproj|d:\\apis\\dondesalimosweb\\dondesalimosapi\\dondesalimos\\shared\\modelos\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CC1EB973-717D-4146-AF6C-E2D307163FEF}|DondeSalimos\\Shared\\DondeSalimos.Shared.csproj|solutionrelative:dondesalimos\\shared\\modelos\\usuario.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CC1EB973-717D-4146-AF6C-E2D307163FEF}|DondeSalimos\\Shared\\DondeSalimos.Shared.csproj|d:\\apis\\dondesalimosweb\\dondesalimosapi\\dondesalimos\\shared\\modelos\\resenia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CC1EB973-717D-4146-AF6C-E2D307163FEF}|DondeSalimos\\Shared\\DondeSalimos.Shared.csproj|solutionrelative:dondesalimos\\shared\\modelos\\resenia.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CC1EB973-717D-4146-AF6C-E2D307163FEF}|DondeSalimos\\Shared\\DondeSalimos.Shared.csproj|d:\\apis\\dondesalimosweb\\dondesalimosapi\\dondesalimos\\shared\\modelos\\comercio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CC1EB973-717D-4146-AF6C-E2D307163FEF}|DondeSalimos\\Shared\\DondeSalimos.Shared.csproj|solutionrelative:dondesalimos\\shared\\modelos\\comercio.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CC1EB973-717D-4146-AF6C-E2D307163FEF}|DondeSalimos\\Shared\\DondeSalimos.Shared.csproj|d:\\apis\\dondesalimosweb\\dondesalimosapi\\dondesalimos\\shared\\modelos\\reserva.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CC1EB973-717D-4146-AF6C-E2D307163FEF}|DondeSalimos\\Shared\\DondeSalimos.Shared.csproj|solutionrelative:dondesalimos\\shared\\modelos\\reserva.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{CC1EB973-717D-4146-AF6C-E2D307163FEF}|DondeSalimos\\Shared\\DondeSalimos.Shared.csproj|d:\\apis\\dondesalimosweb\\dondesalimosapi\\dondesalimos\\shared\\modelos\\publicidad.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{CC1EB973-717D-4146-AF6C-E2D307163FEF}|DondeSalimos\\Shared\\DondeSalimos.Shared.csproj|solutionrelative:dondesalimos\\shared\\modelos\\publicidad.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|d:\\apis\\dondesalimosweb\\dondesalimosapi\\dondesalimos\\server\\controllers\\comercioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -23,24 +51,12 @@
       "RelativeMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|solutionrelative:dondesalimos\\server\\controllers\\publicidadescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|d:\\apis\\dondesalimosweb\\dondesalimosapi\\dondesalimos\\server\\controllers\\reseniascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|solutionrelative:dondesalimos\\server\\controllers\\reseniascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|d:\\apis\\dondesalimosweb\\dondesalimosapi\\dondesalimos\\server\\controllers\\reservascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|solutionrelative:dondesalimos\\server\\controllers\\reservascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|d:\\apis\\dondesalimosweb\\dondesalimosapi\\dondesalimos\\server\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|solutionrelative:dondesalimos\\server\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|d:\\apis\\dondesalimosweb\\dondesalimosapi\\dondesalimos\\server\\controllers\\rolesusuariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|solutionrelative:dondesalimos\\server\\controllers\\rolesusuariocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|d:\\apis\\dondesalimosweb\\dondesalimosapi\\dondesalimos\\server\\controllers\\tiposcomerciocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|solutionrelative:dondesalimos\\server\\controllers\\tiposcomerciocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|d:\\apis\\dondesalimosweb\\dondesalimosapi\\dondesalimos\\server\\controllers\\usuarioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{4DE98FC5-A631-434A-9156-352D35180C64}|DondeSalimos\\Server\\DondeSalimos.Server.csproj|solutionrelative:dondesalimos\\server\\controllers\\usuarioscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -50,121 +66,108 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Program.cs",
-              "RelativeDocumentMoniker": "DondeSalimos\\Server\\Program.cs",
-              "ToolTip": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Program.cs",
-              "RelativeToolTip": "DondeSalimos\\Server\\Program.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAArAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "UsuariosController.cs",
+              "DocumentMoniker": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\UsuariosController.cs",
+              "RelativeDocumentMoniker": "DondeSalimos\\Server\\Controllers\\UsuariosController.cs",
+              "ToolTip": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\UsuariosController.cs",
+              "RelativeToolTip": "DondeSalimos\\Server\\Controllers\\UsuariosController.cs",
+              "ViewState": "AgIAABUAAAAAAAAAAAApwJEAAAAtAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-11-03T22:49:23.005Z",
+              "WhenOpened": "2025-11-15T17:16:03.137Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 0,
               "Title": "ReseniasController.cs",
               "DocumentMoniker": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\ReseniasController.cs",
               "RelativeDocumentMoniker": "DondeSalimos\\Server\\Controllers\\ReseniasController.cs",
               "ToolTip": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\ReseniasController.cs",
               "RelativeToolTip": "DondeSalimos\\Server\\Controllers\\ReseniasController.cs",
-              "ViewState": "AgIAAJIAAAAAAAAAAAAgwJsAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAADgAAAAAAAAAAAAvwEQAAAA8AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-28T16:59:20.4Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "PublicidadesController.cs",
-              "DocumentMoniker": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\PublicidadesController.cs",
-              "RelativeDocumentMoniker": "DondeSalimos\\Server\\Controllers\\PublicidadesController.cs",
-              "ToolTip": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\PublicidadesController.cs",
-              "RelativeToolTip": "DondeSalimos\\Server\\Controllers\\PublicidadesController.cs",
-              "ViewState": "AgIAAKMAAAAAAAAAAAAcwJgAAAApAAAAAAAAAA==",
+              "DocumentIndex": 7,
+              "Title": "Reserva.cs",
+              "DocumentMoniker": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Shared\\Modelos\\Reserva.cs",
+              "RelativeDocumentMoniker": "DondeSalimos\\Shared\\Modelos\\Reserva.cs",
+              "ToolTip": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Shared\\Modelos\\Reserva.cs",
+              "RelativeToolTip": "DondeSalimos\\Shared\\Modelos\\Reserva.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-26T22:25:27.878Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "PagosController.cs",
-              "DocumentMoniker": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\PagosController.cs",
-              "RelativeDocumentMoniker": "DondeSalimos\\Server\\Controllers\\PagosController.cs",
-              "ToolTip": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\PagosController.cs",
-              "RelativeToolTip": "DondeSalimos\\Server\\Controllers\\PagosController.cs",
-              "ViewState": "AgIAAJUAAAAAAAAAAAAAAGcAAAAUAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-26T02:57:31.249Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "ComerciosController.cs",
-              "DocumentMoniker": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\ComerciosController.cs",
-              "RelativeDocumentMoniker": "DondeSalimos\\Server\\Controllers\\ComerciosController.cs",
-              "ToolTip": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\ComerciosController.cs",
-              "RelativeToolTip": "DondeSalimos\\Server\\Controllers\\ComerciosController.cs",
-              "ViewState": "AgIAAIQAAAAAAAAAAAAowBMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T16:58:32.119Z",
+              "WhenOpened": "2025-11-06T01:34:35.034Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\appsettings.json",
-              "RelativeDocumentMoniker": "DondeSalimos\\Server\\appsettings.json",
-              "ToolTip": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\appsettings.json",
-              "RelativeToolTip": "DondeSalimos\\Server\\appsettings.json",
-              "ViewState": "AgIAAAkAAAAAAAAAAAAAACAAAAAfAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2025-08-25T22:46:55.197Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
               "Title": "ReservasController.cs",
               "DocumentMoniker": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\ReservasController.cs",
               "RelativeDocumentMoniker": "DondeSalimos\\Server\\Controllers\\ReservasController.cs",
               "ToolTip": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\ReservasController.cs",
               "RelativeToolTip": "DondeSalimos\\Server\\Controllers\\ReservasController.cs",
-              "ViewState": "AgIAAG0AAAAAAAAAAAAgwAQAAAAqAAAAAAAAAA==",
+              "ViewState": "AgIAAGEAAAAAAAAAAAAmwIwAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-28T16:58:59.536Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "RolesUsuarioController.cs",
-              "DocumentMoniker": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\RolesUsuarioController.cs",
-              "RelativeDocumentMoniker": "DondeSalimos\\Server\\Controllers\\RolesUsuarioController.cs",
-              "ToolTip": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\RolesUsuarioController.cs",
-              "RelativeToolTip": "DondeSalimos\\Server\\Controllers\\RolesUsuarioController.cs",
-              "ViewState": "AgIAAGgAAAAAAAAAAAAgwAoAAAAQAAAAAAAAAA==",
+              "DocumentIndex": 8,
+              "Title": "Publicidad.cs",
+              "DocumentMoniker": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Shared\\Modelos\\Publicidad.cs",
+              "RelativeDocumentMoniker": "DondeSalimos\\Shared\\Modelos\\Publicidad.cs",
+              "ToolTip": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Shared\\Modelos\\Publicidad.cs",
+              "RelativeToolTip": "DondeSalimos\\Shared\\Modelos\\Publicidad.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAowAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T17:00:19.815Z",
+              "WhenOpened": "2025-11-06T01:34:08.143Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 4,
+              "Title": "Usuario.cs",
+              "DocumentMoniker": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Shared\\Modelos\\Usuario.cs",
+              "RelativeDocumentMoniker": "DondeSalimos\\Shared\\Modelos\\Usuario.cs",
+              "ToolTip": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Shared\\Modelos\\Usuario.cs",
+              "RelativeToolTip": "DondeSalimos\\Shared\\Modelos\\Usuario.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAYwBIAAAAyAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T01:34:43.908Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Resenia.cs",
+              "DocumentMoniker": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Shared\\Modelos\\Resenia.cs",
+              "RelativeDocumentMoniker": "DondeSalimos\\Shared\\Modelos\\Resenia.cs",
+              "ToolTip": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Shared\\Modelos\\Resenia.cs",
+              "RelativeToolTip": "DondeSalimos\\Shared\\Modelos\\Resenia.cs",
+              "ViewState": "AgIAAAUAAAAAAAAAAAAxwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T01:34:21.297Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "TiposComercioController.cs",
               "DocumentMoniker": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\TiposComercioController.cs",
               "RelativeDocumentMoniker": "DondeSalimos\\Server\\Controllers\\TiposComercioController.cs",
               "ToolTip": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\TiposComercioController.cs",
               "RelativeToolTip": "DondeSalimos\\Server\\Controllers\\TiposComercioController.cs",
-              "ViewState": "AgIAAIQAAAAAAAAAAAAgwI0AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAI0AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-10-28T17:00:04.983Z",
               "EditorCaption": ""
@@ -172,15 +175,76 @@
             {
               "$type": "Document",
               "DocumentIndex": 9,
-              "Title": "UsuariosController.cs",
-              "DocumentMoniker": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\UsuariosController.cs",
-              "RelativeDocumentMoniker": "DondeSalimos\\Server\\Controllers\\UsuariosController.cs",
-              "ToolTip": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\UsuariosController.cs",
-              "RelativeToolTip": "DondeSalimos\\Server\\Controllers\\UsuariosController.cs",
-              "ViewState": "AgIAAKgAAAAAAAAAAAAAAMkAAAAoAAAAAAAAAA==",
+              "Title": "ComerciosController.cs",
+              "DocumentMoniker": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\ComerciosController.cs",
+              "RelativeDocumentMoniker": "DondeSalimos\\Server\\Controllers\\ComerciosController.cs",
+              "ToolTip": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\ComerciosController.cs",
+              "RelativeToolTip": "DondeSalimos\\Server\\Controllers\\ComerciosController.cs",
+              "ViewState": "AgIAAJMAAAAAAAAAAAAswLgAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-10-28T16:49:50.65Z",
+              "WhenOpened": "2025-11-15T13:04:22.772Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Comercio.cs",
+              "DocumentMoniker": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Shared\\Modelos\\Comercio.cs",
+              "RelativeDocumentMoniker": "DondeSalimos\\Shared\\Modelos\\Comercio.cs",
+              "ToolTip": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Shared\\Modelos\\Comercio.cs",
+              "RelativeToolTip": "DondeSalimos\\Shared\\Modelos\\Comercio.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T01:33:10.948Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "PagosController.cs",
+              "DocumentMoniker": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\PagosController.cs",
+              "RelativeDocumentMoniker": "DondeSalimos\\Server\\Controllers\\PagosController.cs",
+              "ToolTip": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\PagosController.cs",
+              "RelativeToolTip": "DondeSalimos\\Server\\Controllers\\PagosController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T23:43:12.548Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "PublicidadesController.cs",
+              "DocumentMoniker": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\PublicidadesController.cs",
+              "RelativeDocumentMoniker": "DondeSalimos\\Server\\Controllers\\PublicidadesController.cs",
+              "ToolTip": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\PublicidadesController.cs",
+              "RelativeToolTip": "DondeSalimos\\Server\\Controllers\\PublicidadesController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-11-06T23:29:05.399Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\appsettings.json",
+              "RelativeDocumentMoniker": "DondeSalimos\\Server\\appsettings.json",
+              "ToolTip": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\appsettings.json",
+              "RelativeToolTip": "DondeSalimos\\Server\\appsettings.json",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAACAAAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-08-25T22:46:55.197Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "RolesUsuarioController.cs",
+              "DocumentMoniker": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\RolesUsuarioController.cs",
+              "RelativeDocumentMoniker": "DondeSalimos\\Server\\Controllers\\RolesUsuarioController.cs",
+              "ToolTip": "D:\\apis\\DondeSalimosWeb\\DondeSalimosAPI\\DondeSalimos\\Server\\Controllers\\RolesUsuarioController.cs",
+              "RelativeToolTip": "DondeSalimos\\Server\\Controllers\\RolesUsuarioController.cs",
+              "ViewState": "AgIAAGgAAAAAAAAAAAAgwAoAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-10-28T17:00:19.815Z"
             }
           ]
         }

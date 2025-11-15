@@ -9,10 +9,25 @@ namespace DondeSalimos.Server.Controllers
     [Route("api/[controller]")]
     [ApiController]
     [Authorize] // Proteger el controlador por defecto
+
+   
     public class ComerciosController : ControllerBase
+
     {
         private readonly Contexto _context;
-
+        // Agregar al inicio de la clase ComerciosController
+        private static readonly HashSet<string> ValidEmailDomains = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+{
+    // Dominios más comunes
+    "gmail.com", "hotmail.com", "outlook.com", "yahoo.com", "live.com",
+    
+    // Dominios educativos
+    "edu.ar", "unc.edu.ar", "unl.edu.ar", "uba.ar",
+    
+    // Otros dominios corporativos comunes
+    "icloud.com", "me.com", "protonmail.com", "zoho.com",
+    "aol.com", "msn.com", "ymail.com", "mail.com"
+};
         public ComerciosController(Contexto context)
         {
             _context = context;
@@ -138,10 +153,34 @@ namespace DondeSalimos.Server.Controllers
 
             if (!string.IsNullOrEmpty(comercio.Correo))
             {
+                // Validar formato básico de email
                 var emailRegex = new Regex(@"^[^@\s]+@[^@\s]+\.[^@\s]+$");
                 if (!emailRegex.IsMatch(comercio.Correo))
                 {
-                    return BadRequest(new { Correo = new[] { "El correo es inválido." } });
+                    return BadRequest(new { Correo = new[] { "El formato del correo es inválido." } });
+                }
+
+                // Validar que el dominio esté en la lista de dominios permitidos
+                var emailParts = comercio.Correo.Split('@');
+                if (emailParts.Length == 2)
+                {
+                    var domain = emailParts[1].ToLower();
+
+                    // Verificar si el dominio está en la lista de dominios válidos
+                    // O si termina con .edu.ar para instituciones educativas
+                    bool isValidDomain = ValidEmailDomains.Contains(domain) ||
+                                        domain.EndsWith(".edu.ar") ||
+                                        domain.EndsWith(".edu");
+
+                    if (!isValidDomain)
+                    {
+                        return BadRequest(new
+                        {
+                            Correo = new[] {
+                                "El correo debe ser de un dominio conocido (gmail.com, hotmail.com, outlook.com, yahoo.com, etc.)."
+                            }
+                        });
+                    }
                 }
             }
             // Validar dígito verificador del CUIT

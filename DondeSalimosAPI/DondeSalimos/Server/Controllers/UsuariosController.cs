@@ -20,9 +20,36 @@ namespace DondeSalimos.Server.Controllers
     {
         private readonly Contexto _context;
         private readonly FirebaseService _firebaseService;
-        private readonly IConfiguration _configuration; 
+        private readonly IConfiguration _configuration;
 
-        //public UsuariosController(Contexto context, FirebaseService firebaseService)
+        private static readonly HashSet<string> PalabrasOfensivas = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+{
+    // Palabras ofensivas comunes (agregar más según necesites)
+    "puto", "puta", "hijo de puta", "hdp", "mierda", "carajo", "concha",
+    "pelotudo", "boludo", "idiota", "imbecil", "estupido", "tarado","culo", "pene",
+    "gay", "maricon", "trolo", "puto", "pendejo", "gilipollas","pene",
+    "nazi", "hitler", "racista", "terrorista", "admin", "administrador",
+    "moderador", "soporte", "staff", "oficial"
+};
+
+        // Método helper para validar palabras ofensivas
+        private bool ContienePalabrasOfensivas(string texto)
+        {
+            if (string.IsNullOrEmpty(texto))
+                return false;
+
+            var textoLower = texto.ToLower();
+
+            foreach (var palabra in PalabrasOfensivas)
+            {
+                if (textoLower.Contains(palabra.ToLower()))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
         public UsuariosController(Contexto context, FirebaseService firebaseService, IConfiguration configuration) // <CHANGE> Agregar IConfiguration        
         {
             _context = context;
@@ -116,6 +143,12 @@ namespace DondeSalimos.Server.Controllers
                     return NotFound("Usuario no encontrado");
                 }
 
+                if (ContienePalabrasOfensivas(usuarioDto.NombreUsuario))
+                {
+                    return BadRequest("El nombre de usuario contiene palabras no permitidas.");
+                }
+
+
                 // Verificar si el nombre de usuario ya existe (excluyendo el usuario actual)
                 var existingUser = await _context.Usuario.FirstOrDefaultAsync(x => x.NombreUsuario == usuarioDto.NombreUsuario && x.ID_Usuario != id);
 
@@ -132,7 +165,8 @@ namespace DondeSalimos.Server.Controllers
                         usuario.Uid,
                         usuarioDto.Correo,
                         usuarioDto.NombreUsuario);
-                }                
+                }
+                
 
                 // Actualizar en la base de datos
                 usuario.NombreUsuario = usuarioDto.NombreUsuario ?? usuario.NombreUsuario;
