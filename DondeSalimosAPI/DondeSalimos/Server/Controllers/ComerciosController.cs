@@ -8,33 +8,31 @@ namespace DondeSalimos.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize] // Proteger el controlador por defecto
-
-   
+    [Authorize]
     public class ComerciosController : ControllerBase
 
     {
         private readonly Contexto _context;
-        // Agregar al inicio de la clase ComerciosController
         private static readonly HashSet<string> ValidEmailDomains = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-{
-    // Dominios más comunes
-    "gmail.com", "hotmail.com", "outlook.com", "yahoo.com", "live.com",
+        {
+            // Dominios más comunes
+            "gmail.com", "hotmail.com", "outlook.com", "yahoo.com", "live.com",
     
-    // Dominios educativos
-    "edu.ar", "unc.edu.ar", "unl.edu.ar", "uba.ar",
+            // Dominios educativos
+            "edu.ar", "unc.edu.ar", "unl.edu.ar", "uba.ar",
     
-    // Otros dominios corporativos comunes
-    "icloud.com", "me.com", "protonmail.com", "zoho.com",
-    "aol.com", "msn.com", "ymail.com", "mail.com"
-};
+            // Otros dominios corporativos comunes
+            "icloud.com", "me.com", "protonmail.com", "zoho.com",
+            "aol.com", "msn.com", "ymail.com", "mail.com"
+        };
+
         public ComerciosController(Contexto context)
         {
             _context = context;
         }
 
         #region // GET: api/comercios/listado
-        [AllowAnonymous] // Hacer público para explorar bares
+        [AllowAnonymous]
         [HttpGet]
         [Route("listado")]
         public async Task<ActionResult<IEnumerable<Comercio>>> GetShops()
@@ -48,8 +46,8 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // GET: api/comercios/buscarIdComercio/{id}
-        [AllowAnonymous] // Hacer público para ver detalles de bares
-        [HttpGet] //("{id:int}", Name = "GetIdComercio")]
+        [AllowAnonymous]
+        [HttpGet]
         [Route("buscarIdComercio/{id}")]
         public async Task<ActionResult<Comercio>> GetShopById(int id)
         {
@@ -70,8 +68,8 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // GET: api/comercios/buscarNombreComercio/{comercio}
-        [AllowAnonymous] // Hacer público para búsquedas
-        [HttpGet] //("{comercio}")]
+        [AllowAnonymous]
+        [HttpGet]
         [Route("buscarNombreComercio/{comercio}")]
         public async Task<ActionResult<List<Comercio>>> GetShopByName(string comercio)
         {
@@ -83,7 +81,7 @@ namespace DondeSalimos.Server.Controllers
                                                 .Include(x => x.Usuario)
                                                 .ToListAsync();
 
-            if (!comercioNombre.Any()) // Corregir la lógica de NotFound
+            if (!comercioNombre.Any())
             {
                 return NotFound("Comercio no encontrado");
             }
@@ -93,7 +91,7 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // GET: api/comercios/buscarComerciosPorUsuario/{usuarioId}
-        [HttpGet] //("{comercio}")]
+        [HttpGet]
         [Route("buscarComerciosPorUsuario/{usuarioId}")]
         public async Task<ActionResult<List<Comercio>>> GetShopsPerUser(int usuarioId)
         {
@@ -114,7 +112,7 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // PUT: api/comercios/actualizar/{id}
-        [HttpPut] //("{id}")]
+        [HttpPut]
         [Route("actualizar/{id}")]
         public async Task<IActionResult> PutShop(int id, Comercio comercio)
         {
@@ -205,8 +203,6 @@ namespace DondeSalimos.Server.Controllers
                 return BadRequest("Existe comercio con el mismo CUIT");
             }
 
-            // Solo se ejecuta si pasó todas las validaciones
-            Console.WriteLine($"[DEBUG] Creando comercio con CUIT: {comercio.NroDocumento}");
             _context.Comercio.Add(comercio);
             await _context.SaveChangesAsync();
 
@@ -215,7 +211,7 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // DELETE: api/comercios/eliminar/{id}
-        [HttpDelete] //("{id}")]
+        [HttpDelete]
         [Route("eliminar/{id}")]
         public async Task<IActionResult> DeleteShop(int id)
         {
@@ -239,6 +235,8 @@ namespace DondeSalimos.Server.Controllers
                             .AsNoTracking()
                             .Any(e => e.ID_Comercio == id)).GetValueOrDefault();
         }
+
+        #region // Validación de CUIT
         /// <summary>
         /// Valida el dígito verificador de un CUIT argentino según el algoritmo oficial
         /// </summary>
@@ -265,6 +263,7 @@ namespace DondeSalimos.Server.Controllers
 
             return checkDigit == int.Parse(cleanCuit[10].ToString());
         }
+        #endregion
     }
 
 }

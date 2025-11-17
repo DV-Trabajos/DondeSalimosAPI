@@ -2,13 +2,13 @@
 using Microsoft.EntityFrameworkCore;
 using DondeSalimos.Server.Data;
 using DondeSalimos.Shared.Modelos;
-using Microsoft.AspNetCore.Authorization; // Agregar using para Authorization
+using Microsoft.AspNetCore.Authorization;
 
 namespace DondeSalimos.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize] // Proteger el controlador por defecto
+    [Authorize]
     public class ReseniasController : ControllerBase
     {
         private readonly Contexto _context;
@@ -19,7 +19,7 @@ namespace DondeSalimos.Server.Controllers
         }
 
         #region // GET: api/resenias/listado
-        [AllowAnonymous] // Hacer público para leer reseñas
+        [AllowAnonymous]
         [HttpGet]
         [Route("listado")]
         public async Task<ActionResult<List<Resenia>>> GetReviews()
@@ -33,8 +33,8 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // GET: api/resenias/buscarIdResenia/{id}
-        [AllowAnonymous] // Hacer público para ver detalles de reseñas
-        [HttpGet] //("{id:int}", Name = "GetIdResenia")]
+        [AllowAnonymous]
+        [HttpGet]
         [Route("buscarIdResenia/{id}")]
         public async Task<ActionResult<Resenia>> GetIdReview(int id)
         {
@@ -55,14 +55,14 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // GET: api/resenias/buscarNombreComercio/{comercio}
-        [AllowAnonymous] // Hacer público para ver reseñas por comercio
-        [HttpGet] //("{nombreComercio}")]
+        [AllowAnonymous]
+        [HttpGet]
         [Route("buscarNombreComercio/{comercio}")]
         public async Task<ActionResult<List<Resenia>>> GetReviewByShopName(string comercio)
         {
             return await _context.Resenia
                                     .AsNoTracking()
-                                   // .Where(x => x.Comercio.Nombre.ToLower().Contains(comercio))
+                                    //.Where(x => x.Comercio.Nombre.ToLower().Contains(comercio))
                                     .Where(x => x.Comercio.Nombre.ToLower() == comercio.ToLower())
 
                                     .Include(x => x.Comercio)
@@ -72,7 +72,7 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // PUT: api/resenias/actualizar/{id}
-        [HttpPut] //("{id}")]
+        [HttpPut]
         [Route("actualizar/{id}")]
         public async Task<IActionResult> PutReview(int id, Resenia resenia)
         {
@@ -172,9 +172,8 @@ namespace DondeSalimos.Server.Controllers
         }
         #endregion
 
-
         #region // DELETE: api/resenias/eliminar/{id}
-        [HttpDelete] //("{id}")]
+        [HttpDelete]
         [Route("eliminar/{id}")]
         public async Task<IActionResult> DeleteReview(int id)
         {

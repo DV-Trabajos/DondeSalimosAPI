@@ -16,7 +16,9 @@ namespace DondeSalimos.Shared.Modelos
 
         [StringLength(20)]
         public string? Telefono { get; set; }
+
         public string? MotivoRechazo { get; set; }
+
         public string Uid { get; set; }
 
         [Required(ErrorMessage = "El campo {0} es requerido")]

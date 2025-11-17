@@ -8,7 +8,7 @@ namespace DondeSalimos.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize] // Proteger el controlador por defecto
+    [Authorize]
     public class PublicidadesController : ControllerBase
     {
         private readonly Contexto _context;
@@ -19,7 +19,7 @@ namespace DondeSalimos.Server.Controllers
         }
 
         #region // GET: api/publicidades/listado
-        [AllowAnonymous] // Hacer público para atraer nuevos usuarios
+        [AllowAnonymous]
         [HttpGet]
         [Route("listado")]
         public async Task<ActionResult<List<Publicidad>>> GetAdvertisements()
@@ -32,8 +32,8 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // GET: api/publicidades/buscarIdPublicidad/{id}
-        [AllowAnonymous] // Hacer público para ver detalles
-        [HttpGet] //("{id:int}", Name = "GetIdPublicidad")]
+        [AllowAnonymous]
+        [HttpGet]
         [Route("buscarIdPublicidad/{id}")]
         public async Task<ActionResult<Publicidad>> GetIdAdvertising(int id)
         {
@@ -53,8 +53,8 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // GET: api/publicidades/buscarNombreComercio/{comercio}
-        [AllowAnonymous] // Hacer público para búsquedas
-        [HttpGet] //("{nombreComercio}")] 
+        [AllowAnonymous]
+        [HttpGet]
         [Route("buscarNombreComercio/{comercio}")]
         public async Task<ActionResult<List<Publicidad>>> GetAdvertisingByName(string comercio)
         {
@@ -67,7 +67,7 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // PUT: api/publicidades/actualizar/{id}
-        [HttpPut] //("{id}")]
+        [HttpPut]
         [Route("actualizar/{id}")]
         public async Task<IActionResult> PutAdvertising(int id, Publicidad publicidad)
         {
@@ -103,7 +103,6 @@ namespace DondeSalimos.Server.Controllers
         [Route("crear")]
         public async Task<ActionResult<Publicidad>> PostAdvertising(Publicidad publicidad)
         {
-            // <CHANGE> Inicializar Estado = false y Pago = false al crear
             publicidad.Estado = false; // Pendiente de aprobación del admin
             publicidad.Pago = false;   // Pendiente de pago
            
@@ -120,7 +119,7 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // DELETE: api/publicidades/eliminar/{id}
-        [HttpDelete] //("{id}")]
+        [HttpDelete]
         [Route("eliminar/{id}")]
         public async Task<IActionResult> DeleteAdvertising(int id)
         {
@@ -139,7 +138,7 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // PUT: api/publicidades/incrementar-visualizacion/{id}
-        [AllowAnonymous] // Hacer público para tracking de visualizaciones
+        [AllowAnonymous]
         [HttpPut]
         [Route("incrementar-visualizacion/{id}")]
         public async Task<IActionResult> IncrementarVisualizacion(int id)
@@ -156,8 +155,6 @@ namespace DondeSalimos.Server.Controllers
                 publicidad.Visualizaciones += 1;
                 await _context.SaveChangesAsync();
 
-                Console.WriteLine($"[DEBUG] Visualización incrementada para publicidad {id}. Total: {publicidad.Visualizaciones}");
-
                 return Ok(new
                 {
                     message = "Visualización incrementada correctamente",
@@ -166,7 +163,6 @@ namespace DondeSalimos.Server.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[ERROR] Error al incrementar visualización: {ex.Message}");
                 return StatusCode(500, new { error = "Error al incrementar visualización" });
             }
         }

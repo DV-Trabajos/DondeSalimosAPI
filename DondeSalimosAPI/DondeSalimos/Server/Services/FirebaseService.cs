@@ -254,7 +254,6 @@ namespace DondeSalimos.Server.Services
                     };
                 }
 
-                // Valido el token contra tu GOOGLE_CLIENT_ID
                 var validationSettings = new GoogleJsonWebSignature.ValidationSettings
                 {
                     // Aceptar cualquier audience de Google

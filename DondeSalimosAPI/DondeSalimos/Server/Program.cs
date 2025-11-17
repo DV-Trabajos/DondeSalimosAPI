@@ -41,20 +41,6 @@ builder.Services.AddAuthentication(options =>
 });
 
 builder.Services.AddAuthorization();
-
-// CORS (si lo necesitas)
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowAll", policy =>
-    {
-        policy.AllowAnyOrigin()
-              .AllowAnyMethod()
-              .AllowAnyHeader();
-    });
-});
-
-
-
 builder.Services.AddDbContextPool<Contexto>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("db")));
 

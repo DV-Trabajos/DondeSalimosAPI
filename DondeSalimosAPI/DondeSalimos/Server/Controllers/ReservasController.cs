@@ -32,7 +32,7 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // GET: api/reservas/buscarIdReserva/{id}
-        [HttpGet] //("{id:int}", Name = "GetIdReserva")]
+        [HttpGet]
         [Route("buscarIdReserva/{id}")]
         public async Task<ActionResult<Reserva>> GetIdReservation(int id)
         {
@@ -52,7 +52,7 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // GET: api/reservas/buscarNombreComercio/{comercio}
-        [HttpGet] //("{nombreCliente}")]
+        [HttpGet]
         [Route("buscarNombreComercio/{comercio}")]
         public async Task<ActionResult<List<Reserva>>> GetReservationByName(string comercio)
         {
@@ -65,7 +65,7 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // PUT: api/reservas/actualizar/{id}
-        [HttpPut] //("{id}")]
+        [HttpPut]
         [Route("actualizar/{id}")]
         public async Task<IActionResult> PutReservation(int id, Reserva reserva)
         {
@@ -148,7 +148,7 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // DELETE: api/reservas/eliminar/{id}
-        [HttpDelete] //("{id}")]
+        [HttpDelete]
         [Route("eliminar/{id}")]
         public async Task<IActionResult> DeleteReservation(int id)
         {

@@ -28,7 +28,7 @@ namespace DondeSalimos.Shared.Modelos
 
         public int ID_Comercio { get; set; }
         public string? MotivoRechazo { get; set; }
-        public bool Pago { get; set; } = false; // Nueva propiedad
+        public bool Pago { get; set; } = false;
 
         [ForeignKey("ID_Comercio")]
         public Comercio? Comercio { get; set; }

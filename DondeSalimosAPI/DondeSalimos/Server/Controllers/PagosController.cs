@@ -16,30 +16,22 @@ namespace DondeSalimos.Server.Controllers
     {
         private readonly IConfiguration _configuration;
         private readonly Contexto _context;
+
         public PagosController(IConfiguration configuration, Contexto context)
         {
             _configuration = configuration;
-            _context = context; // <CHANGE> Inicializar contexto
+            _context = context;
             var accessToken = _configuration["MercadoPago:AccessToken"];
-
-            Console.WriteLine("=== CONFIGURACIÓN MERCADO PAGO ===");
-            Console.WriteLine($"Access Token: {accessToken?.Substring(0, 30)}...");
-            Console.WriteLine($"Longitud del token: {accessToken?.Length}");
-
             MercadoPagoConfig.AccessToken = accessToken;
         }
 
+        #region // POST: api/pagos/crear-preferencia
         [HttpPost("crear-preferencia")]
         public async Task<IActionResult> CrearPreferencia([FromBody] PreferenciaRequest request)
         {
             try
             {
-                Console.WriteLine($"[DEBUG] Creando preferencia - Titulo: {request.Titulo}, Precio: {request.Precio}");
-                Console.WriteLine($"[DEBUG] PublicidadId recibido: {request.PublicidadId}");
-
                 var externalReference = request.PublicidadId.ToString();
-                Console.WriteLine($"[DEBUG] External Reference (PublicidadId): {externalReference}");
-
                 var preferenceRequest = new PreferenceRequest
                 {
                     Items = new List<PreferenceItemRequest>
@@ -72,14 +64,10 @@ namespace DondeSalimos.Server.Controllers
                 var client = new PreferenceClient();
                 Preference preference = await client.CreateAsync(preferenceRequest);
 
-                Console.WriteLine($"[DEBUG] Preferencia creada: {preference.Id}");
-                Console.WriteLine($"[DEBUG] External Reference guardado: {preference.ExternalReference}");
-
                 return Ok(new { init_point = preference.InitPoint, id = preference.Id });
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[ERROR] {ex.Message}");
                 return BadRequest(new
                 {
                     error = ex.Message,
@@ -88,36 +76,28 @@ namespace DondeSalimos.Server.Controllers
                 });
             }
         }
+        #endregion
 
+        #region // POST: api/pagos/verificar-pago
         [HttpPost("verificar-pago")]
         public async Task<IActionResult> VerificarPago([FromBody] VerificarPagoRequest request)
         {
             try
             {
-                Console.WriteLine($"[DEBUG] Verificando pago - PaymentId: {request.PaymentId}");
-
                 var paymentClient = new PaymentClient();
                 var payment = await paymentClient.GetAsync(long.Parse(request.PaymentId));
-
-                Console.WriteLine($"[DEBUG] Payment status: {payment.Status}");
-                Console.WriteLine($"[DEBUG] External Reference (PublicidadId): {payment.ExternalReference}");
 
                 if (payment.Status == "approved")
                 {
                     
                     var publicidadId = int.Parse(payment.ExternalReference);
-
-                   // <CHANGE> Actualizar Pago = true en la publicidad
-            var publicidad = await _context.Publicidad.FindAsync(publicidadId);
-            if (publicidad != null)
-            {
-                publicidad.Pago = true;
-                await _context.SaveChangesAsync();
-                Console.WriteLine($"[DEBUG] Publicidad {publicidadId} marcada como pagada");
-            }
-
-            Console.WriteLine($"[DEBUG] Pago aprobado para publicidad ID: {publicidadId}");
-
+                    var publicidad = await _context.Publicidad.FindAsync(publicidadId);
+                    if (publicidad != null)
+                    {
+                        publicidad.Pago = true;
+                        await _context.SaveChangesAsync();
+                        Console.WriteLine($"[DEBUG] Publicidad {publicidadId} marcada como pagada");
+                    }
 
                     return Ok(new
                     {
@@ -141,7 +121,6 @@ namespace DondeSalimos.Server.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[ERROR] Error al verificar pago: {ex.Message}");
                 return BadRequest(new
                 {
                     success = false,
@@ -150,6 +129,7 @@ namespace DondeSalimos.Server.Controllers
                 });
             }
         }
+        #endregion
     }
 
     public class PreferenciaRequest

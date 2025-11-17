@@ -17,12 +17,13 @@ namespace DondeSalimos.Shared.Modelos
         [Required(ErrorMessage = "El campo {0} es requerido")]
         public DateTime FechaCreacion { get; set; } = DateTime.Now;
 
-       
         public string? MotivoRechazo { get; set; }
-        public int ID_Usuario { get; set; }
+
         [Required(ErrorMessage = "El campo {0} es requerido")]
         [Range(1, 5, ErrorMessage = "La puntuación debe estar entre 1 y 5")]
         public int Puntuacion { get; set; }
+
+        public int ID_Usuario { get; set; }
 
         [ForeignKey("ID_Usuario")]
         public Usuario? Usuario { get; set; }        

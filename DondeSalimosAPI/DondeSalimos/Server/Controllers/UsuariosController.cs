@@ -23,14 +23,14 @@ namespace DondeSalimos.Server.Controllers
         private readonly IConfiguration _configuration;
 
         private static readonly HashSet<string> PalabrasOfensivas = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
-{
-    // Palabras ofensivas comunes (agregar más según necesites)
-    "puto", "puta", "hijo de puta", "hdp", "mierda", "carajo", "concha",
-    "pelotudo", "boludo", "idiota", "imbecil", "estupido", "tarado","culo", "pene",
-    "gay", "maricon", "trolo", "puto", "pendejo", "gilipollas","pene",
-    "nazi", "hitler", "racista", "terrorista", "admin", "administrador",
-    "moderador", "soporte", "staff", "oficial"
-};
+        {
+            // Palabras ofensivas comunes
+            "puto", "puta", "hijo de puta", "hdp", "mierda", "carajo", "concha",
+            "pelotudo", "boludo", "idiota", "imbecil", "estupido", "tarado","culo", "pene",
+            "gay", "maricon", "trolo", "puto", "pendejo", "gilipollas","pene",
+            "nazi", "hitler", "racista", "terrorista", "admin", "administrador",
+            "moderador", "soporte", "staff", "oficial"
+        };
 
         // Método helper para validar palabras ofensivas
         private bool ContienePalabrasOfensivas(string texto)
@@ -50,7 +50,7 @@ namespace DondeSalimos.Server.Controllers
 
             return false;
         }
-        public UsuariosController(Contexto context, FirebaseService firebaseService, IConfiguration configuration) // <CHANGE> Agregar IConfiguration        
+        public UsuariosController(Contexto context, FirebaseService firebaseService, IConfiguration configuration)       
         {
             _context = context;
             _firebaseService = firebaseService;
@@ -70,7 +70,7 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // GET: api/usuarios/buscarIdUsuario/{id}
-        [HttpGet] //("{id:int}", Name = "GetUserById")]
+        [HttpGet]
         [Route("buscarIdUsuario/{id}")]
         public async Task<ActionResult<Usuario>> GetUserById(int id)
         {
@@ -90,7 +90,7 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // GET: api/usuarios/buscarNombreUsuario/{usuario}
-        [HttpGet] //("{usuario}")]
+        [HttpGet]
         [Route("buscarNombreUsuario/{usuario}")]
         public async Task<ActionResult<List<Usuario>>> GetUserByName(string usuario)
         {
@@ -130,7 +130,7 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // PUT: api/usuarios/actualizar/{id}
-        [HttpPut] //("{id}")]
+        [HttpPut]
         [Route("actualizar/{id}")]
         public async Task<IActionResult> PutUser(int id, Usuario usuarioDto)
         {
@@ -147,7 +147,6 @@ namespace DondeSalimos.Server.Controllers
                 {
                     return BadRequest("El nombre de usuario contiene palabras no permitidas.");
                 }
-
 
                 // Verificar si el nombre de usuario ya existe (excluyendo el usuario actual)
                 var existingUser = await _context.Usuario.FirstOrDefaultAsync(x => x.NombreUsuario == usuarioDto.NombreUsuario && x.ID_Usuario != id);
@@ -281,8 +280,6 @@ namespace DondeSalimos.Server.Controllers
                     PhotoUrl = photoUrl,
                     EmailVerified = emailVerified,
                     Disabled = false
-                    // Nota: vincular el proveedor 'google.com' se hace del lado cliente con Firebase Auth;
-                    // el Admin SDK no "loguea" con Google ni crea la vinculación OIDC en este punto.
                 };
 
                 UserRecord userRecord = await _firebaseService.CreateUserWithGoogleAsync(userArgs);
@@ -309,7 +306,7 @@ namespace DondeSalimos.Server.Controllers
                     Usuario = nuevoUsuario,
                     Mensaje = "Inicio de sesión exitoso",
 
-                    JwtToken = jwtToken // <CHANGE> Agregar esta línea
+                    JwtToken = jwtToken
                 });
             }
             catch (Exception ex)
@@ -513,7 +510,7 @@ namespace DondeSalimos.Server.Controllers
                 {
                     token = jwtToken,
                     usuario = usuario,
-                    mensaje = "Token generado correctamente (SOLO PARA TESTING)"
+                    mensaje = "Token generado correctamente (TEST)"
                 });
             }
             catch (Exception ex)

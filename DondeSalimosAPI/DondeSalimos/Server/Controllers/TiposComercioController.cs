@@ -2,13 +2,13 @@
 using DondeSalimos.Shared.Modelos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.Authorization; // Agregar using para Authorization
+using Microsoft.AspNetCore.Authorization;
 
 namespace DondeSalimos.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [AllowAnonymous] // Todo público - solo datos de referencia
+    [AllowAnonymous]
     public class TiposComercioController : ControllerBase
     {
         private readonly Contexto _context;
@@ -30,7 +30,7 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // GET: api/tiposComercio/buscarIdTipoComercio/{id}
-        [HttpGet] //("{id:int}", Name = "GetIdTipoComercio")]
+        [HttpGet]
         [Route("buscarIdTipoComercio/{id}")]
         public async Task<ActionResult<TipoComercio>> GetIdTypeShop(int id)
         {
@@ -49,7 +49,7 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // GET: api/tiposComercio/buscarNombreTipoComercio/{tipoComercio}
-        [HttpGet] //("{tipoComercio}")]
+        [HttpGet]
         [Route("buscarNombreTipoComercio/{tipoComercio}")]
         public async Task<ActionResult<List<TipoComercio>>> GetTypeShopByName(string tipoComercio)
         {
@@ -68,7 +68,7 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // PUT: api/tiposComercio/actualizar/{id}
-        [HttpPut] //("{id}")]
+        [HttpPut]
         [Route("actualizar/{id}")]
         public async Task<IActionResult> PutTypeShop(int id, TipoComercio tipoComercio)
         {
@@ -113,7 +113,7 @@ namespace DondeSalimos.Server.Controllers
         #endregion
 
         #region // DELETE: api/tiposComercio/eliminar/{id}
-        [HttpDelete]//("{id}")]
+        [HttpDelete]
         [Route("eliminar/{id}")]
         public async Task<IActionResult> DeleteTypeShop(int id)
         {
