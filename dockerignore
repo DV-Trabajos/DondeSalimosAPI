@@ -4,15 +4,15 @@
 **/out/
 
 # Visual Studio
-.vs/
-*.user
-*.suo
+**/.vs/
+**/*.user
+**/*.suo
 
 # Rider
-.idea/
+**/.idea/
 
 # Publishing folder
-publish/
+**/publish/
 
 # Git
 .git/
@@ -27,6 +27,12 @@ Dockerfile
 README.md
 *.md
 
-# Other
-*.log
-appsettings.Development.json
+# Logs
+**/*.log
+
+# Development settings
+**/appsettings.Development.json
+
+# Node modules (si hay frontend)
+**/node_modules/
+**/wwwroot/
