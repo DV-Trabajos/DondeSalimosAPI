@@ -2,19 +2,16 @@ using DondeSalimos.Server.Data;
 using DondeSalimos.Server.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Diagnostics;
-//new
-
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// <CHANGE> Configurar JWT Authentication
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]);
 
@@ -47,6 +44,11 @@ builder.Services.AddDbContextPool<Contexto>(options =>
 builder.Services.AddSingleton<FirebaseService>();
 builder.Services.AddControllers();
 builder.Services.AddSingleton<JwtService>();
+
+// Configurar el puerto desde variable de entorno
+/*var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");*/
+
 var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
 
 builder.Services.AddCors(options =>

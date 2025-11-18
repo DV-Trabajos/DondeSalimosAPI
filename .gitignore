@@ -31,6 +31,11 @@ bld/
 **/Debug/
 **/Release/
 
+# ASP.NET Core
+appsettings.json
+appsettings.Development.json
+appsettings.Production.json
+
 # .NET Core
 project.lock.json
 project.fragment.lock.json

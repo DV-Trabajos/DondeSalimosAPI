@@ -4,9 +4,6 @@ using DondeSalimos.Shared.Modelos;
 using FirebaseAdmin.Auth;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-//nuevos
-
-using Microsoft.AspNetCore.Authorization; 
 using Microsoft.IdentityModel.Tokens; 
 using System.IdentityModel.Tokens.Jwt; 
 using System.Security.Claims; 
