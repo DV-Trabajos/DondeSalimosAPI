@@ -32,9 +32,11 @@ bld/
 **/Release/
 
 # ASP.NET Core
-appsettings.json
 appsettings.Development.json
 appsettings.Production.json
+appsettings.*.json
+!appsettings.json
+!appsettings.TEMPLATE.json
 
 # .NET Core
 project.lock.json
