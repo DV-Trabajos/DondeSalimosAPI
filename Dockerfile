@@ -1,6 +1,7 @@
 # ============================================
 # Dockerfile para DondeSalimos.Server
 # Estructura: DondeSalimosAPI/DondeSalimos/Server/
+# REBUILD FORCED: 2025-11-18-18:15:00-UTC
 # ============================================
 
 # ============================================
@@ -33,8 +34,17 @@ WORKDIR /app
 # Copiar archivos publicados desde el stage de build
 COPY --from=build /app/publish .
 
-# Verificar que el archivo DLL existe (para debugging)
-RUN ls -la
+# DEBUG: Ver estructura completa
+RUN echo "========================================" && \
+    echo "CONTENIDO DE /app:" && \
+    ls -laR && \
+    echo "========================================" && \
+    echo "ARCHIVOS .DLL ENCONTRADOS:" && \
+    find . -name "*.dll" -type f && \
+    echo "========================================" && \
+    echo "VERIFICANDO DondeSalimos.Server.dll:" && \
+    if [ -f "DondeSalimos.Server.dll" ]; then echo "✅ EXISTE"; else echo "❌ NO EXISTE"; fi && \
+    echo "========================================"
 
 # Exponer puerto (Railway lo asigna dinámicamente)
 EXPOSE 8080
