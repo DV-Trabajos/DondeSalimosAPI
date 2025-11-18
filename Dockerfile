@@ -3,38 +3,40 @@
 # Estructura: DondeSalimosAPI/DondeSalimos/Server/
 # ============================================
 
+# ============================================
+# Stage 1: Build
+# ============================================
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Copiar archivos de solución y proyectos
-COPY DondeSalimosAPI/DondeSalimos/Server/*.csproj ./DondeSalimosAPI/DondeSalimos/Server/
-COPY DondeSalimosAPI/DondeSalimos/Shared/*.csproj ./DondeSalimosAPI/DondeSalimos/Shared/
+# Copiar TODO el contenido del repositorio
+COPY . .
+
+# Navegar a la carpeta del proyecto Server
+WORKDIR /src/DondeSalimosAPI/DondeSalimos/Server
 
 # Restaurar dependencias
-RUN dotnet restore ./DondeSalimosAPI/DondeSalimos/Server/DondeSalimos.Server.csproj
+RUN dotnet restore DondeSalimos.Server.csproj
 
-# Copiar el resto de archivos
-COPY DondeSalimosAPI/DondeSalimos/Server/ ./DondeSalimosAPI/DondeSalimos/Server/
-COPY DondeSalimosAPI/DondeSalimos/Shared/ ./DondeSalimosAPI/DondeSalimos/Shared/
-
-# Construir
-WORKDIR /src/DondeSalimosAPI/DondeSalimos/Server
+# Compilar
 RUN dotnet build DondeSalimos.Server.csproj -c Release -o /app/build
 
 # Publicar
-FROM build AS publish
-RUN dotnet publish DondeSalimos.Server.csproj -c Release -o /app/publish
+RUN dotnet publish DondeSalimos.Server.csproj -c Release -o /app/publish --no-restore
 
 # ============================================
-# Runtime
+# Stage 2: Runtime
 # ============================================
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
 WORKDIR /app
 
-# Copiar archivos publicados
-COPY --from=publish /app/publish .
+# Copiar archivos publicados desde el stage de build
+COPY --from=build /app/publish .
 
-# Exponer puerto
+# Verificar que el archivo DLL existe (para debugging)
+RUN ls -la
+
+# Exponer puerto (Railway lo asigna dinámicamente)
 EXPOSE 8080
 
 # Variables de entorno
