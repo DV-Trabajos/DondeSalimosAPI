@@ -1,6 +1,5 @@
 # ============================================
 # Workflow para Build y Deploy de DondeSalimos API
-# Estructura correcta: DondeSalimosAPI/DondeSalimos.sln
 # ============================================
 
 name: Build and deploy ASP.NET Core app to Azure Web App - dondesalimos
@@ -27,11 +26,8 @@ jobs:
       - name: Restore dependencies
         run: dotnet restore DondeSalimosAPI/DondeSalimos.sln
 
-      - name: Build solution
-        run: dotnet build DondeSalimosAPI/DondeSalimos.sln --configuration Release --no-restore
-
-      - name: Publish project
-        run: dotnet publish DondeSalimosAPI/DondeSalimos/Server/DondeSalimos.Server.csproj --configuration Release --no-build --output ${{env.DOTNET_ROOT}}/myapp
+      - name: Build and publish project
+        run: dotnet publish DondeSalimosAPI/DondeSalimos/Server/DondeSalimos.Server.csproj --configuration Release --output ${{env.DOTNET_ROOT}}/myapp
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
@@ -60,3 +56,4 @@ jobs:
           slot-name: 'Production'
           package: .
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_DONDESALIMOS }}
+
