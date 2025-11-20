@@ -187,6 +187,80 @@ namespace DondeSalimos.Server.Controllers
         }
         #endregion
 
+        #region // PUT: api/usuarios/desactivar/{id}
+        [HttpPut]
+        [Route("desactivar/{id}")]
+        public async Task<IActionResult> DesactivarUsuario(int id)
+        {
+            var usuario = await _context.Usuario.FindAsync(id);
+
+            if (usuario == null)
+            {
+                return NotFound("Usuario no encontrado");
+            }
+
+            try
+            {
+                // Desactivar en Firebase
+                if (!string.IsNullOrEmpty(usuario.Uid))
+                {
+                    await _firebaseService.UpdateUserAsync(
+                        usuario.Uid,
+                        disabled: true);
+                }
+
+                // Desactivar en la base de datos
+                usuario.Estado = false;
+
+                _context.Entry(usuario).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al desactivar usuario: {ex.Message}");
+            }
+        }
+        #endregion
+
+        #region // PUT: api/usuarios/cambiarEstado/{id}
+        [HttpPut]
+        [Route("cambiarEstado/{id}")]
+        public async Task<IActionResult> CambiarEstadoUsuario(int id, [FromBody] changeStatusRequest request)
+        {
+            var usuario = await _context.Usuario.FindAsync(id);
+
+            if (usuario == null)
+            {
+                return NotFound("Usuario no encontrado");
+            }
+
+            try
+            {
+                // Actualizar en Firebase si es necesario
+                if (!string.IsNullOrEmpty(usuario.Uid))
+                {
+                    await _firebaseService.UpdateUserAsync(
+                        usuario.Uid,
+                        disabled: !request.Estado); // Si estado=true, disabled=false en Firebase
+                }
+
+                // Actualizar en la base de datos
+                usuario.Estado = request.Estado;
+
+                _context.Entry(usuario).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al cambiar estado de usuario: {ex.Message}");
+            }
+        }
+        #endregion
+
         #region // POST: api/usuarios/iniciarSesionConGoogle
         [HttpPost("iniciarSesionConGoogle")]
         public async Task<ActionResult<SignInWithGoogleResponse>> SignInWithGoogle(SignInWithGoogleRequest request)
@@ -309,43 +383,6 @@ namespace DondeSalimos.Server.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, $"Error al registrarse con Google: {ex.Message}");
-            }
-        }
-        #endregion
-
-        #region // POST: api/usuarios/desactivar/{id}
-        [HttpPost]
-        [Route("desactivar/{id}")]
-        public async Task<IActionResult> DesactivarUsuario(int id)
-        {
-            var usuario = await _context.Usuario.FindAsync(id);
-
-            if (usuario == null)
-            {
-                return NotFound("Usuario no encontrado");
-            }
-
-            try
-            {
-                // Desactivar en Firebase
-                if (!string.IsNullOrEmpty(usuario.Uid))
-                {
-                    await _firebaseService.UpdateUserAsync(
-                        usuario.Uid,
-                        disabled: true);
-                }
-
-                // Desactivar en la base de datos
-                usuario.Estado = false;
-
-                _context.Entry(usuario).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
-
-                return NoContent();
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Error al desactivar usuario: {ex.Message}");
             }
         }
         #endregion
@@ -547,6 +584,11 @@ namespace DondeSalimos.Server.Controllers
         public class LoginTestRequest
         {
             public string Email { get; set; }
+        }
+
+        public class changeStatusRequest
+        {
+            public bool Estado { get; set; }
         }
 
     }
