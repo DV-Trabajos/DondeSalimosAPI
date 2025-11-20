@@ -39,8 +39,8 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 builder.Services.AddDbContextPool<Contexto>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("db")));
-
+  options.UseSqlServer(builder.Configuration.GetConnectionString("db")));
+  
 builder.Services.AddSingleton<FirebaseService>();
 builder.Services.AddControllers();
 builder.Services.AddSingleton<JwtService>();
@@ -72,11 +72,11 @@ if (builder.Environment.IsDevelopment())
 var app = builder.Build();
 
 // Swagger disponible en /swagger pero no se abre automáticamente
-if (app.Environment.IsDevelopment())
-{
+//if (app.Environment.IsDevelopment())
+//{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+//}
 
 app.UseExceptionHandler(errorApp =>
 {
@@ -95,8 +95,10 @@ app.UseExceptionHandler(errorApp =>
     });
 });
 
-app.UseHttpsRedirection();
-app.UseCors("AllowReactApp");
+//app.UseHttpsRedirection();
+
+//app.UseCors("AllowReactApp");
+app.UseCors("AllowAll");
 app.UseRouting();
 app.UseAuthorization();
 app.MapControllers();
