@@ -46,8 +46,8 @@ builder.Services.AddControllers();
 builder.Services.AddSingleton<JwtService>();
 
 // Configurar el puerto desde variable de entorno
-var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+/*var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");*/
 
 var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
 
