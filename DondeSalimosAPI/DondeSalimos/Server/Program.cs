@@ -9,8 +9,6 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]);
@@ -42,8 +40,8 @@ builder.Services.AddDbContextPool<Contexto>(options =>
   options.UseSqlServer(builder.Configuration.GetConnectionString("db")));
   
 builder.Services.AddSingleton<FirebaseService>();
-builder.Services.AddControllers();
 builder.Services.AddSingleton<JwtService>();
+builder.Services.AddHttpClient();
 
 // Configurar el puerto desde variable de entorno
 /*var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
