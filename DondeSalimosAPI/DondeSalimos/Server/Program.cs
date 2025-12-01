@@ -9,6 +9,8 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]);
@@ -43,11 +45,12 @@ builder.Services.AddSingleton<FirebaseService>();
 builder.Services.AddSingleton<JwtService>();
 builder.Services.AddHttpClient();
 
-// Configurar el puerto desde variable de entorno
-/*var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
-builder.WebHost.UseUrls($"http://0.0.0.0:{port}");*/
-
 var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
+
+if (allowedOrigins == null || allowedOrigins.Length == 0)
+{
+    allowedOrigins = new[] { "*" };
+}
 
 builder.Services.AddCors(options =>
 {
@@ -93,9 +96,6 @@ app.UseExceptionHandler(errorApp =>
     });
 });
 
-//app.UseHttpsRedirection();
-
-//app.UseCors("AllowReactApp");
 app.UseCors("AllowAll");
 app.UseRouting();
 app.UseAuthorization();
