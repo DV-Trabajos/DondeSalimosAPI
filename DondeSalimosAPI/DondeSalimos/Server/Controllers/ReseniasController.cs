@@ -54,6 +54,23 @@ namespace DondeSalimos.Server.Controllers
         }
         #endregion
 
+        #region // GET: api/resenias/buscarIdComercio/{idComercio}
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("buscarIdComercio/{idComercio}")]
+        public async Task<ActionResult<List<Resenia>>> GetReviewByShopId(int idComercio)
+        {
+            var resenias = await _context.Resenia
+                                    .AsNoTracking()
+                                    .Where(x => x.ID_Comercio == idComercio)
+                                    .Include(x => x.Comercio)
+                                    .Include(x => x.Usuario)
+                                    .ToListAsync();
+
+            return Ok(resenias);
+        }
+        #endregion
+
         #region // GET: api/resenias/buscarNombreComercio/{comercio}
         [AllowAnonymous]
         [HttpGet]

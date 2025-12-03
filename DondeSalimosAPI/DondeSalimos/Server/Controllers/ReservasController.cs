@@ -64,6 +64,27 @@ namespace DondeSalimos.Server.Controllers
         }
         #endregion
 
+        #region // GET: api/reservas/usuario/{idUsuario}
+        [HttpGet]
+        [Route("usuario/{idUsuario}")]
+        public async Task<ActionResult<List<Reserva>>> GetReservasByUsuario(int idUsuario)
+        {
+            var reservas = await _context.Reserva
+                                        .AsNoTracking()
+                                        .Where(x => x.ID_Usuario == idUsuario && x.Usuario.Estado == true)
+                                        .Include(x => x.Comercio)
+                                        .Include(x => x.Usuario)
+                                        .ToListAsync();
+
+            if (reservas == null || !reservas.Any())
+            {
+                return NotFound("No se encontraron reservas para este usuario");
+            }
+
+            return reservas;
+        }
+        #endregion
+
         #region // PUT: api/reservas/actualizar/{id}
         [HttpPut]
         [Route("actualizar/{id}")]
