@@ -98,23 +98,63 @@ namespace DondeSalimos.Server.Controllers
         }
         #endregion
 
+        #region // PUT: api/publicidades/cambiar-estado/{id}
+        [HttpPut]
+        [Route("cambiar-estado/{id}")]
+        public async Task<IActionResult> CambiarEstadoPublicidad(int id, [FromBody] CambiarEstadoRequest request)
+        {
+            var publicidad = await _context.Publicidad.FindAsync(id);
+
+            if (publicidad == null)
+            {
+                return NotFound("Publicidad no encontrada");
+            }
+
+            // Validar que si se rechaza, tenga motivo
+            if (!request.Estado && string.IsNullOrWhiteSpace(request.MotivoRechazo))
+            {
+                return BadRequest("El motivo de rechazo es requerido");
+            }
+
+            publicidad.Estado = request.Estado;
+            publicidad.MotivoRechazo = request.Estado ? null : request.MotivoRechazo;
+
+            await _context.SaveChangesAsync();
+
+            var mensaje = request.Estado ? "Publicidad aprobada correctamente" : "Publicidad rechazada correctamente";
+            return Ok(new { message = mensaje, estado = publicidad.Estado });
+        }
+        #endregion
+
         #region // POST: api/publicidades/crear
         [HttpPost]
         [Route("crear")]
         public async Task<ActionResult<Publicidad>> PostAdvertising(Publicidad publicidad)
         {
-            publicidad.Estado = false; // Pendiente de aprobación del admin
-            publicidad.Pago = false;   // Pendiente de pago
-           
-            _context.Publicidad.Add(publicidad);
-            await _context.SaveChangesAsync();
-
-            return Ok(new
+            try
             {
-                message = "Publicidad creada correctamente",
-                id = publicidad.ID_Publicidad,
-                publicidad = publicidad
-            });
+                publicidad.Estado = false; // Pendiente de aprobación del admin
+                publicidad.Pago = false;   // Pendiente de pago
+           
+                _context.Publicidad.Add(publicidad);
+                await _context.SaveChangesAsync();
+
+                return Ok(new
+                {
+                    message = "Publicidad creada correctamente",
+                    id = publicidad.ID_Publicidad,
+                    publicidad = publicidad
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    error = "Error al crear publicidad",
+                    details = ex.Message,
+                    innerError = ex.InnerException?.Message
+                });
+            }
         }
         #endregion
 
@@ -172,6 +212,12 @@ namespace DondeSalimos.Server.Controllers
             return (_context.Publicidad?
                             .AsNoTracking()
                             .Any(e => e.ID_Publicidad == id)).GetValueOrDefault();
+        }
+
+        public class CambiarEstadoRequest
+        {
+            public bool Estado { get; set; }
+            public string? MotivoRechazo { get; set; }
         }
     }
 }

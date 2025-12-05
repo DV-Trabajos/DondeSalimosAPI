@@ -32,30 +32,45 @@ namespace DondeSalimos.Server.Controllers
             try
             {
                 var externalReference = request.PublicidadId.ToString();
-                var preferenceRequest = new PreferenceRequest
+
+                // Determinar URLs según origen (web o app)
+                PreferenceBackUrlsRequest backUrls;
+
+                if (request.IsWeb)
                 {
-                    Items = new List<PreferenceItemRequest>
+                    // URLs para la web
+                    var webBaseUrl = _configuration["App:WebUrl"] ?? "https://donde-salimos-web.vercel.app";
+                    backUrls = new PreferenceBackUrlsRequest
                     {
-                        new PreferenceItemRequest
-                        {
-                            Title = request.Titulo,
-                            Quantity = 1,
-                            CurrencyId = "ARS",
-                            UnitPrice = request.Precio,
-                        }
-                    },
-                    Payer = new PreferencePayerRequest
-                    {
-                        Name = "Test",
-                        Surname = "User",
-                        Email = "test_user@testuser.com",
-                    },
-                    BackUrls = new PreferenceBackUrlsRequest
+                        Success = $"{webBaseUrl}/payment/callback?status=success",
+                        Failure = $"{webBaseUrl}/payment/callback?status=failure",
+                        Pending = $"{webBaseUrl}/payment/callback?status=pending"
+                    };
+                }
+                else
+                {
+                    // URLs para la app móvil
+                    backUrls = new PreferenceBackUrlsRequest
                     {
                         Success = "dondesalimos://payment/success",
                         Failure = "dondesalimos://payment/failure",
                         Pending = "dondesalimos://payment/pending"
-                    },
+                    };
+                }
+
+                var preferenceRequest = new PreferenceRequest
+                {
+                    Items = new List<PreferenceItemRequest>
+            {
+                new PreferenceItemRequest
+                {
+                    Title = request.Titulo,
+                    Quantity = 1,
+                    CurrencyId = "ARS",
+                    UnitPrice = request.Precio,
+                }
+            },
+                    BackUrls = backUrls,
                     AutoReturn = "approved",
                     ExternalReference = externalReference,
                     StatementDescriptor = "DondeSalimos",
@@ -68,12 +83,7 @@ namespace DondeSalimos.Server.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(new
-                {
-                    error = ex.Message,
-                    details = ex.InnerException?.Message,
-                    stackTrace = ex.StackTrace
-                });
+                return BadRequest(new { error = ex.Message });
             }
         }
         #endregion
@@ -137,6 +147,7 @@ namespace DondeSalimos.Server.Controllers
         public string Titulo { get; set; }
         public decimal Precio { get; set; }
         public int PublicidadId { get; set; }
+        public bool IsWeb { get; set; } = false;
     }
 
     public class VerificarPagoRequest
