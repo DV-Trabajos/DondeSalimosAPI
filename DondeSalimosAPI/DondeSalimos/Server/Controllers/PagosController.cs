@@ -3,8 +3,10 @@ using MercadoPago.Config;
 using MercadoPago.Client.Preference;
 using MercadoPago.Resource.Preference;
 using MercadoPago.Client.Payment;
+
 using Microsoft.AspNetCore.Authorization;
 using DondeSalimos.Server.Data;
+using Microsoft.EntityFrameworkCore;
 
 namespace DondeSalimos.Server.Controllers
 
@@ -73,7 +75,8 @@ namespace DondeSalimos.Server.Controllers
                     BackUrls = backUrls,
                     AutoReturn = "approved",
                     ExternalReference = externalReference,
-                    StatementDescriptor = "DondeSalimos"
+                    StatementDescriptor = "DondeSalimos",
+                     NotificationUrl = $"{_configuration["App:ApiUrl"]}/api/pagos/webhook"
                 };
 
                 var client = new PreferenceClient();
@@ -137,6 +140,88 @@ namespace DondeSalimos.Server.Controllers
                     error = ex.Message,
                     details = ex.InnerException?.Message
                 });
+            }
+        }
+        #endregion
+
+        #region // POST: api/pagos/webhook
+        [AllowAnonymous]
+        [HttpPost("webhook")]
+        public async Task<IActionResult> WebhookMercadoPago(
+            [FromBody] dynamic notification,
+            [FromHeader(Name = "x-signature")] string xSignature,
+            [FromHeader(Name = "x-request-id")] string xRequestId)
+        {
+            try
+            {
+                Console.WriteLine($"[WEBHOOK] Notificación recibida: {notification}");
+                Console.WriteLine($"[WEBHOOK] x-signature: {xSignature}");
+                Console.WriteLine($"[WEBHOOK] x-request-id: {xRequestId}");
+
+                // <CHANGE> Validar firma del webhook
+                var webhookSecret = _configuration["MercadoPago:WebhookSecret"] ??
+                                   Environment.GetEnvironmentVariable("MERCADOPAGO_WEBHOOK_SECRET");
+
+                if (!string.IsNullOrEmpty(webhookSecret) && !string.IsNullOrEmpty(xSignature))
+                {
+                    // Extraer ts y hash de x-signature (formato: "ts=123456,v1=hash")
+                    var signatureParts = xSignature.Split(',');
+                    var ts = signatureParts[0].Replace("ts=", "");
+                    var hash = signatureParts[1].Replace("v1=", "");
+
+                    // Obtener el data.id de la notificación
+                    string dataId = notification?.data?.id?.ToString() ?? "";
+
+                    // Crear manifest: "id:{data.id};request-id:{x-request-id};ts:{ts};"
+                    var manifest = $"id:{dataId};request-id:{xRequestId};ts:{ts};";
+
+                    // Calcular HMAC-SHA256
+                    using (var hmac = new System.Security.Cryptography.HMACSHA256(
+                        System.Text.Encoding.UTF8.GetBytes(webhookSecret)))
+                    {
+                        var hashBytes = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(manifest));
+                        var calculatedHash = BitConverter.ToString(hashBytes).Replace("-", "").ToLower();
+
+                        if (calculatedHash != hash)
+                        {
+                            Console.WriteLine($"[WEBHOOK] Firma inválida. Rechazando notificación.");
+                            return Unauthorized();
+                        }
+                    }
+
+                    Console.WriteLine($"[WEBHOOK] Firma válida. Procesando notificación.");
+                }
+
+                // Mercado Pago envía el ID del pago en data.id
+                string paymentIdStr = notification?.data?.id?.ToString();
+
+                if (string.IsNullOrEmpty(paymentIdStr))
+                {
+                    return Ok(); // Mercado Pago requiere 200 OK
+                }
+
+                var paymentClient = new PaymentClient();
+                var payment = await paymentClient.GetAsync(long.Parse(paymentIdStr));
+
+                if (payment.Status == "approved" && !string.IsNullOrEmpty(payment.ExternalReference))
+                {
+                    var publicidadId = int.Parse(payment.ExternalReference);
+                    var publicidad = await _context.Publicidad.FindAsync(publicidadId);
+
+                    if (publicidad != null && !publicidad.Pago)
+                    {
+                        publicidad.Pago = true;
+                        await _context.SaveChangesAsync();
+                        Console.WriteLine($"[WEBHOOK] Publicidad {publicidadId} marcada como pagada automáticamente");
+                    }
+                }
+
+                return Ok(); // Siempre responder 200 OK a Mercado Pago
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[WEBHOOK ERROR] {ex.Message}");
+                return Ok(); // Aún con error, responder 200 OK
             }
         }
         #endregion
