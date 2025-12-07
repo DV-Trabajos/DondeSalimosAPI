@@ -222,10 +222,51 @@ namespace DondeSalimos.Server.Controllers
                 return NotFound("Comercio no encontrado");
             }
 
-            _context.Comercio.Remove(comercio);
-            await _context.SaveChangesAsync();
+            try
+            {
+                // 1. ELIMINAR RESERVAS DEL COMERCIO
+                var reservasComercio = await _context.Reserva
+                    .Where(r => r.ID_Comercio == id)
+                    .ToListAsync();
 
-            return NoContent();
+                if (reservasComercio.Any())
+                {
+                    _context.Reserva.RemoveRange(reservasComercio);
+                    await _context.SaveChangesAsync();
+                }
+
+                // 2. ELIMINAR PUBLICIDADES DEL COMERCIO
+                var publicidadesComercio = await _context.Publicidad
+                    .Where(p => p.ID_Comercio == id)
+                    .ToListAsync();
+
+                if (publicidadesComercio.Any())
+                {
+                    _context.Publicidad.RemoveRange(publicidadesComercio);
+                    await _context.SaveChangesAsync();
+                }
+
+                // 3. ELIMINAR RESEÑAS DEL COMERCIO
+                var reseniasComercio = await _context.Resenia
+                    .Where(r => r.ID_Comercio == id)
+                    .ToListAsync();
+
+                if (reseniasComercio.Any())
+                {
+                    _context.Resenia.RemoveRange(reseniasComercio);
+                    await _context.SaveChangesAsync();
+                }
+
+                // 4. ELIMINAR EL COMERCIO
+                _context.Comercio.Remove(comercio);
+                await _context.SaveChangesAsync();
+
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Error al eliminar comercio: {ex.Message}");
+            }
         }
         #endregion
 
