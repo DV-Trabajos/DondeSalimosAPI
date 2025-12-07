@@ -52,9 +52,9 @@ namespace DondeSalimos.Server.Controllers
                     // URLs para la app móvil
                     backUrls = new PreferenceBackUrlsRequest
                     {
-                        Success = "dondesalimos://payment/success",
-                        Failure = "dondesalimos://payment/failure",
-                        Pending = "dondesalimos://payment/pending"
+                        Success = $"dondesalimos://payment/success?publicidad_id={request.PublicidadId}",
+                        Failure = $"dondesalimos://payment/failure?publicidad_id={request.PublicidadId}",
+                        Pending = $"dondesalimos://payment/pending?publicidad_id={request.PublicidadId}"
                     };
                 }
 
@@ -73,7 +73,7 @@ namespace DondeSalimos.Server.Controllers
                     BackUrls = backUrls,
                     AutoReturn = "approved",
                     ExternalReference = externalReference,
-                    StatementDescriptor = "DondeSalimos",
+                    StatementDescriptor = "DondeSalimos"
                 };
 
                 var client = new PreferenceClient();
