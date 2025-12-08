@@ -2,6 +2,7 @@
 using DondeSalimos.Server.Services;
 using DondeSalimos.Shared.Modelos;
 using FirebaseAdmin.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens; 
@@ -123,6 +124,78 @@ namespace DondeSalimos.Server.Controllers
             }
 
             return usuario;
+        }
+        #endregion
+
+        #region // GET: api/usuarios/verificarSesion
+        [HttpGet]
+        [Route("verificarSesion")]
+        [Authorize]
+        public async Task<ActionResult> VerificarSesion()
+        {
+            try
+            {
+                // Obtener el ID del usuario desde el token JWT
+                var userIdClaim = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier);
+
+                if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out int userId))
+                {
+                    return Unauthorized(new { mensaje = "Token inválido o expirado" });
+                }
+
+                // Buscar el usuario en la base de datos
+                var usuario = await _context.Usuario
+                                            .AsNoTracking()
+                                            .Include(u => u.RolUsuario)
+                                            .FirstOrDefaultAsync(u => u.ID_Usuario == userId);
+
+                if (usuario == null)
+                {
+                    return NotFound(new
+                    {
+                        mensaje = "Usuario no encontrado",
+                        sesionValida = false,
+                        requiereLogout = true
+                    });
+                }
+
+                // Si el usuario está desactivado, forzar logout
+                if (!usuario.Estado)
+                {
+                    return Ok(new
+                    {
+                        sesionValida = false,
+                        requiereLogout = true,
+                        mensaje = "Tu cuenta ha sido desactivada. Contacta al administrador.",
+                        motivoRechazo = usuario.MotivoRechazo
+                    });
+                }
+
+                // Sesión válida - devolver datos actualizados
+                return Ok(new
+                {
+                    sesionValida = true,
+                    requiereLogout = false,
+                    usuario = new
+                    {
+                        iD_Usuario = usuario.ID_Usuario,
+                        nombreUsuario = usuario.NombreUsuario,
+                        correo = usuario.Correo,
+                        telefono = usuario.Telefono,
+                        estado = usuario.Estado,
+                        iD_RolUsuario = usuario.ID_RolUsuario,
+                        rolDescripcion = usuario.RolUsuario?.Descripcion
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    mensaje = $"Error al verificar sesión: {ex.Message}",
+                    sesionValida = false
+                });
+            }
         }
         #endregion
 

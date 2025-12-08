@@ -111,6 +111,147 @@ namespace DondeSalimos.Server.Controllers
         }
         #endregion
 
+        #region // GET: api/comercios/listadoAdmin
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("listadoAdmin")]
+        public async Task<ActionResult> GetShopsAdmin()
+        {
+            try
+            {
+                var comercios = await _context.Comercio
+                    .AsNoTracking()
+                    .Include(x => x.TipoComercio)
+                    .Include(x => x.Usuario)
+                    .Select(c => new
+                    {
+                        iD_Comercio = c.ID_Comercio,
+                        nombre = c.Nombre,
+                        direccion = c.Direccion,
+                        telefono = c.Telefono,
+                        correo = c.Correo,
+                        nroDocumento = c.NroDocumento,
+                        tipoDocumento = c.TipoDocumento,
+                        capacidad = c.Capacidad,
+                        mesas = c.Mesas,
+                        generoMusical = c.GeneroMusical,
+                        horaIngreso = c.HoraIngreso,
+                        horaCierre = c.HoraCierre,
+                        estado = c.Estado,
+                        motivoRechazo = c.MotivoRechazo,
+                        fechaCreacion = c.FechaCreacion,
+                        iD_TipoComercio = c.ID_TipoComercio,
+                        iD_Usuario = c.ID_Usuario,
+                        tieneFoto = c.Foto != null && c.Foto.Length > 0,
+                        tipoComercio = c.TipoComercio == null ? null : new
+                        {
+                            iD_TipoComercio = c.TipoComercio.ID_TipoComercio,
+                            descripcion = c.TipoComercio.Descripcion
+                        },
+                        usuario = c.Usuario == null ? null : new
+                        {
+                            iD_Usuario = c.Usuario.ID_Usuario,
+                            nombreUsuario = c.Usuario.NombreUsuario,
+                            correo = c.Usuario.Correo,
+                            telefono = c.Usuario.Telefono
+                        }
+                    })
+                    .ToListAsync();
+
+                return Ok(comercios);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "Error al obtener comercios", details = ex.Message });
+            }
+        }
+        #endregion
+
+        #region // GET: api/comercios/{id}/imagen
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("{id}/imagen")]
+        public async Task<ActionResult> GetComercioImagen(int id)
+        {
+            try
+            {
+                var comercio = await _context.Comercio
+                    .AsNoTracking()
+                    .Where(c => c.ID_Comercio == id)
+                    .Select(c => new
+                    {
+                        iD_Comercio = c.ID_Comercio,
+                        foto = c.Foto,
+                        tieneFoto = c.Foto != null && c.Foto.Length > 0
+                    })
+                    .FirstOrDefaultAsync();
+
+                if (comercio == null)
+                {
+                    return NotFound(new { mensaje = "Comercio no encontrado" });
+                }
+
+                return Ok(comercio);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "Error al obtener imagen", details = ex.Message });
+            }
+        }
+        #endregion
+
+        #region // GET: api/comercios/{id}/imagenRaw
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("{id}/imagen-raw")]
+        public async Task<ActionResult> GetComercioImagenRaw(int id)
+        {
+            try
+            {
+                var foto = await _context.Comercio
+                    .AsNoTracking()
+                    .Where(c => c.ID_Comercio == id)
+                    .Select(c => c.Foto)
+                    .FirstOrDefaultAsync();
+
+                if (foto == null || foto.Length == 0)
+                {
+                    return NotFound();
+                }
+
+                // Detectar tipo de imagen (básico)
+                string contentType = "image/jpeg";
+                if (foto.Length > 8)
+                {
+                    // PNG magic bytes: 137 80 78 71
+                    if (foto[0] == 137 && foto[1] == 80 && foto[2] == 78 && foto[3] == 71)
+                    {
+                        contentType = "image/png";
+                    }
+                    // GIF magic bytes: 71 73 70
+                    else if (foto[0] == 71 && foto[1] == 73 && foto[2] == 70)
+                    {
+                        contentType = "image/gif";
+                    }
+                    // WebP magic bytes: 82 73 70 70
+                    else if (foto[0] == 82 && foto[1] == 73 && foto[2] == 70 && foto[3] == 70)
+                    {
+                        contentType = "image/webp";
+                    }
+                }
+
+                // Agregar cache headers (1 hora)
+                Response.Headers.Add("Cache-Control", "public, max-age=3600");
+
+                return File(foto, contentType);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "Error al obtener imagen" });
+            }
+        }
+        #endregion
+
         #region // PUT: api/comercios/actualizar/{id}
         [HttpPut]
         [Route("actualizar/{id}")]

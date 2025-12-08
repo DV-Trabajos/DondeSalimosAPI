@@ -64,6 +64,64 @@ namespace DondeSalimos.Server.Controllers
         }
         #endregion
 
+        #region // GET: api/reservas/recibidasUsuario/{usuarioId}
+        [HttpGet]
+        [Route("recibidasUsuario/{usuarioId}")]
+        public async Task<ActionResult> GetReservasRecibidasByUsuario(int usuarioId)
+        {
+            try
+            {
+                // Obtener reservas de comercios que pertenecen al usuario
+                var reservas = await _context.Reserva
+                    .AsNoTracking()
+                    .Include(r => r.Comercio)
+                    .Include(r => r.Usuario)
+                    .Where(r => r.Comercio.ID_Usuario == usuarioId && r.Usuario.Estado == true)
+                    .Select(r => new
+                    {
+                        iD_Reserva = r.ID_Reserva,
+                        fechaReserva = r.FechaReserva,
+                        tiempoTolerancia = r.TiempoTolerancia,
+                        comenzales = r.Comenzales,
+                        estado = r.Estado,
+                        fechaCreacion = r.FechaCreacion,
+                        motivoRechazo = r.MotivoRechazo,
+                        iD_Usuario = r.ID_Usuario,
+                        iD_Comercio = r.ID_Comercio,
+                        // Datos del comercio (incluye foto porque son pocas reservas)
+                        comercio = r.Comercio == null ? null : new
+                        {
+                            iD_Comercio = r.Comercio.ID_Comercio,
+                            nombre = r.Comercio.Nombre,
+                            direccion = r.Comercio.Direccion,
+                            telefono = r.Comercio.Telefono,
+                            foto = r.Comercio.Foto
+                        },
+                        // Datos del usuario que hizo la reserva
+                        usuario = r.Usuario == null ? null : new
+                        {
+                            iD_Usuario = r.Usuario.ID_Usuario,
+                            nombreUsuario = r.Usuario.NombreUsuario,
+                            correo = r.Usuario.Correo,
+                            telefono = r.Usuario.Telefono
+                        }
+                    })
+                    .OrderByDescending(r => r.fechaReserva)
+                    .ToListAsync();
+
+                return Ok(reservas);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    error = "Error al obtener reservas del usuario",
+                    details = ex.Message
+                });
+            }
+        }
+        #endregion
+
         #region // GET: api/reservas/usuario/{idUsuario}
         [HttpGet]
         [Route("usuario/{idUsuario}")]

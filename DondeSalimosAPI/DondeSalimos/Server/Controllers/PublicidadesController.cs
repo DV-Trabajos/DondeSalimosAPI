@@ -66,6 +66,181 @@ namespace DondeSalimos.Server.Controllers
         }
         #endregion
 
+        #region // GET: api/publicidades/buscarIdUsuario/{usuarioId}
+        [HttpGet]
+        [Route("BuscarIdUsuario/{usuarioId}")]
+        public async Task<ActionResult> GetPublicidadesByUsuario(int usuarioId)
+        {
+            try
+            {
+                // Obtener publicidades de comercios que pertenecen al usuario
+                var publicidades = await _context.Publicidad
+                    .AsNoTracking()
+                    .Include(p => p.Comercio)
+                    .Where(p => p.Comercio.ID_Usuario == usuarioId)
+                    .Select(p => new
+                    {
+                        iD_Publicidad = p.ID_Publicidad,
+                        descripcion = p.Descripcion,
+                        visualizaciones = p.Visualizaciones,
+                        tiempo = p.Tiempo,
+                        estado = p.Estado,
+                        pago = p.Pago,
+                        fechaCreacion = p.FechaCreacion,
+                        motivoRechazo = p.MotivoRechazo,
+                        iD_Comercio = p.ID_Comercio,
+                        imagen = p.Imagen,
+                        comercio = p.Comercio == null ? null : new
+                        {
+                            iD_Comercio = p.Comercio.ID_Comercio,
+                            nombre = p.Comercio.Nombre,
+                            direccion = p.Comercio.Direccion
+                        }
+                    })
+                    .OrderByDescending(p => p.fechaCreacion)
+                    .ToListAsync();
+
+                return Ok(publicidades);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new
+                {
+                    error = "Error al obtener publicidades del usuario",
+                    details = ex.Message
+                });
+            }
+        }
+        #endregion
+
+        #region // GET: api/publicidades/listadoAdmin 
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("listadoAdmin")]
+        public async Task<ActionResult> GetAdvertisementsAdmin()
+        {
+            try
+            {
+                var publicidades = await _context.Publicidad
+                    .AsNoTracking()
+                    .Include(x => x.Comercio)
+                    .Select(p => new
+                    {
+                        iD_Publicidad = p.ID_Publicidad,
+                        descripcion = p.Descripcion,
+                        visualizaciones = p.Visualizaciones,
+                        tiempo = p.Tiempo,
+                        estado = p.Estado,
+                        fechaCreacion = p.FechaCreacion,
+                        iD_Comercio = p.ID_Comercio,
+                        motivoRechazo = p.MotivoRechazo,
+                        pago = p.Pago,
+                        tieneImagen = p.Imagen != null && p.Imagen.Length > 0,
+                        comercio = p.Comercio == null ? null : new
+                        {
+                            iD_Comercio = p.Comercio.ID_Comercio,
+                            nombre = p.Comercio.Nombre,
+                            direccion = p.Comercio.Direccion,
+                            correo = p.Comercio.Correo,
+                            telefono = p.Comercio.Telefono
+                        }
+                    })
+                    .ToListAsync();
+
+                return Ok(publicidades);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "Error al obtener publicidades", details = ex.Message });
+            }
+        }
+        #endregion
+
+        #region // GET: api/publicidades/{id}/imagen
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("{id}/imagen")]
+        public async Task<ActionResult> GetPublicidadImagen(int id)
+        {
+            try
+            {
+                var publicidad = await _context.Publicidad
+                    .AsNoTracking()
+                    .Where(p => p.ID_Publicidad == id)
+                    .Select(p => new
+                    {
+                        iD_Publicidad = p.ID_Publicidad,
+                        imagen = p.Imagen,
+                        tieneImagen = p.Imagen != null && p.Imagen.Length > 0
+                    })
+                    .FirstOrDefaultAsync();
+
+                if (publicidad == null)
+                {
+                    return NotFound(new { mensaje = "Publicidad no encontrada" });
+                }
+
+                return Ok(publicidad);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "Error al obtener imagen", details = ex.Message });
+            }
+        }
+        #endregion
+
+        #region // GET: api/publicidades/{id}/imagenRaw
+        [AllowAnonymous]
+        [HttpGet]
+        [Route("{id}/imagenRaw")]
+        public async Task<ActionResult> GetPublicidadImagenRaw(int id)
+        {
+            try
+            {
+                var imagen = await _context.Publicidad
+                    .AsNoTracking()
+                    .Where(p => p.ID_Publicidad == id)
+                    .Select(p => p.Imagen)
+                    .FirstOrDefaultAsync();
+
+                if (imagen == null || imagen.Length == 0)
+                {
+                    return NotFound();
+                }
+
+                // Detectar tipo de imagen (básico)
+                string contentType = "image/jpeg";
+                if (imagen.Length > 8)
+                {
+                    // PNG magic bytes: 137 80 78 71
+                    if (imagen[0] == 137 && imagen[1] == 80 && imagen[2] == 78 && imagen[3] == 71)
+                    {
+                        contentType = "image/png";
+                    }
+                    // GIF magic bytes: 71 73 70
+                    else if (imagen[0] == 71 && imagen[1] == 73 && imagen[2] == 70)
+                    {
+                        contentType = "image/gif";
+                    }
+                    // WebP magic bytes: 82 73 70 70
+                    else if (imagen[0] == 82 && imagen[1] == 73 && imagen[2] == 70 && imagen[3] == 70)
+                    {
+                        contentType = "image/webp";
+                    }
+                }
+
+                // Agregar cache headers (1 hora)
+                Response.Headers.Add("Cache-Control", "public, max-age=3600");
+
+                return File(imagen, contentType);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { error = "Error al obtener imagen" });
+            }
+        }
+        #endregion
+
         #region // PUT: api/publicidades/actualizar/{id}
         [HttpPut]
         [Route("actualizar/{id}")]
@@ -207,6 +382,7 @@ namespace DondeSalimos.Server.Controllers
             }
         }
         #endregion
+
         private bool PublicidadExists(int id)
         {
             return (_context.Publicidad?

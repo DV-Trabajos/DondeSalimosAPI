@@ -3,10 +3,8 @@ using MercadoPago.Config;
 using MercadoPago.Client.Preference;
 using MercadoPago.Resource.Preference;
 using MercadoPago.Client.Payment;
-
 using Microsoft.AspNetCore.Authorization;
 using DondeSalimos.Server.Data;
-using Microsoft.EntityFrameworkCore;
 
 namespace DondeSalimos.Server.Controllers
 
@@ -63,15 +61,15 @@ namespace DondeSalimos.Server.Controllers
                 var preferenceRequest = new PreferenceRequest
                 {
                     Items = new List<PreferenceItemRequest>
-            {
-                new PreferenceItemRequest
-                {
-                    Title = request.Titulo,
-                    Quantity = 1,
-                    CurrencyId = "ARS",
-                    UnitPrice = request.Precio,
-                }
-            },
+                    {
+                        new PreferenceItemRequest
+                        {
+                            Title = request.Titulo,
+                            Quantity = 1,
+                            CurrencyId = "ARS",
+                            UnitPrice = request.Precio,
+                        }
+                    },
                     BackUrls = backUrls,
                     AutoReturn = "approved",
                     ExternalReference = externalReference,
@@ -154,11 +152,8 @@ namespace DondeSalimos.Server.Controllers
         {
             try
             {
-                Console.WriteLine($"[WEBHOOK] Notificación recibida: {notification}");
-                Console.WriteLine($"[WEBHOOK] x-signature: {xSignature}");
-                Console.WriteLine($"[WEBHOOK] x-request-id: {xRequestId}");
 
-                // <CHANGE> Validar firma del webhook
+                // Validar firma del webhook
                 var webhookSecret = _configuration["MercadoPago:WebhookSecret"] ??
                                    Environment.GetEnvironmentVariable("MERCADOPAGO_WEBHOOK_SECRET");
 
@@ -212,7 +207,6 @@ namespace DondeSalimos.Server.Controllers
                     {
                         publicidad.Pago = true;
                         await _context.SaveChangesAsync();
-                        Console.WriteLine($"[WEBHOOK] Publicidad {publicidadId} marcada como pagada automáticamente");
                     }
                 }
 
@@ -220,7 +214,6 @@ namespace DondeSalimos.Server.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[WEBHOOK ERROR] {ex.Message}");
                 return Ok(); // Aún con error, responder 200 OK
             }
         }
